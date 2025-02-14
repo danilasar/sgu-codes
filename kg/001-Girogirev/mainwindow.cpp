@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include <QPainter>
-#include <qpoint.h>
+#include <QFont>
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -43,6 +43,12 @@ void MainWindow::paintEvent(QPaintEvent *event) {
 	painter.setPen(bluePen);
 
 	painter.drawLine(QPoint(90, 50), QPoint(width, 80));
+
+	// пишем текст
+	QBrush blackBrush(Qt::black);
+	QFont font("Iosevka NF", 10);
+	painter.setBrush(blackBrush);
+	painter.drawText(QPoint(40, 100), "Надпись на форме");
 }
 
 MainWindow::~MainWindow()
