@@ -1,0 +1,21 @@
+﻿  MyForm.cpp
+z:\data\docs\sgu\code\nir\nir\MatrixCalculator\MyForm.h(746,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+z:\data\docs\sgu\code\nir\nir\MatrixCalculator\MyForm.h(799,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+z:\data\docs\sgu\code\nir\nir\MatrixCalculator\MyForm.h(801,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+z:\data\docs\sgu\code\nir\nir\MatrixCalculator\MyForm.h(825,1): warning C4244: -=: преобразование "double" в "_Ty", возможна потеря данных
+          with
+          [
+              _Ty=int
+          ]
+z:\data\docs\sgu\code\nir\nir\MatrixCalculator\MyForm.h(859,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+z:\data\docs\sgu\code\nir\nir\MatrixCalculator\MyForm.h(860,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+z:\data\docs\sgu\code\nir\nir\MatrixCalculator\MyForm.h(918,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+z:\data\docs\sgu\code\nir\nir\MatrixCalculator\MyForm.h(919,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+z:\data\docs\sgu\code\nir\nir\MatrixCalculator\MyForm.h(977,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+z:\data\docs\sgu\code\nir\nir\MatrixCalculator\MyForm.h(978,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+z:\data\docs\sgu\code\nir\nir\MatrixCalculator\MyForm.h(979,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+z:\data\docs\sgu\code\nir\nir\MatrixCalculator\MyForm.h(980,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  .NETFramework,Version=v4.7.2.AssemblyAttributes.cpp
+  Создание кода...
+  MyForm.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
+  MatrixCalculator.vcxproj -> Z:\data\docs\sgu\code\nir\nir\MatrixCalculator\x64\Debug\MatrixCalculator.exe

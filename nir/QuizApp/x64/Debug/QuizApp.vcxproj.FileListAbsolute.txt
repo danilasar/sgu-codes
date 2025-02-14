@@ -1,0 +1,4 @@
+z:\data\docs\sgu\code\nir\nir\QuizApp\x64\Debug\QuizApp.QuizAppForm.resources
+z:\data\docs\sgu\code\nir\nir\QuizApp\x64\Debug\QuizApp.vcxproj.GenerateResource.cache
+z:\data\docs\sgu\code\nir\nir\QuizApp\x64\Debug\QuizApp.exe
+z:\data\docs\sgu\code\nir\nir\QuizApp\x64\Debug\QuizApp.vcxproj.AssemblyReference.cache

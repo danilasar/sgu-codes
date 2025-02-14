@@ -1,0 +1,6 @@
+[submodule "asm-exam/nasm"]
+	path = asm-exam/nasm
+	url = git@github.com:danilasar/asm-exam-preparation.git
+[submodule "oop/cpp-04-crossroad"]
+	path = oop/cpp-04-crossroad
+	url = git@github.com:danilasar/crossroad.git

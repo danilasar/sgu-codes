@@ -1,0 +1,8 @@
+﻿  QuizAppForm.cpp
+z:\data\docs\sgu\code\nir\nir\QuizApp\QuizAppForm.h(232,31): warning C4677: GetNextQuestion: сигнатура члена, не являющегося частным, содержит частный тип сборки "Question"
+z:\data\docs\sgu\code\nir\nir\QuizApp\Question.h(3): message : см. объявление "Question"
+z:\data\docs\sgu\code\nir\nir\QuizApp\QuizAppForm.cpp(7,33): warning C4829: Возможно, неправильные параметры функции main. Рекомендуемый вариант - "int main(Platform::Array<Platform::String^>^ argv)"
+  .NETFramework,Version=v4.7.2.AssemblyAttributes.cpp
+  Создание кода...
+  QuizAppForm.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
+  QuizApp.vcxproj -> Z:\data\docs\sgu\code\nir\nir\QuizApp\x64\Debug\QuizApp.exe

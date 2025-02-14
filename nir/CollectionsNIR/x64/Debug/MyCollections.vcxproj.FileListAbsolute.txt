@@ -1,0 +1,4 @@
+z:\data\docs\sgu\code\nir\nir\CollectionsNIR\x64\Debug\MyCollections.MyCollections.resources
+z:\data\docs\sgu\code\nir\nir\CollectionsNIR\x64\Debug\MyCollections.vcxproj.GenerateResource.cache
+z:\data\docs\sgu\code\nir\nir\CollectionsNIR\x64\Debug\MyCollections.exe
+z:\data\docs\sgu\code\nir\nir\CollectionsNIR\x64\Debug\MyCollections.vcxproj.AssemblyReference.cache
