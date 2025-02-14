@@ -1,0 +1,14 @@
+z:\data\docs\sgu\code\oop\04-sharp\DynamicConsoleCalculator\bin\Debug\netcoreapp3.1\DynamicConsoleCalculator.exe
+z:\data\docs\sgu\code\oop\04-sharp\DynamicConsoleCalculator\bin\Debug\netcoreapp3.1\DynamicConsoleCalculator.deps.json
+z:\data\docs\sgu\code\oop\04-sharp\DynamicConsoleCalculator\bin\Debug\netcoreapp3.1\DynamicConsoleCalculator.runtimeconfig.json
+z:\data\docs\sgu\code\oop\04-sharp\DynamicConsoleCalculator\bin\Debug\netcoreapp3.1\DynamicConsoleCalculator.runtimeconfig.dev.json
+z:\data\docs\sgu\code\oop\04-sharp\DynamicConsoleCalculator\bin\Debug\netcoreapp3.1\DynamicConsoleCalculator.dll
+z:\data\docs\sgu\code\oop\04-sharp\DynamicConsoleCalculator\bin\Debug\netcoreapp3.1\DynamicConsoleCalculator.pdb
+z:\data\docs\sgu\code\oop\04-sharp\DynamicConsoleCalculator\obj\Debug\netcoreapp3.1\DynamicConsoleCalculator.csproj.AssemblyReference.cache
+z:\data\docs\sgu\code\oop\04-sharp\DynamicConsoleCalculator\obj\Debug\netcoreapp3.1\DynamicConsoleCalculator.GeneratedMSBuildEditorConfig.editorconfig
+z:\data\docs\sgu\code\oop\04-sharp\DynamicConsoleCalculator\obj\Debug\netcoreapp3.1\DynamicConsoleCalculator.AssemblyInfoInputs.cache
+z:\data\docs\sgu\code\oop\04-sharp\DynamicConsoleCalculator\obj\Debug\netcoreapp3.1\DynamicConsoleCalculator.AssemblyInfo.cs
+z:\data\docs\sgu\code\oop\04-sharp\DynamicConsoleCalculator\obj\Debug\netcoreapp3.1\DynamicConsoleCalculator.csproj.CoreCompileInputs.cache
+z:\data\docs\sgu\code\oop\04-sharp\DynamicConsoleCalculator\obj\Debug\netcoreapp3.1\DynamicConsoleCalculator.dll
+z:\data\docs\sgu\code\oop\04-sharp\DynamicConsoleCalculator\obj\Debug\netcoreapp3.1\DynamicConsoleCalculator.pdb
+z:\data\docs\sgu\code\oop\04-sharp\DynamicConsoleCalculator\obj\Debug\netcoreapp3.1\DynamicConsoleCalculator.genruntimeconfig.cache

@@ -1,0 +1,14 @@
+z:\data\docs\sgu\code\oop\sharp-03\Matrix\bin\Debug\netcoreapp3.1\Matrix.exe
+z:\data\docs\sgu\code\oop\sharp-03\Matrix\bin\Debug\netcoreapp3.1\Matrix.deps.json
+z:\data\docs\sgu\code\oop\sharp-03\Matrix\bin\Debug\netcoreapp3.1\Matrix.runtimeconfig.json
+z:\data\docs\sgu\code\oop\sharp-03\Matrix\bin\Debug\netcoreapp3.1\Matrix.runtimeconfig.dev.json
+z:\data\docs\sgu\code\oop\sharp-03\Matrix\bin\Debug\netcoreapp3.1\Matrix.dll
+z:\data\docs\sgu\code\oop\sharp-03\Matrix\bin\Debug\netcoreapp3.1\Matrix.pdb
+z:\data\docs\sgu\code\oop\sharp-03\Matrix\obj\Debug\netcoreapp3.1\Matrix.csproj.AssemblyReference.cache
+z:\data\docs\sgu\code\oop\sharp-03\Matrix\obj\Debug\netcoreapp3.1\Matrix.GeneratedMSBuildEditorConfig.editorconfig
+z:\data\docs\sgu\code\oop\sharp-03\Matrix\obj\Debug\netcoreapp3.1\Matrix.AssemblyInfoInputs.cache
+z:\data\docs\sgu\code\oop\sharp-03\Matrix\obj\Debug\netcoreapp3.1\Matrix.AssemblyInfo.cs
+z:\data\docs\sgu\code\oop\sharp-03\Matrix\obj\Debug\netcoreapp3.1\Matrix.csproj.CoreCompileInputs.cache
+z:\data\docs\sgu\code\oop\sharp-03\Matrix\obj\Debug\netcoreapp3.1\Matrix.dll
+z:\data\docs\sgu\code\oop\sharp-03\Matrix\obj\Debug\netcoreapp3.1\Matrix.pdb
+z:\data\docs\sgu\code\oop\sharp-03\Matrix\obj\Debug\netcoreapp3.1\Matrix.genruntimeconfig.cache

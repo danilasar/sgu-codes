@@ -1,0 +1,10 @@
+C:\Users\danilasar\source\repos\PhotoshopKiller\bin\Debug\PhotoshopKiller.exe.config
+C:\Users\danilasar\source\repos\PhotoshopKiller\bin\Debug\PhotoshopKiller.exe
+C:\Users\danilasar\source\repos\PhotoshopKiller\bin\Debug\PhotoshopKiller.pdb
+C:\Users\danilasar\source\repos\PhotoshopKiller\obj\Debug\PhotoshopKiller.csproj.AssemblyReference.cache
+C:\Users\danilasar\source\repos\PhotoshopKiller\obj\Debug\PhotoshopKiller.Form1.resources
+C:\Users\danilasar\source\repos\PhotoshopKiller\obj\Debug\PhotoshopKiller.Properties.Resources.resources
+C:\Users\danilasar\source\repos\PhotoshopKiller\obj\Debug\PhotoshopKiller.csproj.GenerateResource.cache
+C:\Users\danilasar\source\repos\PhotoshopKiller\obj\Debug\PhotoshopKiller.csproj.CoreCompileInputs.cache
+C:\Users\danilasar\source\repos\PhotoshopKiller\obj\Debug\PhotoshopKiller.exe
+C:\Users\danilasar\source\repos\PhotoshopKiller\obj\Debug\PhotoshopKiller.pdb

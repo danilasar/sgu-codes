@@ -1,0 +1,35 @@
+﻿  ConsoleApplication1.cpp
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(25,11): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(25,24): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(25,27): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(25,38): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(25,41): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(25,51): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(26,11): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(26,24): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(26,27): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(26,38): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(26,41): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(26,51): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(41,8): warning C4244: инициализация: преобразование "double" в "ll", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(43,18): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(62,20): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(66,20): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(71,19): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(72,20): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(82,16): warning C4244: инициализация: преобразование "double" в "ll", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(83,16): warning C4244: инициализация: преобразование "double" в "ll", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(84,16): warning C4244: инициализация: преобразование "double" в "ll", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(85,16): warning C4244: инициализация: преобразование "double" в "ll", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(90,28): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(90,31): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(91,28): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(91,31): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(92,28): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(92,31): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(93,28): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(93,31): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(116,12): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(116,20): warning C4244: аргумент: преобразование "ll" в "const unsigned int", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(118,8): warning C4244: инициализация: преобразование "double" в "ll", возможна потеря данных
+  ConsoleApplication1.vcxproj -> C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\Debug\ConsoleApplication1.exe

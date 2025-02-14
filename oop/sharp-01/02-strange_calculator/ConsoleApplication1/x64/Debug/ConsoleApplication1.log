@@ -1,0 +1,8 @@
+﻿  ConsoleApplication1.cpp
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(100,8): warning C4244: инициализация: преобразование "double" в "ll", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(142,16): warning C4244: инициализация: преобразование "double" в "ll", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(143,16): warning C4244: инициализация: преобразование "double" в "ll", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(144,16): warning C4244: инициализация: преобразование "double" в "ll", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(145,16): warning C4244: инициализация: преобразование "double" в "ll", возможна потеря данных
+C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\ConsoleApplication1.cpp(183,8): warning C4244: инициализация: преобразование "double" в "ll", возможна потеря данных
+  ConsoleApplication1.vcxproj -> C:\Users\contest\source\repos\danilasar\sharp-02-strange_calculator\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe

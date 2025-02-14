@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "StaticConsoleCalculator/1.0.0": {
+        "dependencies": {
+          "CalculatorLibrary": "1.0.0"
+        },
+        "runtime": {
+          "StaticConsoleCalculator.dll": {}
+        }
+      },
+      "CalculatorLibrary/1.0.0": {
+        "runtime": {
+          "CalculatorLibrary.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "StaticConsoleCalculator/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CalculatorLibrary/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
