@@ -1,3 +1,0 @@
-z:\data\docs\sgu\code\nir\nir\FileDialogNIR\x64\Debug\Winform8.MyForm.resources
-z:\data\docs\sgu\code\nir\nir\FileDialogNIR\x64\Debug\Winform8.vcxproj.GenerateResource.cache
-z:\data\docs\sgu\code\nir\nir\FileDialogNIR\x64\Debug\Winform8.exe

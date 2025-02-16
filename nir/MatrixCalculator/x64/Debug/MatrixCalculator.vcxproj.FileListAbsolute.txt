@@ -1,4 +1,0 @@
-z:\data\docs\sgu\code\nir\nir\MatrixCalculator\x64\Debug\MatrixCalculator.MyForm.resources
-z:\data\docs\sgu\code\nir\nir\MatrixCalculator\x64\Debug\MatrixCalculator.vcxproj.GenerateResource.cache
-z:\data\docs\sgu\code\nir\nir\MatrixCalculator\x64\Debug\MatrixCalculator.exe
-z:\data\docs\sgu\code\nir\nir\MatrixCalculator\x64\Debug\MatrixCalculator.vcxproj.AssemblyReference.cache
