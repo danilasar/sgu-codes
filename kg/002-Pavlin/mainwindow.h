@@ -3,20 +3,15 @@
 
 #include <QMainWindow>
 #include <QBrush>
+#include <QKeyEvent>
 #include <QVector>
 #include <QPointF>
+#include "picture.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-struct PolylineData {
-	QVector<QPointF> points;
-	bool isClosed = false;
-	QColor fillColor = Qt::transparent;
-	QColor strokeColor = Qt::darkBlue;
-	qreal strokeWidth = 2.0;
-};
 
 class MainWindow : public QMainWindow
 {
@@ -29,9 +24,10 @@ public:
 
 protected:
 	void paintEvent(QPaintEvent *event) override;
+	void keyPressEvent(QKeyEvent *event) override;
 
 private:
 	Ui::MainWindow *ui;
-	QVector<PolylineData> m_polylines;
+	std::unique_ptr<Picture> picture;
 };
 #endif // MAINWINDOW_H

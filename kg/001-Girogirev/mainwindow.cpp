@@ -26,7 +26,7 @@ void MainWindow::paintEvent(QPaintEvent *event) {
 	QPoint topPoint(width * 2 /3, 0);
 	QPoint bottomPoint(width / 3, height);
 	QPoint leftPoint(0, height * 1 /3);
-	QPoint rightPoint(width, height / 3);
+	QPoint rightPoint(width, height * 2 / 3);
 
 	painter.drawLine(leftPoint, topPoint);
 	painter.drawLine(topPoint, rightPoint);

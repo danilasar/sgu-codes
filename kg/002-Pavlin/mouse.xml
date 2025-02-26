@@ -1,0 +1,300 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE SimpleVectorGraphics>
+<Picture width="11" height="15">
+	<Path name="копьё" closed="false" stroke="#000000">
+		<Point x="1.00" y="10.00" />
+		<Point x="1.00" y="11.00" />
+		<Point x="0.50" y="11.00" />
+		<Point x="1.50" y="14.50" />
+		<Point x="2.00" y="11.00" />
+		<Point x="1.50" y="11.00" />
+		<Point x="1.50" y="0.50" />
+		<Point x="1.00" y="0.50" />
+		<Point x="1.00" y="9.00" />
+	</Path>
+	<Path name="левая_нога" closed="false" stroke="#000000">
+		<Point x="5.50" y="1.00" />
+		<Point x="3.50" y="0.50" />
+		<Point x="2.50" y="1.00" />
+		<Point x="2.00" y="1.50" />
+		<Point x="2.50" y="2.50" />
+		<Point x="3.50" y="2.00" />
+		<Point x="5.50" y="2.00" />
+	</Path>
+	<Path name="меж_ног" closed="false" stroke="#000000">
+		<Point x="5.50" y="2.00" />
+		<Point x="5.50" y="6.00" />
+	</Path>
+	<Path name="промежность" closed="false" stroke="#000000">
+		<Point x="5.25" y="6.25" />
+		<Point x="5.50" y="6.00" />
+		<Point x="5.75" y="6.25" />
+	</Path>
+	<Path name="ноги" closed="true" stroke="#000000">
+		<Point x="6.00" y="2.00" />
+		<Point x="5.00" y="2.00" />
+		<Point x="4.50" y="5.00" />
+		<Point x="6.50" y="5.00" />
+	</Path>
+	<Path name="полоска_на_штанах_1" closed="false" stroke="#000000">
+		<Point x="4.88" y="2.50" />
+		<Point x="6.00" y="2.50" />
+	</Path>
+	<Path name="полоска_на_штанах_2" closed="false" stroke="#000000">
+		<Point x="4.8" y="3.00" />
+		<Point x="6.10" y="3.00" />
+	</Path>
+	<Path name="полоска_на_штанах_3" closed="false" stroke="#000000">
+		<Point x="4.7" y="3.50" />
+		<Point x="6.2" y="3.50" />
+	</Path>
+	<Path name="полоска_на_штанах_4" closed="false" stroke="#000000">
+		<Point x="4.6" y="4.00" />
+		<Point x="6.3" y="4.00" />
+	</Path>
+	<Path name="правая_нога" closed="false" stroke="#000000">
+		<Point x="6.00" y="2.00" />
+		<Point x="5.50" y="2.00" />
+		<Point x="5.50" y="1.00" />
+	</Path>
+	<Path name="сыр" closed="true" stroke="#000000">
+		<Point x="5.50" y="1.00" />
+		<Point x="8.00" y="6.00" />
+		<Point x="10.00" y="2.00" />
+		<Point x="8.00" y="0.50" />
+	</Path>
+	<Path name="угол_сыра" closed="false" stroke="#000000">
+		<Point x="8.00" y="0.50" />
+		<Point x="8.00" y="6.00" />
+	</Path>
+	<Path name="квадрат_1" closed="false" stroke="#000000">
+		<Point x="7.00" y="0.665" />
+		<Point x="7.00" y="1.00" />
+		<Point x="7.50" y="1.00" />
+		<Point x="7.50" y="0.567" />
+	</Path>
+	<Path name="квадрат_2" closed="true" stroke="#000000">
+		<Point x="7.00" y="1.50" />
+		<Point x="6.50" y="2.00" />
+		<Point x="7.00" y="2.50" />
+		<Point x="7.50" y="2.00" />
+	</Path>
+	<Path name="квадрат_3" closed="false" stroke="#000000">
+		<Point x="8.00" y="3.00" />
+		<Point x="7.50" y="3.00" />
+		<Point x="7.50" y="3.50" />
+		<Point x="8.00" y="3.50" />
+	</Path>
+	<Path name="квадрат_4" closed="false" stroke="#000000">
+		<Point x="7.00" y="4.00" />
+		<Point x="7.50" y="4.00" />
+		<Point x="7.50" y="4.50" />
+		<Point x="7.25" y="4.50" />
+	</Path>
+	<Path name="квадрат_5" closed="false" stroke="#000000">
+		<Point x="8.00" y="1.00" />
+		<Point x="8.50" y="1.00" />
+		<Point x="8.50" y="1.50" />
+		<Point x="8.00" y="1.50" />
+	</Path>
+	<Path name="квадрат_6" closed="true" stroke="#000000">
+		<Point x="9.00" y="2.50" />
+		<Point x="9.00" y="2.00" />
+		<Point x="8.50" y="2.00" />
+		<Point x="8.50" y="2.50" />
+	</Path>
+	<Path name="квадрат_7" closed="false" stroke="#000000">
+		<Point x="9.00" y="4.00" />
+		<Point x="8.50" y="4.00" />
+		<Point x="8.50" y="4.50" />
+		<Point x="8.75" y="4.50" />
+	</Path>
+	<Path name="штаны" closed="true" stroke="#000000">
+		<Point x="4.00" y="7.50" />
+		<Point x="4.00" y="6.50" />
+		<Point x="4.50" y="5.00" />
+		<Point x="6.50" y="5.00" />
+		<Point x="7.00" y="6.50" />
+		<Point x="7.00" y="7.50" />
+		<Point x="6.00" y="7.00" />
+		<Point x="5.00" y="7.00" />
+	</Path>
+	<Path name="туловище" closed="false" stroke="#000000">
+		<Point x="4.00" y="7.50" />
+		<Point x="4.50" y="8.50" />
+		<Point x="4.50" y="9.00" />
+		<Point x="5.00" y="9.50" />
+		<Point x="6.00" y="9.50" />
+		<Point x="6.50" y="9.00" />
+		<Point x="6.50" y="8.50" />
+		<Point x="7.00" y="7.50" />
+	</Path>
+	<Path name="левая_лямка" closed="false" stroke="#000000">
+		<Point x="4.50" y="8.50" />
+		<Point x="4.50" y="7.25" />
+		<Point x="5.00" y="7.00" />
+		<Point x="5.00" y="9.50" />
+	</Path>
+	<Path name="правая_лямка_внутри" closed="false" stroke="#000000">
+		<Point x="6.00" y="9.50" />
+		<Point x="6.00" y="7.00" />
+	</Path>
+	<Path name="правая_лямка_снаружи" closed="false" stroke="#000000">
+		<Point x="6.50" y="7.25" />
+		<Point x="6.50" y="8.50" />
+	</Path>
+	<Path name="левая_рука_низ" closed="false" stroke="#000000">
+		<Point x="1.50" y="8.50" />
+		<Point x="2.00" y="8.50" />
+		<Point x="4.00" y="8.00" />
+		<Point x="4.25" y="8.00" />
+	</Path>
+	<Path name="левая_рука_верх" closed="false" stroke="#000000">
+		<Point x="1.50" y="10.00" />
+		<Point x="2.00" y="10.00" />
+		<Point x="2.00" y="9.50" />
+		<Point x="4.00" y="8.50" />
+		<Point x="4.50" y="9.00" />
+	</Path>
+	<Path name="ладонь" closed="false" stroke="#000000">
+		<Point x="1.00" y="8.50" />
+		<Point x="0.50" y="9.00" />
+		<Point x="0.50" y="10.00" />
+		<Point x="1.00" y="10.50" />
+	</Path>
+	<Path name="палец" closed="false" stroke="#000000">
+		<Point x="0.50" y="9.50" />
+		<Point x="1.00" y="9.00" />
+		<Point x="1.50" y="9.50" />
+		<Point x="1.00" y="10.00" />
+		<Point x="0.50" y="10.00" />
+	</Path>
+	<Path name="солнечное_сплетение" closed="false" stroke="#000000">
+		<Point x="5.00" y="8.00" />
+		<Point x="6.00" y="8.00" />
+	</Path>
+	<Path name="пупок" closed="false" stroke="#000000">
+		<Point x="5.35" y="7.75" />
+		<Point x="5.50" y="7.75" />
+	</Path>
+	<Path name="правая_рука" closed="false" stroke="#000000">
+		<Point x="6.50" y="9.00" />
+		<Point x="7.00" y="8.50" />
+		<Point x="7.50" y="7.50" />
+		<Point x="7.00" y="6.50" />
+	</Path>
+	<Path name="голова" closed="false" stroke="#000000">
+		<Point x="5.00" y="9.50" />
+		<Point x="3.50" y="10.00" />
+		<Point x="3.00" y="11.00" />
+		<Point x="3.50" y="12.50" />
+		<Point x="5.00" y="13.50" />
+		<Point x="6.00" y="13.50" />
+		<Point x="7.50" y="12.50" />
+		<Point x="8.00" y="11.00" />
+		<Point x="7.50" y="10.00" />
+		<Point x="6.00" y="9.50" />
+	</Path>
+	<Path name="левый_большой_ус" closed="false" stroke="#000000">
+		<Point x="2.00" y="10.50" />
+		<Point x="4.00" y="11.00" />
+		<Point x="2.50" y="11.00" />
+	</Path>
+	<Path name="правый_большой_ус" closed="false" stroke="#000000">
+		<Point x="9.00" y="10.50" />
+		<Point x="7.00" y="11.00" />
+		<Point x="8.50" y="11.00" />
+	</Path>
+	<Path name="левый_малый_ус" closed="false" stroke="#000000">
+		<Point x="4.00" y="11.50" />
+		<Point x="2.00" y="12.00" />
+	</Path>
+	<Path name="правый_малый_ус" closed="false" stroke="#000000">
+		<Point x="7.00" y="11.50" />
+		<Point x="9.00" y="12.00" />
+	</Path>
+	<Path name="верхняя_губа" closed="false" stroke="#000000">
+		<Point x="7.50" y="12.00" />
+		<Point x="6.00" y="11.00" />
+		<Point x="5.00" y="11.00" />
+		<Point x="3.50" y="12.00" />
+	</Path>
+	<Path name="нижняя_губа" closed="false" stroke="#000000">
+		<Point x="4.50" y="11.25" />
+		<Point x="4.50" y="10.50" />
+		<Point x="5.00" y="10.00" />
+		<Point x="6.00" y="10.00" />
+		<Point x="6.50" y="10.50" />
+		<Point x="6.50" y="11.25" />
+	</Path>
+	<Path name="центральная_щель" closed="false" stroke="#000000">
+		<Point x="5.50" y="10.00" />
+		<Point x="5.50" y="11.00" />
+	</Path>
+	<Path name="левая_щель" closed="false" stroke="#000000">
+		<Point x="5.00" y="10.00" />
+		<Point x="5.00" y="11.00" />
+	</Path>
+	<Path name="правая_щель" closed="false" stroke="#000000">
+		<Point x="6.00" y="10.00" />
+		<Point x="6.00" y="11.00" />
+	</Path>
+	<Path name="нос" closed="true" stroke="#000000">
+		<Point x="6.00" y="12.00" />
+		<Point x="5.00" y="12.00" />
+		<Point x="5.50" y="11.50" />
+	</Path>
+	<Path name="левый_мешок" closed="false" stroke="#000000">
+		<Point x="3.50" y="12.50" />
+		<Point x="5.00" y="12.00" />
+	</Path>
+	<Path name="правый_мешок" closed="false" stroke="#000000">
+		<Point x="7.50" y="12.50" />
+		<Point x="6.00" y="12.00" />
+	</Path>
+	<Path name="глаза" closed="false" stroke="#000000">
+		<Point x="6.50" y="12.25" />
+		<Point x="6.50" y="12.50" />
+		<Point x="6.00" y="13.00" />
+		<Point x="5.50" y="12.50" />
+		<Point x="5.00" y="13.00" />
+		<Point x="4.50" y="12.50" />
+		<Point x="4.50" y="12.25" />
+	</Path>
+	<Path name="меж_глаз" closed="false" stroke="#000000">
+		<Point x="5.50" y="12.50" />
+		<Point x="5.50" y="12.00" />
+	</Path>
+	<Path name="левый_зрачок" closed="false" stroke="#000000">
+		<Point x="5.00" y="12.00" />
+		<Point x="5.00" y="12.50" />
+	</Path>
+	<Path name="правый_зрачок" closed="false" stroke="#000000">
+		<Point x="6.00" y="12.00" />
+		<Point x="6.00" y="12.50" />
+	</Path>
+	<Path name="левое_ухо" closed="false" stroke="#000000">
+		<Point x="5.00" y="13.50" />
+		<Point x="4.50" y="14.50" />
+		<Point x="2.50" y="14.50" />
+		<Point x="2.00" y="12.50" />
+		<Point x="3.3" y="12.00" />
+		<Point x="3.50" y="12.50" />
+		<Point x="2.50" y="13.00" />
+		<Point x="3.00" y="14.00" />
+		<Point x="4.00" y="14.00" />
+		<Point x="4.50" y="13.25" />
+	</Path>
+	<Path name="правое_ухо" closed="false" stroke="#000000">
+		<Point x="6.00" y="13.50" />
+		<Point x="6.50" y="14.50" />
+		<Point x="8.50" y="14.50" />
+		<Point x="9.00" y="12.50" />
+		<Point x="7.64" y="12.00" />
+		<Point x="7.50" y="12.50" />
+		<Point x="8.50" y="13.00" />
+		<Point x="8.00" y="14.00" />
+		<Point x="7.00" y="14.00" />
+		<Point x="6.50" y="13.25" />
+	</Path>
+</Picture>

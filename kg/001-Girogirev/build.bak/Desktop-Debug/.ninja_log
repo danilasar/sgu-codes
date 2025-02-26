@@ -1,0 +1,21 @@
+# ninja log v6
+207	820	1740373746673133054	build.ninja	ddeeb417397dbc39
+4	153	1740373746060759609	/data/docs/sgu/code/kg/001-Girogirev/build/Desktop-Debug/CMakeFiles/cmake.verify_globs	bfa9e1ba2e0969fc
+127	169	1739563184946617167	001-Girogirev_autogen/mocs_compilation.cpp	930e583038000c0b
+127	169	1739563184946617167	001-Girogirev_autogen/timestamp	930e583038000c0b
+127	169	1739563184946617167	/data/docs/sgu/code/kg/001-Girogirev/build/Desktop-Debug/001-Girogirev_autogen/timestamp	930e583038000c0b
+684	4991	1739563089482538582	CMakeFiles/001-Girogirev.dir/main.cpp.o	27ef02d59ac9fc9b
+127	169	1739563184946617167	/data/docs/sgu/code/kg/001-Girogirev/build/Desktop-Debug/001-Girogirev_autogen/mocs_compilation.cpp	930e583038000c0b
+684	5000	1739563089482538582	CMakeFiles/001-Girogirev.dir/001-Girogirev_autogen/mocs_compilation.cpp.o	a8ffe84b5dc272cb
+169	3013	1739563184989974559	CMakeFiles/001-Girogirev.dir/mainwindow.cpp.o	705e5f794d8f26bc
+3013	3493	1739563187831550144	001-Girogirev	de7ba083eac76cc9
+153	712	1740373746673133054	build.ninja	ddeeb417397dbc39
+4	164	1740373746718160513	/data/docs/sgu/code/kg/001-Girogirev/build/Desktop-Debug/CMakeFiles/cmake.verify_globs	bfa9e1ba2e0969fc
+168	901	1740373747585689057	001-Girogirev_autogen/timestamp	930e583038000c0b
+168	901	1740373747585689057	001-Girogirev_autogen/mocs_compilation.cpp	930e583038000c0b
+168	901	1740373747585689057	/data/docs/sgu/code/kg/001-Girogirev/build/Desktop-Debug/001-Girogirev_autogen/timestamp	930e583038000c0b
+168	901	1740373747585689057	/data/docs/sgu/code/kg/001-Girogirev/build/Desktop-Debug/001-Girogirev_autogen/mocs_compilation.cpp	930e583038000c0b
+902	5806	1740373747615707337	CMakeFiles/001-Girogirev.dir/001-Girogirev_autogen/mocs_compilation.cpp.o	a8ffe84b5dc272cb
+903	6702	1740373747617648128	CMakeFiles/001-Girogirev.dir/mainwindow.cpp.o	705e5f794d8f26bc
+902	6707	1740373747617275005	CMakeFiles/001-Girogirev.dir/main.cpp.o	27ef02d59ac9fc9b
+6707	7589	1740373753421227961	001-Girogirev	8b1f9891ff5cbc3e
