@@ -29,5 +29,8 @@ protected:
 private:
 	Ui::MainWindow *ui;
 	std::unique_ptr<Picture> picture;
+	bool keep_aspect_ratio = false;
+	bool is_mouse = false;
+	QPointF transform_point(QPointF point, QPointF base_size, QPointF new_size, QPointF new_position) const;
 };
 #endif // MAINWINDOW_H

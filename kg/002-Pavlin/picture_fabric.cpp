@@ -52,7 +52,18 @@ std::unique_ptr<QVector<Path>> PictureFabric::parse_xml_file(QString path) const
 		QXmlStreamReader::TokenType token = xml.readNext();
 
 		if(token == QXmlStreamReader::StartElement) {
-			if(xml.name() == "Path") {
+			if(xml.name() == "Picture") {
+				bool wok = true, hok = true;
+				try {
+					this->picture->set_width(xml.attributes().value("width").toDouble(&wok));
+				} catch(...) { wok = false; }
+				try {
+					this->picture->set_height(xml.attributes().value("height").toDouble(&hok));
+				} catch(...) { hok = false; }
+				if(!(wok && hok)) {
+					std::cerr << "Неверные размеры изображения" << std::endl;
+				}
+			} else if(xml.name() == "Path") {
 				current_path = Path();
 				current_path.isClosed = xml.attributes().value("closed") == "true";
 

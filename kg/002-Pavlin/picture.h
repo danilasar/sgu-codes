@@ -12,12 +12,18 @@ struct Path {
 };
 
 struct Picture {
-	explicit Picture(const QVector<Path> &paths) noexcept;
+	explicit Picture(double width, double height, const QVector<Path> &paths) noexcept;
 	Picture() noexcept = default;
 	Picture(const Picture& pic) noexcept = default;
 	const QVector<Path>& get_paths() const;
 	void add_paths(const QVector<Path> &paths) noexcept;
 	void clear() noexcept;
+	double get_width() const noexcept;
+	double get_height() const noexcept;
+	void set_width(double width) noexcept;
+	void set_height(double height) noexcept;
 private:
+	double width;
+	double height;
 	QVector<Path> paths;
 };

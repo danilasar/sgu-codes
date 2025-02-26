@@ -1,37 +1,228 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE SimpleVectorGraphics>
-<Shapes>
-	<!-- Закрытый залитый многоугольник -->
-	<Path closed="true" fill="#FF000080" stroke="#0000FF" stroke-width="3">
-		<Point x="50" y="50"/>
-        <Point x="150" y="75"/>
-        <Point x="100" y="150"/>
+<Picture width="9" height="9">
+	<Path closed="false" fill="#000000FF" name="от левой щеки вверх до уха">
+		<Point x="0.5" y="3.0"/>
+		<Point x="1.0" y="4.5"/>
 	</Path>
-
-    <!-- Незамкнутая линия с обводкой -->
-    <Path closed="false" stroke="#00FF00" stroke-width="2">
-        <Point x="200" y="50"/>
-        <Point x="250" y="200"/>
-        <Point x="300" y="100"/>
-    </Path>
-
-    <!-- Залитый треугольник -->
-    <Path closed="true" fill="#FFFF00" stroke="#000000">
-        <Point x="350" y="50"/>
-        <Point x="400" y="150"/>
-        <Point x="300" y="100"/>
-		</Path>
-
-    <Path closed="true" stroke="#000000">
-        <Point x="450" y="50"/>
-        <Point x="500" y="150"/>
-        <Point x="400" y="100"/>
-    </Path>
-
-
-    <Path closed="true" fill="#FFFF00" stroke-width="0">
-        <Point x="550" y="50"/>
-        <Point x="600" y="150"/>
-        <Point x="500" y="100"/>
-    </Path>
-</Shapes>
+	<Path closed="false" fill="#000000FF" name="левое ухо слева снизу вверх">
+		<Point x="1.0" y="4.5"/>
+		<Point x="0.5" y="6.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="левое ухо слева">
+		<Point x="0.5" y="6.0"/>
+		<Point x="0.5" y="7.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="левое ухо верх слева">
+		<Point x="0.5" y="7.5"/>
+		<Point x="1.0" y="8.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="левое ухо верх середина">
+		<Point x="1.0" y="8.0"/>
+		<Point x="1.5" y="8.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="левое ухо верх справа">
+		<Point x="1.5" y="8.0"/>
+		<Point x="2.0" y="7.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="левое ухо справа сверху вниз">
+		<Point x="2.0" y="7.5"/>
+		<Point x="1.5" y="6.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="левое ухо справа до макушки">
+		<Point x="1.5" y="6.0"/>
+		<Point x="1.5" y="4.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="макушка">
+		<Point x="1.5" y="4.5"/>
+		<Point x="3.0" y="4.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="правое ухо слева снизу вверх">
+		<Point x="3.0" y="4.5"/>
+		<Point x="3.0" y="6.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="правое ухо слева">
+		<Point x="3.0" y="6.0"/>
+		<Point x="2.5" y="7.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="правое ухо верх слева">
+		<Point x="2.5" y="7.5"/>
+		<Point x="3.0" y="8.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="правое ухо верх середина">
+		<Point x="3.0" y="8.0"/>
+		<Point x="3.5" y="8.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="правое ухо верх справа">
+		<Point x="3.5" y="8.0"/>
+		<Point x="4.0" y="7.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="правое ухо сверху вниз">
+		<Point x="4.0" y="7.5"/>
+		<Point x="4.0" y="6.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="правое ухо справа">
+		<Point x="4.0" y="6.0"/>
+		<Point x="3.5" y="4.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="от правого уха вниз до щеки">
+		<Point x="3.5" y="4.5"/>
+		<Point x="4.0" y="3.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="правая скула">
+		<Point x="4.0" y="3.0"/>
+		<Point x="3.5" y="1.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="подбородок справа">
+		<Point x="3.5" y="1.5"/>
+		<Point x="2.5" y="1.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="подбородок снизу">
+		<Point x="2.5" y="1.0"/>
+		<Point x="2.0" y="1.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="подбородок слева">
+		<Point x="2.0" y="1.0"/>
+		<Point x="1.0" y="1.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="левая скула">
+		<Point x="1.0" y="1.5"/>
+		<Point x="0.5" y="3.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="спина от головы вправо">
+		<Point x="4.0" y="3.0"/>
+		<Point x="5.5" y="3.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="спина верх">
+		<Point x="5.5" y="3.5"/>
+		<Point x="7.0" y="3.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="спина сверху до хвоста">
+		<Point x="7.0" y="3.5"/>
+		<Point x="7.5" y="2.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="хвост сверху">
+		<Point x="7.5" y="2.5"/>
+		<Point x="8.0" y="2.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="хвост справа">
+		<Point x="8.0" y="2.5"/>
+		<Point x="8.0" y="2.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="хвост низ справа налево">
+		<Point x="8.0" y="2.0"/>
+		<Point x="7.5" y="2.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="задняя нога справа сверху вниз">
+		<Point x="7.5" y="2.0"/>
+		<Point x="7.5" y="0.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="задняя нога низ">
+		<Point x="7.5" y="0.5"/>
+		<Point x="6.5" y="0.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="задняя нога слева">
+		<Point x="6.5" y="0.5"/>
+		<Point x="6.5" y="1.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="между задних ног">
+		<Point x="6.5" y="1.0"/>
+		<Point x="6.0" y="1.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="левая задняя нога справа">
+		<Point x="6.0" y="1.0"/>
+		<Point x="6.0" y="0.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="левая задняя нога низ">
+		<Point x="6.0" y="0.5"/>
+		<Point x="5.0" y="0.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="левая задняя нога слева">
+		<Point x="5.0" y="0.5"/>
+		<Point x="5.0" y="1.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="между задними и передними ногами">
+		<Point x="5.0" y="1.0"/>
+		<Point x="4.0" y="1.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="правая передняя нога справа">
+		<Point x="4.0" y="1.0"/>
+		<Point x="4.0" y="0.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="правая передняя нога низ">
+		<Point x="4.0" y="0.5"/>
+		<Point x="3.0" y="0.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="правая передняя нога слева">
+		<Point x="3.0" y="0.5"/>
+		<Point x="3.0" y="1.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="между передних ног">
+		<Point x="3.0" y="1.0"/>
+		<Point x="2.5" y="1.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="передняя нога справа">
+		<Point x="2.5" y="1.0"/>
+		<Point x="2.5" y="0.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="передняя нога низ">
+		<Point x="2.5" y="0.5"/>
+		<Point x="1.5" y="0.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="передняя нога слева">
+		<Point x="1.5" y="0.5"/>
+		<Point x="1.5" y="1.25"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="левый глаз слева сверху вниз">
+		<Point x="1.5" y="3.5"/>
+		<Point x="1.5" y="3.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="левый глаз низ">
+		<Point x="1.5" y="3.0"/>
+		<Point x="2.0" y="3.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="левый глаз справа">
+		<Point x="2.0" y="3.0"/>
+		<Point x="2.0" y="3.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="левый глаз верх">
+		<Point x="2.0" y="3.5"/>
+		<Point x="1.5" y="3.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="правый глаз слева">
+		<Point x="2.5" y="3.5"/>
+		<Point x="2.5" y="3.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="правый глаз снизу">
+		<Point x="2.5" y="3.0"/>
+		<Point x="3.0" y="3.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="правый глаз справа">
+		<Point x="3.0" y="3.0"/>
+		<Point x="3.0" y="3.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="правый глаз сверху">
+		<Point x="3.0" y="3.5"/>
+		<Point x="2.5" y="3.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="левая ушная раковина">
+		<Point x="1.0" y="5.5"/>
+		<Point x="1.0" y="7.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="правая ушная раковина">
+		<Point x="3.5" y="5.5"/>
+		<Point x="3.5" y="7.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="нос сверху">
+		<Point x="2.0" y="2.5"/>
+		<Point x="2.5" y="2.5"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="нос справа">
+		<Point x="2.5" y="2.5"/>
+		<Point x="2.25" y="2.0"/>
+	</Path>
+	<Path closed="false" fill="#000000FF" name="нос слева">
+		<Point x="2.25" y="2.0"/>
+		<Point x="2.0" y="2.5"/>
+	</Path>
+</Picture>
