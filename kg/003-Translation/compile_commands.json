@@ -1,0 +1,20 @@
+[
+{
+  "directory": "/data/docs/sgu/code/kg/002-Pavlin/build",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/data/docs/sgu/code/kg/002-Pavlin/build/002-Pavlin_autogen/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -std=gnu++17 -o CMakeFiles/002-Pavlin.dir/002-Pavlin_autogen/mocs_compilation.cpp.o -c /data/docs/sgu/code/kg/002-Pavlin/build/002-Pavlin_autogen/mocs_compilation.cpp",
+  "file": "/data/docs/sgu/code/kg/002-Pavlin/build/002-Pavlin_autogen/mocs_compilation.cpp",
+  "output": "CMakeFiles/002-Pavlin.dir/002-Pavlin_autogen/mocs_compilation.cpp.o"
+},
+{
+  "directory": "/data/docs/sgu/code/kg/002-Pavlin/build",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/data/docs/sgu/code/kg/002-Pavlin/build/002-Pavlin_autogen/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -std=gnu++17 -o CMakeFiles/002-Pavlin.dir/main.cpp.o -c /data/docs/sgu/code/kg/002-Pavlin/main.cpp",
+  "file": "/data/docs/sgu/code/kg/002-Pavlin/main.cpp",
+  "output": "CMakeFiles/002-Pavlin.dir/main.cpp.o"
+},
+{
+  "directory": "/data/docs/sgu/code/kg/002-Pavlin/build",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/data/docs/sgu/code/kg/002-Pavlin/build/002-Pavlin_autogen/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -std=gnu++17 -o CMakeFiles/002-Pavlin.dir/mainwindow.cpp.o -c /data/docs/sgu/code/kg/002-Pavlin/mainwindow.cpp",
+  "file": "/data/docs/sgu/code/kg/002-Pavlin/mainwindow.cpp",
+  "output": "CMakeFiles/002-Pavlin.dir/mainwindow.cpp.o"
+}
+]
