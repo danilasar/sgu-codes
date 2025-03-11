@@ -14,9 +14,9 @@ struct Vec {
 	template<typename... Args, typename = std::enable_if_t<(std::is_convertible_v<Args, T> && ...)>>
 	Vec(Args&&... args) noexcept;
 	Vec(std::initializer_list<T> coordinates);
-	Vec<N, T>& operator*=(const Vec<N, T>& r);
-	Vec<N, T> operator*(const Vec<N, T>& r);
 	T operator[](const size_t i);
+	friend Vec<N, T>& operator*=(Vec<N, T>& l, const Vec<N, float>& r);
+	friend Vec<N, T> operator*(const Vec<N, T>& l, const Vec<N, float>& r);
 };
 template<typename T>
 struct Vec<0, T> {
@@ -25,6 +25,8 @@ struct Vec<0, T> {
 
 typedef Vec<2, float> Vec2;
 typedef Vec<3, float> Vec3;
+template<size_t N, size_t M, typename T>
+using Mat = Vec<N, Vec<M, T>>;
 
 template<size_t N, typename T>
 Vec<N, T>::Vec(const Vec<N - 1, T>& v, T dimension) noexcept {
@@ -47,17 +49,26 @@ Vec<N, T>::Vec(std::initializer_list<T> list) {
 }
 
 template<size_t N, typename T>
-Vec<N, T>& Vec<N, T>::operator*=(const Vec<N, T>& r) {
-	for(int i = 0; i < N; ++i) {
-		coordinates[i] *= r.coordinates[i];
-	}
-	return &this;
+Vec<N, T>& operator*=(Vec<N, T>& l, const Vec<N, T>& r) {
+	throw std::logic_error("Операция * не определена для этого типа");
 }
 
-
 template<size_t N, typename T>
-Vec<N, T> Vec<N, T>::operator*(const Vec<N, T>& r) {
-	Vec<N, T> result(this);
+Vec<N, T> operator*(const Vec<N, T>& l, const Vec<N, T>& r) {
+	throw std::logic_error("Операция * не определена для этого типа");
+}
+
+template<size_t N>
+Vec<N, float>& operator*=(Vec<N, float>& l, const Vec<N, float>& r) {
+	for(int i = 0; i < N; ++i) {
+		l.coordinates[i] *= r.coordinates[i];
+	}
+	return l;
+}
+
+template<size_t N>
+Vec<N, float> operator*(const Vec<N, float>& l, const Vec<N, float>& r) {
+	Vec<N, float> result(l);
 	result *= r;
 	return result;
 }

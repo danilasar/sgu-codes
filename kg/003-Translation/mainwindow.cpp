@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "vec.h"
 #include "./ui_mainwindow.h"
 #include "picture_fabric.h"
 #include <QFile>
