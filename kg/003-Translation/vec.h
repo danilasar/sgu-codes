@@ -10,24 +10,24 @@ struct Vec {
 	T coordinates[N];
 	Vec() = delete;
 	Vec(const Vec<N, T>& v) = default;
-	Vec(const Vec<N - 1, T>& v, float dimension) noexcept;
+	Vec(const Vec<N - 1, T>& v, T dimension) noexcept;
 	template<typename... Args, typename = std::enable_if_t<(std::is_convertible_v<Args, T> && ...)>>
 	Vec(Args&&... args) noexcept;
-	Vec(std::initializer_list<float> coordinates);
+	Vec(std::initializer_list<T> coordinates);
 	Vec<N, T>& operator*=(const Vec<N, T>& r);
 	Vec<N, T> operator*(const Vec<N, T>& r);
-	float operator[](const size_t i);
+	T operator[](const size_t i);
 };
 template<typename T>
 struct Vec<0, T> {
-	Vec(const Vec& v, float dimension) noexcept = delete;
+	Vec(const Vec& v, T dimension) noexcept = delete;
 };
 
 typedef Vec<2, float> Vec2;
 typedef Vec<3, float> Vec3;
 
 template<size_t N, typename T>
-Vec<N, T>::Vec(const Vec<N - 1, T>& v, float dimension) noexcept {
+Vec<N, T>::Vec(const Vec<N - 1, T>& v, T dimension) noexcept {
 	std::copy(std::begin(v.coordinates), std::end(v.coordinates), std::begin(coordinates));
 	coordinates[N - 1] = dimension;
 }
@@ -36,11 +36,11 @@ template<size_t N, typename T>
 template<typename... Args, typename>
 Vec<N, T>::Vec(Args&&... args) noexcept {
 	static_assert(sizeof...(Args) == N, "Число аргументов должно соответствовать размерности вектора");
-	coordinates = { static_cast<float>(std::forward<Args>(args))... };
+	coordinates = { static_cast<T>(std::forward<Args>(args))... };
 }
 
 template<size_t N, typename T>
-Vec<N, T>::Vec(std::initializer_list<float> list) {
+Vec<N, T>::Vec(std::initializer_list<T> list) {
 	if(list.size() != N) {
 		throw std::invalid_argument("Неверное число аргументов в списке инициализации");
 	}
@@ -63,7 +63,7 @@ Vec<N, T> Vec<N, T>::operator*(const Vec<N, T>& r) {
 }
 
 template<size_t N, typename T>
-float Vec<N, T>::operator[](const size_t i) {
+T Vec<N, T>::operator[](const size_t i) {
 	return ((T*)this)[i];
 }
 
