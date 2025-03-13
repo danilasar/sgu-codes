@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "vec.h"
+#include "math/vec.h"
 #include "./ui_mainwindow.h"
 #include "picture_fabric.h"
 #include <QFile>
@@ -23,10 +23,10 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
-	Vec3 a{1.f, 2.f, 3.f};
-	Vec<2, float> b(1., 2.);
-	Vec<3, float> d(b, 3.);
-	Vec<4, int> c { 1, 2, 3, 4};
+	Math::Vec3 a{1.f, 2.f, 3.f};
+	Math::Vec<2, float> b(1., 2.);
+	Math::Vec<3, float> d(b, 3.);
+	Math::Vec<4, int> c { 1, 2, 3, 4};
 	a *= a;
 	if(event->modifiers() == Qt::NoModifier) {
 		if(event->key() == Qt::Key_N) {
