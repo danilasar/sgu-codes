@@ -23,6 +23,11 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
+	Vec3 a{1.f, 2.f, 3.f};
+	Vec<2, float> b(1., 2.);
+	Vec<3, float> d(b, 3.);
+	Vec<4, int> c { 1, 2, 3, 4};
+	a *= a;
 	if(event->modifiers() == Qt::NoModifier) {
 		if(event->key() == Qt::Key_N) {
 			is_mouse = !is_mouse;
