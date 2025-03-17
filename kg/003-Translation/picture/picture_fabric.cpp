@@ -7,12 +7,13 @@
 #include <stdexcept>
 #include <system_error>
 
+using namespace Picture;
 
 PictureFabric::PictureFabric(std::unique_ptr<Picture> pic) noexcept {
 	picture = std::move(pic);
 }
 
-std::unique_ptr<Picture> PictureFabric::get_picture() {
+std::unique_ptr<::Picture::Picture> PictureFabric::get_picture() {
 	return std::move(picture);
 }
 
@@ -30,6 +31,10 @@ void PictureFabric::make_mouse() {
 		const QVector<Path> &paths = *data;
 		this->picture->add_paths(paths);
 	}
+}
+
+std::unique_ptr<QVector<Path>> PictureFabric::xml_parse_points(QXmlStreamReader& xml) {
+
 }
 
 std::unique_ptr<QVector<Path>> PictureFabric::parse_xml_file(QString path) const {

@@ -5,7 +5,8 @@ namespace Math {
 	template<size_t N, size_t M, typename T> requires std::is_arithmetic_v<T>
 	struct Mat : Vec<N, Vec<M, T, true>> {
 		using Vec<N, Vec<M, T, true>>::Vec;
-		Mat<N, M, T>(float x) noexcept;
+		//Mat() = delete;
+		Mat(float x) noexcept;
 		static Mat<M, N, T> transpose(const Mat<N, M, T>& mat);
 		template<size_t X, size_t Y>
 		Mat<N, M, T>& operator*=(const Mat<X, Y, T>& r);
@@ -21,9 +22,9 @@ namespace Math {
 		for(int y = 0; y < N; ++y) {
 			for(int x = 0; x < M; ++x) {
 				if(y == x) {
-					this->coordinates = a;
+					this->coordinates[y][x] = a;
 				} else {
-					this->coordinates = 0;
+					this->coordinates[y][x] = 0;
 				}
 			}
 		}

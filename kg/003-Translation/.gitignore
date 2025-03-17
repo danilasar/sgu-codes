@@ -82,3 +82,10 @@ CMakeLists.txt.user*
 /build*/
 
 .cache
+.qt
+CMakeFiles
+build
+CMakeCache.txt
+compile_commands.json
+sivg
+sivg_autogen

@@ -1,15 +1,13 @@
 #include "mainwindow.h"
 #include "math/vec.h"
 #include "./ui_mainwindow.h"
-#include "picture_fabric.h"
+#include "picture/picture_fabric.h"
 #include <QFile>
 #include <QPainter>
 #include <QPainterPath>
 #include <QXmlStreamReader>
 #include <QPen>
 #include <iostream>
-#include <qnamespace.h>
-#include <qpoint.h>
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -17,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
 	ui->setupUi(this);
 	setFocusPolicy(Qt::StrongFocus);
-	PictureFabric fabric(std::make_unique<Picture>());
+	Picture::PictureFabric fabric(std::make_unique<Picture::Picture>());
 	fabric.make_rabbit();
 	picture = std::move(fabric.get_picture());
 }
@@ -32,7 +30,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 		if(event->key() == Qt::Key_N) {
 			is_mouse = !is_mouse;
 			picture->clear();
-			PictureFabric fabric(std::move(picture));
+			Picture::PictureFabric fabric(std::move(picture));
 			if(is_mouse) {
 				fabric.make_mouse();
 			} else {
@@ -72,8 +70,8 @@ void MainWindow::paintEvent(QPaintEvent *event) {
 	painter.setPen(pen);
 	painter.setBrush(Qt::NoBrush); // Без заливки, только контуры
 
-	const QVector<Path> &paths = picture->get_paths();
-	for(const Path& polyline : paths) {
+	const QVector<Picture::Path> &paths = picture->get_paths();
+	for(const Picture::Path& polyline : paths) {
 		if(polyline.points.size() < 2) {
 			continue;
 		}

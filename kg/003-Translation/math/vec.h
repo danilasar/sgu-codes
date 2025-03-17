@@ -12,7 +12,7 @@ namespace Math {
 	struct VecBase {
 		T coordinates[N];
 	
-		VecBase() = delete;
+		VecBase() noexcept;
 		template<typename... Args, typename = std::enable_if_t<(std::is_convertible_v<Args, T> && ...)>>
 		VecBase(Args&&... args) noexcept((std::is_nothrow_constructible_v<T, Args> && ...));
 		VecBase(const VecBase<N, T>& v) = default;
@@ -25,13 +25,15 @@ namespace Math {
 	template<size_t N, typename T, bool = std::is_arithmetic_v<T>>
 	struct Vec : VecBase<N, T> {
 		using VecBase<N, T>::VecBase;
+		//Vec() = delete;
 	};
 	
 	
 	template<size_t N, typename T>
 	struct Vec<N, T, true> : VecBase<N, T> {
 		using VecBase<N, T>::VecBase;
-	
+		//Vec() = delete;
+
 		T dot_product(const Vec<N, T>& r);
 		static T dot_product(const Vec<N, T>& l, const Vec<N, T>& r);
 	
@@ -45,7 +47,12 @@ namespace Math {
 	
 	typedef Vec<2, float> Vec2;
 	typedef Vec<3, float> Vec3;
-	
+
+	template<size_t N, typename T>
+	VecBase<N, T>::VecBase() noexcept {
+
+	}
+
 	template<size_t N, typename T>
 	VecBase<N, T>::VecBase(const VecBase<N - 1, T>& v, T dimension) noexcept {
 		std::copy(std::begin(v.coordinates), std::end(v.coordinates), std::begin(coordinates));
@@ -63,11 +70,12 @@ namespace Math {
 	
 	template<size_t N, typename T>
 	VecBase<N, T>::VecBase(std::initializer_list<T> list) {
-		/*if(list.size() != N) {
+		if(list.size() != N) {
 			throw std::invalid_argument("Неверное число аргументов в списке инициализации");
-		}*/
-		static_assert(sizeof list == N, "Неверное число аргументов в списке инициализации");
-		// TODO:
+		}
+		for(size_t i = 0; i < list.size(); ++i) {
+			coordinates[i] = *(list.begin() + i);
+		}
 	}
 	
 	template<size_t N, typename T>
