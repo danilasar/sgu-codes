@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE SimpleVectorGraphics>
 <Picture width="11" height="15">
-	<Path name="копьё" closed="false" stroke="#000000">
+	<Path name="копьё" closed="false" fill="#FF0000" stroke="#F00000">
 		<Point x="1.00" y="10.00" />
 		<Point x="1.00" y="11.00" />
 		<Point x="0.50" y="11.00" />

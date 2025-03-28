@@ -33,6 +33,10 @@ void PictureFabric::make_mouse() {
 	}
 }
 
+void PictureFabric::clear() {
+	picture->clear();
+}
+
 std::unique_ptr<QVector<Path>> PictureFabric::xml_parse_points(QXmlStreamReader& xml) {
 
 }
@@ -102,7 +106,7 @@ std::unique_ptr<QVector<Path>> PictureFabric::parse_xml_file(QString path) const
 				float y = xml.attributes().value("y").toFloat(&okY);
 
 				if(okX && okY) {
-					current_path.points.append(QPointF(x, y));
+					current_path.points.append(Math::Vec2(x, y));
 				}
 			}
 		} else if(token == QXmlStreamReader::EndElement) {

@@ -22,7 +22,8 @@ set(PROJECT_SOURCES
 	picture/picture_fabric.cpp
 	picture/picture_fabric.h
 	math/vec.h
-	math/matrix.h
+        math/vec.cpp
+        math/matrix.h
 	math/translation_matrix.h
 	math/translation_matrix.cpp
 	math/units/degree.cpp

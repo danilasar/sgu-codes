@@ -1,11 +1,12 @@
 #pragma once
+#include "../math/vec.h"
 #include <QVector>
 #include <QPointF>
 #include <QColor>
 
 namespace Picture  {
 	struct Path {
-		QVector<QPointF> points;
+		QVector<Math::Vec2> points;
 		bool isClosed = false;
 		QColor fillColor = Qt::transparent;
 		QColor strokeColor = Qt::darkBlue;
