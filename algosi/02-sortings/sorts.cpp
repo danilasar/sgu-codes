@@ -95,27 +95,28 @@ void merge(std::vector<int>::iterator array, size_t left, size_t mid_index, size
 	auto mid = array + mid_index;
 	auto end = array + right;
 	size_t full_size = right - left;
-	auto it1 = array;
-	auto it2 = array;
+	auto it1 = array + left;
+	auto it2 = mid;
 	std::vector<int> result(full_size);
+	size_t result_index = 0;
 	while(it1 < mid && it2 < end) {
 		if(*it1 < *it2) {
-			result[(it1 - array) + (it2 - array)] = *it1;
+			result[result_index++] = *it1;
 			++it1;
 		} else {
-			result[(it1 - array) + (it2 - array)] = *mid;
+			result[result_index++] = *it2;
 			++it2;
 		}
 	}
 	while(it1 < mid) {
-		result[(it1 - array) + (it2 - array)] = *it1;
+		result[result_index++] = *it1;
 		++it1;
 	}
 	while(it2 < end) {
-		result[(it1 - array) + (it2 - array)] = *it2;
+		result[result_index++] = *it2;
 		++it2;
 	}
-	std::copy(result.begin(), result.end(), array);
+	std::copy(result.begin(), result.end(), array + left);
 }
 
 void merge_sort(std::vector<int>::iterator begin, std::vector<int>::iterator end) {
