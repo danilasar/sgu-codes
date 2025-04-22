@@ -1,36 +1,42 @@
-.PHONY: all clean run
+# Папки
+BIN_DIR := bin
+OBJ_DIR := obj
+HEADER_DIR := include
+SRC_DIR := src
 
-CXX = g++
-CXXFLAGS = -std=c++23 -fmodules-ts
-CXXFLAGS+=-Isrc
-# debug:
-CXXFLAGS+=-g
+# Компилятор и его флаги
+CXX := g++
+CXXFLAGS := -std=c++23 -Wall -Wextra -I$(HEADER_DIR) -I$(SRC_DIR) -MMD -MP
 
-SRC := sortings/quick.cpp sortings/merge.cpp sortings/heap.cpp sortings/counting.cpp sortings/radix.cpp main.cpp
-OBJS=$(patsubst %.cpp,$(OBJ_CATALOG)%.o,$(SRC))
+# Целевой бинарник
+TARGET := $(BIN_DIR)/sortings
 
-OUT_DIR = bin
-OUT_EXECUTABLE = sorts
-OBJ_CATALOG = obj/
+# Автоматический поиск исходных файлов и составление списка объектных
+SRC_FILES := $(shell find $(SRC_DIR) -type f -name '*.cpp')
+OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
+DEP_FILES := $(OBJ_FILES:.o=.d)
 
-vpath %.cpp src
-vpath %.h src
+# Цель по умолчанию
+all: $(TARGET)
 
-default: all
+# Link target
+$(TARGET): $(OBJ_FILES) | $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
-all: build
+# Компиляция исходных файлов
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-build: $(OBJS)
-	${CXX} $^ -o ${OUT_DIR}/${OUT_EXECUTABLE}
+# Создать папки, если их не существует
+$(BIN_DIR) $(OBJ_DIR):
+	@mkdir -p $@
 
-cache/%.o: src/%.cpp
-	${CXX} ${CXXFLAGS} -o $@ -c $<
-
-test:
-	./test.sh
-
+# Чистка артефактов сборки
 clean:
-	rm -f *.txt
-	rm -rf build
-	rm -rf */*.o
-	@-rm -r gcm.cache
+	rm -rf $(BIN_DIR) $(OBJ_DIR)
+
+# Подсос автоматически сгенерированных зависимостей
+-include $(DEP_FILES)
+
+.PHONY: all clean

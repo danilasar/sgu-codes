@@ -1,0 +1,15 @@
+{
+	"InstallScripts" : 
+	[
+		"/data/docs/sgu/code/kg/raylib/Build/cmake_install.cmake",
+		"/data/docs/sgu/code/kg/raylib/Build/Libraries/nfd/cmake_install.cmake",
+		"/data/docs/sgu/code/kg/raylib/Build/Libraries/nfd/src/cmake_install.cmake",
+		"/data/docs/sgu/code/kg/raylib/Build/Libraries/raylib/cmake_install.cmake",
+		"/data/docs/sgu/code/kg/raylib/Build/Libraries/raylib/raylib/cmake_install.cmake",
+		"/data/docs/sgu/code/kg/raylib/Build/Libraries/raylib/raylib/external/glfw/cmake_install.cmake",
+		"/data/docs/sgu/code/kg/raylib/Build/Libraries/raylib/raylib/external/glfw/src/cmake_install.cmake",
+		"/data/docs/sgu/code/kg/raylib/Build/Libraries/raygui/cmake_install.cmake",
+		"/data/docs/sgu/code/kg/raylib/Build/Projects/lab1/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

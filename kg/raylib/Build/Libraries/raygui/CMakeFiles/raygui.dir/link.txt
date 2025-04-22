@@ -1,0 +1,2 @@
+/usr/bin/ar qc libraygui.a CMakeFiles/raygui.dir/src/raygui.c.o
+/usr/bin/ranlib libraygui.a

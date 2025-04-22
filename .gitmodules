@@ -4,3 +4,6 @@
 [submodule "oop/cpp-04-crossroad"]
 	path = oop/cpp-04-crossroad
 	url = git@github.com:danilasar/crossroad.git
+[submodule "kg/raylib/Libraries/raylib"]
+	path = kg/raylib/Libraries/raylib
+	url = https://github.com/raysan5/raylib.git
