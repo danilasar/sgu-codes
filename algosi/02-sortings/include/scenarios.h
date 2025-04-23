@@ -25,8 +25,6 @@ namespace Scenarios {
 		SortingTask(std::string name, const toml::table& table);
 		void print_input() override;
 		void print_output() override;
-	private:
-		void print_array();
 	};
 
 	template<Algorithms::Algorithm T>

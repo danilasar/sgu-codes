@@ -1,4 +1,5 @@
 #include "scenarios.h"
+#include "utils.h"
 #include <iostream>
 #include <random>
 #include <stdexcept>
@@ -51,13 +52,9 @@ namespace Scenarios {
 		}
 	}
 	void SortingTask::print_input() {
-		print_array();
+		Utils::print_array(data);
 	}
 	void SortingTask::print_output() {
-		print_array();
-	}
-	void SortingTask::print_array() {	
-    std::copy(data.begin(), data.end(), std::ostream_iterator<int>(std::cout, "\t"));
-		std::cout << std::endl;
+		Utils::print_array(data);
 	}
 }
