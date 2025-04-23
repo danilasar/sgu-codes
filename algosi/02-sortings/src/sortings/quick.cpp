@@ -1,4 +1,5 @@
 #include "sortings.h"
+#include <random>
 namespace Sortings {
 	void quick_sort(std::vector<int>& arr) {
 		std::random_device rdev;

@@ -9,24 +9,6 @@
 
 #include "sortings.h"
 
-
-void quick_sort(std::vector<int>& arr) {
-	std::random_device rdev;
-	std::default_random_engine rengine(rdev());
-	auto sort = [&rengine](std::vector<int> &arr) -> std::vector<int>& {
-		if(arr.size() <= 1) {
-			return arr;
-		}
-		std::uniform_int_distribution<> unidist(0, arr.size());
-		int mean = unidist(rengine);
-		// TODO:
-		
-		std::vector<int> *left = new std::vector<int>(arr.begin(), arr.end());
-		return *(new std::vector<int>());
-	};
-	sort(arr);
-}
-
 void merge(std::vector<int>::iterator array, size_t left, size_t mid_index, size_t right) {
 	auto mid = array + mid_index;
 	auto end = array + right;
@@ -66,7 +48,7 @@ void merge_sort(std::vector<int>::iterator begin, std::vector<int>::iterator end
 
 void heap_sort(std::vector<int>& arr) {
 
-}*/
+}
 
 int main(int argc, char* argv[]) {
 	if (argc != 2) {

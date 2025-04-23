@@ -1,7 +1,7 @@
+#include "sortings.h"
 #include <algorithm>
 #include <iostream>
 #include <vector>
-#include "counting.h"
 
 namespace Sortings {
 	void counting_sort(std::vector<int, std::allocator<int>>& arr) {
