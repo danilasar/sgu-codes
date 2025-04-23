@@ -1,5 +1,9 @@
 [tasks]
 [tasks.quick_hello]
 algorithm = "quick_sort"
-debug = true
+debug = false
+data = [9, 1, 3, 5, 8, 4, 0, 2, 6, 7]
+[tasks.merge_hello]
+algorithm = "merge_sort"
+debug = false
 data = [9, 1, 3, 5, 8, 4, 0, 2, 6, 7]

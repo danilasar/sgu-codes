@@ -10,7 +10,7 @@ void Task<Algorithms::HEAP_SORT>::run() {
 	Sortings::heap_sort(data);
 }
 void Task<Algorithms::MERGE_SORT>::run() {
-	Sortings::merge_sort(data.begin(), data.end());
+	Sortings::merge_sort(data, debug);
 }
 void Task<Algorithms::QUICK_SORT>::run() {
 	Sortings::quick_sort(data, debug);
