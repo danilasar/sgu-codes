@@ -13,7 +13,7 @@ void Task<Algorithms::MERGE_SORT>::run() {
 	Sortings::merge_sort(data.begin(), data.end());
 }
 void Task<Algorithms::QUICK_SORT>::run() {
-	Sortings::quick_sort(data);
+	Sortings::quick_sort(data, debug);
 }
 void Task<Algorithms::RADIX_SORT>::run() {
 	Sortings::radix_sort_lsd(data);

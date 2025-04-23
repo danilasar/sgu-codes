@@ -47,6 +47,11 @@ namespace Scenarios {
 	}
 
 	TaskBase::TaskBase(std::string name, const toml::table& table) : name(name) {
-		debug = table["debug"].as_boolean();
+		const auto* debug_value = table.get_as<bool>("debug");
+		if(debug_value == nullptr) {
+			debug = false;
+		} else {
+			debug = debug_value->get();
+		}
 	}
 }
