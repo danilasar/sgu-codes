@@ -7,3 +7,7 @@ data = [9, 1, 3, 5, 8, 4, 0, 2, 6, 7]
 algorithm = "merge_sort"
 debug = false
 data = [9, 1, 3, 5, 8, 4, 0, 2, 6, 7]
+[tasks.heap_hello]
+algorithm = "heap_sort"
+debug = true
+data = [9, 1, 3, 5, 8, 4, 0, 2, 6, 7]
