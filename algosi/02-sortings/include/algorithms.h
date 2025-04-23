@@ -1,3 +1,4 @@
+#pragma once
 namespace Algorithms {
 	enum Algorithm {
 		COUNTING_SORT,

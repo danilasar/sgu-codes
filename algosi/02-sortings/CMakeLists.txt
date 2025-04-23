@@ -4,7 +4,7 @@ project(sortings LANGUAGES CXX)
 set(CMAKE_CXX_STANDART 23)
 set(CMAKE_CXX_STANDART_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-add_compile_options(-Wall -Wextra)
+add_compile_options(-Wall -Wextra -g)
 
 file(GLOB_RECURSE SRC_FILES "src/*.cpp")
 

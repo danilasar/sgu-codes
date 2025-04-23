@@ -1,5 +1,8 @@
 #include "scenarios.h"
+#include <iostream>
 #include <random>
+#include <stdexcept>
+#include <toml++/toml.hpp>
 
 namespace Scenarios {
 	void SortingTask::set_data(const std::vector<int>& data) {
@@ -13,5 +16,48 @@ namespace Scenarios {
 		for(size_t i = 0; i < size; ++i) {
 			data.push_back(unidist(rengine));
 		}
+	}
+	SortingTask::SortingTask(std::string name, const toml::table& table) : TaskBase(name, table) {
+		if(!!table["data"]) {
+			if(const toml::array* arr = table["data"].as_array()) {
+				for(const auto& elem : *arr) {
+					auto& data = this->data;
+					elem.visit([&data](auto&& el) noexcept {
+						if constexpr (toml::is_number<decltype(el)>) {
+							data.push_back(*el);
+						} else {
+							std::cerr << "Предупреждение: нечисловые входные данные были опущены" << std::endl;
+						}
+					});
+				}
+			} else {
+				throw std::invalid_argument("Некорректный формат массива данных задачи");
+			}
+		} else if(!!table["size"] && !!table["min_value"] && !!table["max_value"]) {
+			if constexpr (
+				toml::is_number<decltype(table["size"])>
+				&& toml::is_number<decltype(table["min_value"])>
+				&& toml::is_number<decltype(table["max_value"])>
+			) {
+				generate_data(*table.get_as<size_t>("size"),
+					*table.get_as<int>("min_value"),
+					*table.get_as<int>("max_value")
+				);
+			} else {
+				throw std::invalid_argument("Некорректные ограничения рандомайзера");
+			}
+		} else {
+			throw std::invalid_argument("Не могу распарсить ввод");
+		}
+	}
+	void SortingTask::print_input() {
+		print_array();
+	}
+	void SortingTask::print_output() {
+		print_array();
+	}
+	void SortingTask::print_array() {	
+    std::copy(data.begin(), data.end(), std::ostream_iterator<int>(std::cout, "\t"));
+		std::cout << std::endl;
 	}
 }

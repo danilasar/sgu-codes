@@ -6,16 +6,42 @@
 #include <string>
 #include <toml++/toml.hpp>
 
+#include "scenarios.h"
 #include "sortings.h"
 
+void execute_task(std::unique_ptr<Scenarios::TaskBase> task) {
+	auto ref = task.get();
+	ref->print_input();
+	ref->run();
+	ref->print_output();
+}
+
 int main(int argc, char* argv[]) {
-	if (argc != 2) {
-		std::cerr << "Usage: " << argv[0] << " [counting|radix|quick|merge|heap]\n";
+	if (argc < 2) {
+		std::cerr << "Usage: " << argv[0] << " <toml scenario> [task]\n";
 		return 1;
 	}
 
-	std::string mode(argv[1]);
-	std::vector<int> v;
+	std::string file_path(argv[1]);
+	Scenarios::Scenario scenario;
+	try {
+		scenario = Scenarios::Scenario(file_path);
+	} catch(const toml::parse_error& error) {
+		std::cerr << "Parse error:\n" << error << std::endl;
+		return 1;
+	}
+
+	if(argc >= 3) {
+		for(int i = 2; i < argc; ++i) {
+			execute_task(std::move(scenario.tasks[std::string(argv[i])]));
+		}
+	} else {
+		for(auto t = scenario.tasks.begin(); t != scenario.tasks.end(); ++t) {
+			execute_task(std::move(t->second));
+		}
+	}
+
+	/*std::vector<int> v;
 	int num;
 
 	while (std::cin >> num) v.push_back(num);
@@ -31,7 +57,7 @@ int main(int argc, char* argv[]) {
 	}
 
     std::copy(v.begin(), v.end(), std::ostream_iterator<int>(std::cout, " "));
-    std::cout << '\n';
+    std::cout << '\n';*/
 
     return 0;
 }
