@@ -1,5 +1,6 @@
 #pragma once
 #include "algorithms.h"
+#include "binary_tree.h"
 #include <map>
 #include <memory>
 #include <string>
@@ -29,6 +30,15 @@ namespace Scenarios {
 
 	template<Algorithms::Algorithm T>
 	struct Task : TaskBase {};
+
+	template<>
+	struct Task<Algorithms::BINARY_TREE> : TaskBase {
+		BinaryTree<int> tree;
+		Task(std::string name, toml::table& table);
+		void print_input() final;
+		void run() final;
+		void print_output() final;
+	};
 
 	template<>
 	struct Task<Algorithms::COUNTING_SORT> : SortingTask {

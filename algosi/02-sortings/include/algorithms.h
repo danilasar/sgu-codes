@@ -5,6 +5,7 @@ namespace Algorithms {
 		HEAP_SORT,
 		MERGE_SORT,
 		QUICK_SORT,
-		RADIX_SORT
+		RADIX_SORT,
+		BINARY_TREE
 	};
 }
