@@ -5,7 +5,7 @@
 
 namespace Scenarios {
 
-	Task<Algorithms::BINARY_TREE>::Task(std::string name, toml::table& table) : TaskBase(name, table)  {
+	Task<Algorithms::BINARY_TREE>::Task(std::string name, const toml::table& table) : TaskBase(name, table)  {
 		auto& tree = this->tree;
 		if(!!table["data"]) {
 			if(const toml::array* arr = table["data"].as_array()) {

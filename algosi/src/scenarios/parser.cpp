@@ -40,6 +40,8 @@ namespace Scenarios {
 			return new Task<Algorithms::QUICK_SORT>(name, table);
 		} else if(algorithm == "radix_sort") {
 			return new Task<Algorithms::RADIX_SORT>(name, table);
+		} else if(algorithm == "binary_tree") {
+			return new Task<Algorithms::BINARY_TREE>(name, table);
 		} else {
 			std::cerr << "[Ошибка] Неизвестный алгоритм: " << algorithm << std::endl;
 			return nullptr;

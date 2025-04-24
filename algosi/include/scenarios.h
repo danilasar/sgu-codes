@@ -34,7 +34,7 @@ namespace Scenarios {
 	template<>
 	struct Task<Algorithms::BINARY_TREE> : TaskBase {
 		BinaryTree<int> tree;
-		Task(std::string name, toml::table& table);
+		Task(std::string name, const toml::table& table);
 		void print_input() final;
 		void run() final;
 		void print_output() final;
