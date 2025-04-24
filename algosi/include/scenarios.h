@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <toml++/toml.hpp>
+#include <sol/sol.hpp>
 
 namespace Scenarios {
 	struct TaskBase {
@@ -34,6 +35,8 @@ namespace Scenarios {
 	template<>
 	struct Task<Algorithms::BINARY_TREE> : TaskBase {
 		BinaryTree<int> tree;
+		sol::state lua;
+		std::string script;
 		Task(std::string name, const toml::table& table);
 		void print_input() final;
 		void run() final;
