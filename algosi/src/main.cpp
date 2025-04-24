@@ -5,6 +5,7 @@
 #include <iterator>
 #include <string>
 #include <toml++/toml.hpp>
+#include <LuaCpp/LuaCpp.hpp>
 
 #include "scenarios.h"
 #include "sortings.h"

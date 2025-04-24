@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(algorithms LANGUAGES CXX)
 include(ExternalProject)
+include(FetchContent)
 
 set(CMAKE_CXX_STANDART 23)
 set(CMAKE_CXX_STANDART_REQUIRED ON)
@@ -23,8 +24,20 @@ set(LUA_INCLUDE_DIR ${BINARY_DIR}/src)
 set(LUA_LIBRARIES ${BINARY_DIR}/src/liblua.a)
 file(GLOB_RECURSE SRC_FILES "src/*.cpp")
 
+# LuaCpp
+# set(LUACPP_VERSION "0.2.0")
+# ExternalProject_Add(luacpp_project
+# 	PREFIX ${CMAKE_BINARY_DIR}/luacpp-${LUACPP_VERSION}
+# 	URL https://github.com/jordanvrtanoski/luacpp/archive/refs/tags/v0.2.0.tar.gz
+# 	CONFIGURE_COMMAND cmake ${CMAKE_BINARY_DIR}/luacpp-${LUACPP_VERSION}/src/luacpp_project/Source
+# 	BUILD_COMMAND make -j$(nproc)
+# 	INSTALL_COMMAND sudo make install
+# 	BUILD_IN_SOURCE true
+# 	DOWNLOAD_EXTRACT_TIMESTAMP true
+# )
+
+
 # toml++
-include(FetchContent)
 FetchContent_Declare(
 	tomlplusplus
 	URL https://github.com/marzer/tomlplusplus/archive/refs/tags/v3.4.0.tar.gz
@@ -38,8 +51,10 @@ add_executable(algorithms ${SRC_FILES})
 target_include_directories(algorithms PRIVATE
 	${CMAKE_SOURCE_DIR}/include
 	${CMAKE_SOURCE_DIR}/src
+
 )
 target_link_libraries(algorithms tomlplusplus::tomlplusplus)
+target_link_libraries(algorithms luacpp)
 
 
 add_dependencies(algorithms lua_project)
