@@ -1,12 +1,12 @@
 #pragma once
 #include "algorithms.h"
 #include "binary_tree.h"
+#include "lua.h"
 #include <map>
 #include <memory>
 #include <string>
 #include <vector>
 #include <toml++/toml.hpp>
-#include <sol/sol.hpp>
 
 namespace Scenarios {
 	struct TaskBase {
@@ -35,7 +35,7 @@ namespace Scenarios {
 	template<>
 	struct Task<Algorithms::BINARY_TREE> : TaskBase {
 		BinaryTree<int> tree;
-		sol::state lua;
+		Lua lua;
 		std::string script;
 		Task(std::string name, const toml::table& table);
 		void print_input() final;

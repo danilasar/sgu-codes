@@ -3,28 +3,11 @@
 #include "scenarios.h"
 #include <stdexcept>
 
-void _print_tree(BinaryTree<int>* tree) { Utils::print_tree<int>(tree->get_root()); }
-
 namespace Scenarios {
 
 	Task<Algorithms::BINARY_TREE>::Task(std::string name, const toml::table& table) : TaskBase(name, table)  {
-		lua.open_libraries(sol::lib::base);
-		sol::usertype<BinaryTree<int>> binary_tree = lua.new_usertype<BinaryTree<int>>(
-			"BinaryTree",
-
-			"in_order", &BinaryTree<int>::in_order,
-			"pre_order", &BinaryTree<int>::pre_order,
-			"post_order", &BinaryTree<int>::post_order,
-
-			"find", &BinaryTree<int>::find,
-			"add_node", &BinaryTree<int>::add_node,
-			"delete_node", &BinaryTree<int>::delete_node,
-			"print", &_print_tree
-		);
-		lua.set("tree", &tree);
-		lua["print_array"] = &Utils::print_array;
-		
 		auto& tree = this->tree;
+		lua.runtime.set("tree", &tree);
 		if(!!table["data"]) {
 			if(const toml::array* arr = table["data"].as_array()) {
 				for(const auto& elem : *arr) {
@@ -56,7 +39,7 @@ namespace Scenarios {
 
 	}
 	void Task<Algorithms::BINARY_TREE>::run() {
-		lua.script(script);
+		lua.runtime.script(script);
 	}
 	void Task<Algorithms::BINARY_TREE>::print_output() {
 
