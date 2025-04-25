@@ -4,6 +4,15 @@ algorithm = "binary_tree"
 debug = false
 data = [0, 1, 69, 2, 3]
 script = """
+function try_find_node(n)
+	local number = tree:find(n)
+	if number == nil then
+		print("Число " .. tostring(n) .. " не найдено")
+	else
+		print("Число " .. tostring(n) .. " найдено")
+	end
+end
+
 local aboba = tree:in_order()
 print("Симметричный обход:")
 print_array(aboba)
@@ -15,5 +24,16 @@ print_array(aboba)
 aboba = tree:post_order()
 print("Обратный обход:")
 print_array(aboba)
+
+try_find_node(69)
+try_find_node(42)
+
+tree:add_node(42)
+tree:delete_node(69)
+
+try_find_node(69)
+try_find_node(42)
+
+tree:print()
 """
 

@@ -1,7 +1,9 @@
+#include "utils.h"
 #include "binary_tree.h"
 #include "scenarios.h"
-#include "utils.h"
 #include <stdexcept>
+
+void _print_tree(BinaryTree<int>* tree) { Utils::print_tree<int>(tree->get_root()); }
 
 namespace Scenarios {
 
@@ -16,7 +18,8 @@ namespace Scenarios {
 
 			"find", &BinaryTree<int>::find,
 			"add_node", &BinaryTree<int>::add_node,
-			"delete_node", &BinaryTree<int>::delete_node
+			"delete_node", &BinaryTree<int>::delete_node,
+			"print", &_print_tree
 		);
 		lua.set("tree", &tree);
 		lua["print_array"] = &Utils::print_array;
@@ -54,25 +57,6 @@ namespace Scenarios {
 	}
 	void Task<Algorithms::BINARY_TREE>::run() {
 		lua.script(script);
-		return;
-		std::cout << "Симметричный (in order): ";
-		std::vector<int> vec = tree.in_order();
-    Utils::print_array(vec);
-    std::cout << "Прямой (pre order): ";
-		vec = tree.pre_order();
-    Utils::print_array(vec);
-    std::cout << "Обратный: (post order): ";
-		vec = tree.post_order();
-    Utils::print_array(vec);
-
-    int key = 40;
-    Node<int>* found = tree.find(key);
-    std::cout << "Вершина " << key << " " << (found ? "" : "не ") << "найдена" << std::endl;
-
-    tree.delete_node(30);
-    std::cout << "In-order after deleting 30: ";
-		vec = tree.in_order();
-    Utils::print_array(vec);
 	}
 	void Task<Algorithms::BINARY_TREE>::print_output() {
 

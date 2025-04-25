@@ -20,18 +20,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(sol2)
 
-# LuaCpp
-# set(LUACPP_VERSION "0.2.0")
-# ExternalProject_Add(luacpp_project
-# 	PREFIX ${CMAKE_BINARY_DIR}/luacpp-${LUACPP_VERSION}
-# 	URL https://github.com/jordanvrtanoski/luacpp/archive/refs/tags/v0.2.0.tar.gz
-# 	CONFIGURE_COMMAND cmake ${CMAKE_BINARY_DIR}/luacpp-${LUACPP_VERSION}/src/luacpp_project/Source
-# 	BUILD_COMMAND make -j$(nproc)
-# 	INSTALL_COMMAND sudo make install
-# 	BUILD_IN_SOURCE true
-# 	DOWNLOAD_EXTRACT_TIMESTAMP true
-# )
-
 # toml++
 FetchContent_Declare(
 	tomlplusplus

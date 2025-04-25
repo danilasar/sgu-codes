@@ -19,6 +19,7 @@ public:
 
 	void add_node(T key);
 	void delete_node(T key);
+	Node<T>* get_root();
 	Node<T>* find(T key);
 	std::vector<T> in_order();
 	std::vector<T> pre_order();
@@ -131,6 +132,11 @@ Node<T>* BinaryTree<T>::find_recursive(Node<T>* node, T key) {
 	if (!node || node->key == key) return node;
 	if (key < node->key) return find_recursive(node->left, key);
 	return find_recursive(node->right, key);
+}
+
+template <typename T>
+Node<T>* BinaryTree<T>::get_root() {
+	return root;
 }
 
 template <typename T>
