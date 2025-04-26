@@ -1,0 +1,9 @@
+.*
+*~
+!.gitignore
+!.gitattributes
+!.clangd
+!.clang-format
+!.github
+*.zip
+Build
