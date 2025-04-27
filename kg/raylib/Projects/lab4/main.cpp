@@ -90,6 +90,55 @@ ssu::Figure readFromFile(const char *fileName) {
 	return figure;
 }
 
+char codeKS(const Vec2& P, const Vec2& min, const Vec2& max) {
+	char code = 0;
+
+	if(P.x < min.x) {
+		code |= 1;
+	} else if(P.x > max.x) {
+		code |= 2;
+	}
+
+	if(P.y < min.y) {
+		code |= 4;
+	} else if(P.y > max.y) {
+		code |= 8;
+	}
+
+	return code;
+}
+
+bool clip(Vec2 &A, Vec2 &B, const Vec2& min, const Vec2& max) {
+	char codeA = codeKS(A, min, max);
+	char codeB = codeKS(B, min, max);
+
+	while(codeA | codeB) {
+		if(codeA & codeB) {
+			return false;
+		}
+		if(codeA == 0) {
+			std::swap(A, B);
+			std::swap(codeA, codeB);
+		}
+
+		if(codeA & 1) { // A левее области видимости
+			A.y = A.y + (B.y - A.y) * (min.x - A.x) / (B.x - A.x);
+			A.x = min.x;
+		} else if(codeA & 2) { // A правее области видимости
+			A.y = A.y + (B.y - A.y) * (max.x- A.x) / (B.x - A.x);
+			A.x = max.x;
+		} else if(codeA & 4) { // A ниже области видимости
+			A.x = A.x + (B.x - A.x) * (min.y - A.y) / (B.y - A.y);
+			A.y = min.y;
+		} else { // A выше области видимости
+			A.x = A.x + (B.x - A.x) * (max.y - A.y) / (B.y - A.y);
+			A.y = max.y;
+		}
+		codeA = codeKS(A, min, max);
+	}
+	return true;
+}
+
 int main() {
 	if (NFD_Init() != NFD_OKAY) {
 		std::cerr << "ERROR: can't initialize Native File Dialog" << std::endl;
@@ -110,12 +159,14 @@ int main() {
 		const float Wcx = Wx / 2.0f;
 		const float Wcy = Wy / 2.0f;
 		const float windowAspect = Wx / Wy;
+		float left = 30.f, right = 160.f, top = 20.f, bottom = 50.f; // расстояния от границ окна
+		const Vec2 Vmin = { left, top };
+		const Vec2 Vmax = { Wx - right, Wy - bottom };
 
 		// Render figures
 		BeginDrawing();
 		ClearBackground(SKYBLUE);
 
-		float left = 30.f, right = 100.f, top = 20.f, bottom = 50.f; // расстояния от границ окна
 		DrawRectangleLinesEx({
 			left, // слева
 			top, // сверху
@@ -126,15 +177,18 @@ int main() {
 		for (const auto &lines : figure.paths) {
 			Vec2 start = normalize(T * Vec3(lines.vertices[0], 1));
 			for (const auto &line : lines.vertices) {
-				const Vec2 end = normalize(T * Vec3(line, 1));
-				DrawLineEx(
-					{start.x, start.y},
-					{end.x, end.y},
-					lines.thickness,
-					lines.color
-				);
+				Vec2 end = normalize(T * Vec3(line, 1));
+				Vec2 old_end = end;
+				if(clip(start, end, Vmin, Vmax)) {
+					DrawLineEx(
+						{start.x, start.y},
+						{end.x, end.y},
+						lines.thickness,
+						lines.color
+					);
+				}
 
-				start = end;
+				start = old_end;
 			}
 		}
 
