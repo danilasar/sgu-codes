@@ -114,6 +114,15 @@ int main() {
 		// Render figures
 		BeginDrawing();
 		ClearBackground(SKYBLUE);
+
+		float left = 30.f, right = 100.f, top = 20.f, bottom = 50.f; // расстояния от границ окна
+		DrawRectangleLinesEx({
+			left, // слева
+			top, // сверху
+			Wx - left - right, // ширина
+			Wy - top - bottom // высота
+		}, 2.f, BLACK);
+
 		for (const auto &lines : figure.paths) {
 			Vec2 start = normalize(T * Vec3(lines.vertices[0], 1));
 			for (const auto &line : lines.vertices) {
