@@ -154,14 +154,14 @@ int main() {
 	Mat3 initT;
 
 	while (!WindowShouldClose()) {
-		const float Wx = static_cast<float>(GetScreenWidth());
-		const float Wy = static_cast<float>(GetScreenHeight());
+		const float WindowWidth = static_cast<float>(GetScreenWidth());
+		const float WindowHeight = static_cast<float>(GetScreenHeight());
+		float left = 30.f, right = 160.f, top = 20.f, bottom = 50.f; // расстояния от границ окна
+		const float Wx = WindowWidth - left - right;
+		const float Wy = WindowHeight - top - bottom;
 		const float Wcx = Wx / 2.0f;
 		const float Wcy = Wy / 2.0f;
-		const float windowAspect = Wx / Wy;
-		float left = 30.f, right = 160.f, top = 20.f, bottom = 50.f; // расстояния от границ окна
-		const Vec2 Vmin = { left, top };
-		const Vec2 Vmax = { Wx - right, Wy - bottom };
+		const float frameAspect = Wx / Wy;
 
 		// Render figures
 		BeginDrawing();
@@ -170,8 +170,8 @@ int main() {
 		DrawRectangleLinesEx({
 			left, // слева
 			top, // сверху
-			Wx - left - right, // ширина
-			Wy - top - bottom // высота
+			Wx, // ширина
+			Wy // высота
 		}, 2.f, BLACK);
 
 		for (const auto &lines : figure.paths) {
@@ -179,7 +179,7 @@ int main() {
 			for (const auto &line : lines.vertices) {
 				Vec2 end = normalize(T * Vec3(line, 1));
 				Vec2 old_end = end;
-				if(clip(start, end, Vmin, Vmax)) {
+				if(clip(start, end, {left, top}, {left + Wx, top + Wy})) {
 					DrawLineEx(
 						{start.x, start.y},
 						{end.x, end.y},
@@ -192,7 +192,7 @@ int main() {
 			}
 		}
 
-		if (GuiButton({Wx - 140, 20, 120, 30}, "OPEN FILE")) {
+		if (GuiButton({WindowWidth - 140, 20, 120, 30}, "OPEN FILE")) {
 			nfdchar_t *outPath;
 			nfdfilteritem_t filterItem[2]
 				= {{"Text files", "txt"}, {"All files", "*"}};
@@ -201,10 +201,11 @@ int main() {
 			if (result == NFD_OKAY) {
 				figure = readFromFile(outPath);
 				const float figureAspect = figure.Vx / figure.Vy;
-				const float S = figureAspect < windowAspect ? Wy / figure.Vy
+				const float S = figureAspect < frameAspect ? Wy / figure.Vy
 															: Wx / figure.Vx;
-				const float Ty = S * figure.Vy;
-				initT = translate(0, Ty) * scale(S, -S);
+				const float Tx = left;
+				const float Ty = S * figure.Vy + top;
+				initT = translate(Tx, Ty) * scale(S, -S);
 				T = initT;
 				NFD_FreePath(outPath);
 			} else if (result == NFD_CANCEL) {
