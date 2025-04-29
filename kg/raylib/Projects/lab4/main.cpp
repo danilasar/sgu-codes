@@ -139,6 +139,18 @@ bool clip(Vec2 &A, Vec2 &B, const Vec2& min, const Vec2& max) {
 	return true;
 }
 
+struct Padding {
+	float left, right, top, bottom;
+};
+
+void frame_calc(const Padding& p, float& Wx, float& Wy, float& Wcx, float& Wcy, float& frameAspect) {
+	Wx = static_cast<float>(GetScreenWidth()) - p.left - p.right;
+	Wy = static_cast<float>(GetScreenHeight()) - p.top - p.bottom;
+	Wcx = Wx / 2.0f;
+	Wcy = Wy / 2.0f;
+	frameAspect = Wx / Wy;
+}
+
 int main() {
 	if (NFD_Init() != NFD_OKAY) {
 		std::cerr << "ERROR: can't initialize Native File Dialog" << std::endl;
@@ -153,23 +165,22 @@ int main() {
 	Mat3 T = Mat3(1.f);
 	Mat3 initT;
 
+	const Padding paddings = { 30.f, 160.f, 20.f, 50.f }; // расстояния от границ окна
+	float Wx, Wy, Wcx, Wcy, frameAspect;
+	frame_calc(paddings, Wx, Wy, Wcx, Wcy, frameAspect);
+	
 	while (!WindowShouldClose()) {
-		const float WindowWidth = static_cast<float>(GetScreenWidth());
-		const float WindowHeight = static_cast<float>(GetScreenHeight());
-		float left = 30.f, right = 160.f, top = 20.f, bottom = 50.f; // расстояния от границ окна
-		const float Wx = WindowWidth - left - right;
-		const float Wy = WindowHeight - top - bottom;
-		const float Wcx = Wx / 2.0f;
-		const float Wcy = Wy / 2.0f;
-		const float frameAspect = Wx / Wy;
+		if(IsWindowResized()) {
+			frame_calc(paddings, Wx, Wy, Wcx, Wcy, frameAspect);
+		}
 
 		// Render figures
 		BeginDrawing();
 		ClearBackground(SKYBLUE);
 
 		DrawRectangleLinesEx({
-			left, // слева
-			top, // сверху
+			paddings.left, // слева
+			paddings.top, // сверху
 			Wx, // ширина
 			Wy // высота
 		}, 2.f, BLACK);
@@ -179,7 +190,7 @@ int main() {
 			for (const auto &line : lines.vertices) {
 				Vec2 end = normalize(T * Vec3(line, 1));
 				Vec2 old_end = end;
-				if(clip(start, end, {left, top}, {left + Wx, top + Wy})) {
+				if(clip(start, end, {paddings.left, paddings.top}, {paddings.left + Wx, paddings.top + Wy})) {
 					DrawLineEx(
 						{start.x, start.y},
 						{end.x, end.y},
@@ -192,7 +203,7 @@ int main() {
 			}
 		}
 
-		if (GuiButton({WindowWidth - 140, 20, 120, 30}, "OPEN FILE")) {
+		if (GuiButton({static_cast<float>(GetScreenWidth()) - 140, 20, 120, 30}, "OPEN FILE")) {
 			nfdchar_t *outPath;
 			nfdfilteritem_t filterItem[2]
 				= {{"Text files", "txt"}, {"All files", "*"}};
@@ -203,8 +214,8 @@ int main() {
 				const float figureAspect = figure.Vx / figure.Vy;
 				const float S = figureAspect < frameAspect ? Wy / figure.Vy
 															: Wx / figure.Vx;
-				const float Tx = left;
-				const float Ty = S * figure.Vy + top;
+				const float Tx = paddings.left;
+				const float Ty = S * figure.Vy + paddings.top;
 				initT = translate(Tx, Ty) * scale(S, -S);
 				T = initT;
 				NFD_FreePath(outPath);
