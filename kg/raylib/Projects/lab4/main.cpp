@@ -212,11 +212,12 @@ int main() {
 			if (result == NFD_OKAY) {
 				figure = readFromFile(outPath);
 				const float figureAspect = figure.Vx / figure.Vy;
+				Mat3 T1 = translate(-figure.Vx / 2, -figure.Vy / 2);
 				const float S = figureAspect < frameAspect ? Wy / figure.Vy
 															: Wx / figure.Vx;
-				const float Tx = paddings.left;
-				const float Ty = S * figure.Vy + paddings.top;
-				initT = translate(Tx, Ty) * scale(S, -S);
+				Mat3 S1 = scale(S, -S);
+				Mat3 T2 = translate(Wx / 2 - Wcx, Wcy + Wy / 2); // WARN: Миронов походу знаки попутал
+				initT = T2 * (S1 * T1);
 				T = initT;
 				NFD_FreePath(outPath);
 			} else if (result == NFD_CANCEL) {
