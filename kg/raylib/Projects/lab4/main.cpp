@@ -19,7 +19,7 @@ bool isIgnorableLine(const std::string &line) {
 		|| line.front() == '#';
 }
 
-ssu::Figure readFromFile(const char *fileName) {
+ssu::Model readFromFile(const char *fileName) {
 	std::ifstream in(fileName);
 
 	// NOTE: После изменения типа возвращаемого значения с void на Figure, этот
@@ -34,13 +34,18 @@ ssu::Figure readFromFile(const char *fileName) {
 	}
 #endif
 
-	ssu::Figure figure;
+	ssu::Model model;
 	// NOTE: как же я ненавижу C++!!! По историческим(??) причинам cin и ss
 	// считывают в переменные char ASCII (!!!!!!) код введённого символа, вместо
 	// парсинга 8-битного числа. Отсюда здесь int и ниже static_cast на три
 	// переменные (?!?!?!?!?).
 	int r, g, b;
 	float thickness;
+	float mVcx, mVcy, mVx, mVy;
+    std::vector<ssu::Path> paths;
+	Mat3 M = Mat3(1.f);
+	Mat3 initM;
+	std::vector<Mat3> transforms;
 
 	std::string line;
 	while (in) {
@@ -54,7 +59,7 @@ ssu::Figure readFromFile(const char *fileName) {
 		std::string cmd;
 		s >> cmd;
 		if (cmd == "frame") {
-			s >> figure.Vx >> figure.Vy;
+			s >> model.Vx >> model.Vy;
 		} else if (cmd == "color") {
 			s >> r >> g >> b;
 		} else if (cmd == "thickness") {
@@ -75,7 +80,7 @@ ssu::Figure readFromFile(const char *fileName) {
 				vertices.push_back(Vec2(x, y));
 				--n;
 			}
-			figure.paths.push_back(ssu::Path(
+			paths.push_back(ssu::Path(
 				vertices,
 				Color{
 					static_cast<uint8_t>(r),
@@ -85,9 +90,35 @@ ssu::Figure readFromFile(const char *fileName) {
 				},
 				thickness
 			));
+		} else if(cmd == "figure") {
+			if(!paths.empty()) {
+				paths.clear();
+			}
+			s >> mVcx >> mVcy >> mVx >> mVy;
+			float S = mVx / mVy < 1 ? 2.f / mVy : 2.f / mVx;
+			initM = scale(S) * translate(-mVcx, -mVcy);
+		} else if(cmd == "saveTransform") {
+			model.figures.push_back(ssu::Figure(paths, mVx, mVy, M * initM));
+		} else if(cmd == "translate") {
+			float Tx, Ty;
+			s >> Tx >> Ty;
+			M = translate(Tx, Ty) * M;
+		} else if(cmd == "scale") {
+			float S;
+			s >> S;
+			M = scale(S) * M;
+		} else if(cmd == "rotate") {
+			float theta;
+			s >> theta;
+			M = rotate(theta / 180.f * M_PI) * M;
+		} else if(cmd == "saveTransform" || cmd == "pushTransform") {
+			transforms.push_back(M);
+		} else if(cmd == "popTransform") {
+			M = transforms.back();
+			transforms.pop_back();
 		}
 	}
-	return figure;
+	return model;
 }
 
 char codeKS(const Vec2& P, const Vec2& min, const Vec2& max) {
@@ -161,7 +192,7 @@ int main() {
 	InitWindow(600, 600, "Lab cuatro");
 	SetTargetFPS(60);
 
-	ssu::Figure figure;
+	ssu::Model model;
 	Mat3 T = Mat3(1.f);
 	Mat3 initT;
 
@@ -185,21 +216,24 @@ int main() {
 			Wy // высота
 		}, 2.f, BLACK);
 
-		for (const auto &lines : figure.paths) {
-			Vec2 start = normalize(T * Vec3(lines.vertices[0], 1));
-			for (const auto &line : lines.vertices) {
-				Vec2 end = normalize(T * Vec3(line, 1));
-				Vec2 old_end = end;
-				if(clip(start, end, {paddings.left, paddings.top}, {paddings.left + Wx, paddings.top + Wy})) {
-					DrawLineEx(
-						{start.x, start.y},
-						{end.x, end.y},
-						lines.thickness,
-						lines.color
-					);
-				}
+		for (const auto &figure : model.figures) {
+			Mat3 TM = T * figure.M;
+			for (const auto &lines : figure.paths) {
+				Vec2 start = normalize(TM * Vec3(lines.vertices[0], 1));
+				for (const auto &line : lines.vertices) {
+					Vec2 end = normalize(TM * Vec3(line, 1));
+					Vec2 old_end = end;
+					if(clip(start, end, {paddings.left, paddings.top}, {paddings.left + Wx, paddings.top + Wy})) {
+						DrawLineEx(
+							{start.x, start.y},
+							{end.x, end.y},
+							lines.thickness,
+							lines.color
+						);
+					}
 
-				start = old_end;
+					start = old_end;
+				}
 			}
 		}
 
@@ -210,13 +244,13 @@ int main() {
 			nfdresult_t result
 				= NFD_OpenDialog(&outPath, filterItem, 2, nullptr);
 			if (result == NFD_OKAY) {
-				figure = readFromFile(outPath);
-				const float figureAspect = figure.Vx / figure.Vy;
-				Mat3 T1 = translate(-figure.Vx / 2, -figure.Vy / 2);
-				const float S = figureAspect < frameAspect ? Wy / figure.Vy
-															: Wx / figure.Vx;
+				model = readFromFile(outPath);
+				const float figureAspect = model.Vx / model.Vy;
+				Mat3 T1 = translate(-model.Vx / 2, -model.Vy / 2);
+				const float S = figureAspect < frameAspect ? Wy / model.Vy
+															: Wx / model.Vx;
 				Mat3 S1 = scale(S, -S);
-				Mat3 T2 = translate(Wx / 2 - Wcx, Wcy + Wy / 2); // WARN: Миронов походу знаки попутал
+				Mat3 T2 = translate(Wx / 2, Wy / 2); // WARN: Миронов походу знаки попутал
 				initT = T2 * (S1 * T1);
 				T = initT;
 				NFD_FreePath(outPath);
@@ -239,7 +273,7 @@ int main() {
 			T = translate(Wcx, Wcy) * T;
 		}
 		if (IsKeyDown(KEY_E)) {
-			T = translate(-Wcx, -Wcy) * T;
+			T = translate(-Wx, -Wy) * T;
 			T = rotate(-0.01f) * T;
 			T = translate(Wcx, Wcy) * T;
 		}

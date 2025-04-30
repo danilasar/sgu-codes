@@ -27,6 +27,7 @@ static const Figure HARE = Figure(
         ),
     },
     8.5f,
-    8.5f
+    8.5f,
+	Mat3(1.)
 );
 } // namespace ssu::figure
