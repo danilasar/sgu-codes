@@ -70,8 +70,8 @@ struct Padding {
 void frame_calc(const Padding& p, float& Wx, float& Wy, float& Wcx, float& Wcy, float& frameAspect) {
 	Wx = static_cast<float>(GetScreenWidth()) - p.left - p.right;
 	Wy = static_cast<float>(GetScreenHeight()) - p.top - p.bottom;
-	Wcx = Wx / 2.0f;
-	Wcy = Wy / 2.0f;
+	Wcx = Wx / 2.0f + p.left;
+	Wcy = Wy / 2.0f + p.top;
 	frameAspect = Wx / Wy;
 }
 
@@ -89,11 +89,11 @@ int main() {
 	InitWindow(600, 600, "Lab cuatro");
 	SetTargetFPS(60);
 
-	ssu::Model model;
 	Mat3 T = Mat3(1.f);
 	Mat3 initT;
 
 	const Padding paddings = { 30.f, 160.f, 20.f, 50.f }; // расстояния от границ окна
+	const float thickness = 1.f;
 	float Wx, Wy, Wcx, Wcy, frameAspect;
 	float Vx, Vy;
 	Vec2 Vc = Vec2(-2.f, -2.f), V = Vec2(4.f, 4.f);
@@ -103,7 +103,8 @@ int main() {
 	T = initT = Mat3(1.f);
 	Vc_work = normalize(T * Vec3(Vc, 1.f));
 	V_work = Mat2(T) * V;
-	
+
+
 	while (!WindowShouldClose()) {
 		if(IsWindowResized()) {
 			frame_calc(paddings, Wx, Wy, Wcx, Wcy, frameAspect);
@@ -114,31 +115,39 @@ int main() {
 		ClearBackground(SKYBLUE);
 
 		DrawRectangleLinesEx({
-			paddings.left, // слева
-			paddings.top, // сверху
+			Wcx - Wx / 2, // слева
+			Wcy - Wy / 2, // сверху
 			Wx, // ширина
 			Wy // высота
 		}, 2.f, BLACK);
 
-		for (const auto &figure : model.figures) {
-			Mat3 TM = T * figure.M;
-			for (const auto &lines : figure.paths) {
-				Vec2 start = normalize(TM * Vec3(lines.vertices[0], 1));
-				for (const auto &line : lines.vertices) {
-					Vec2 end = normalize(TM * Vec3(line, 1));
-					Vec2 old_end = end;
-					if(clip(start, end, {paddings.left, paddings.top}, {paddings.left + Wx, paddings.top + Wy})) {
-						DrawLineEx(
-							{start.x, start.y},
-							{end.x, end.y},
-							lines.thickness,
-							lines.color
-						);
-					}
-
-					start = old_end;
-				}
+		Vec2 start;
+		float x, y;
+		x = Vc_work.x;
+		y = f(x);
+		start.x = Wcx;
+		start.y = Wcy - (y - Vc_work.y) / V_work.y * Wy;
+		const float delta_x = V_work.x / Wx;
+			DrawCircle(10, 10, 5., RED);
+			DrawCircle(Vc_work.x, Vc_work.y, 5., RED);
+		
+		while(start.x < Vc_work.x + V_work.x) {
+			Vec2 end;
+			end.x = start.x + 1.f;
+			x += delta_x;
+			y = f(x);
+			end.y = Wcy - (y - Vc_work.y) / V_work.y * Wy;
+			Vec2 tmp_end = end;
+			bool visible = clip(start, end, Vc_work, {Vc_work.x + V_work.x, Vc_work.y + V_work.y});
+			if(visible) {
+				DrawLineEx(
+					{start.x, start.y},
+					{end.x, end.y},
+					thickness,
+					BLUE
+				);
 			}
+			start = tmp_end;
 		}
 
 		EndDrawing();

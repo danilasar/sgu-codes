@@ -273,7 +273,7 @@ int main() {
 			T = translate(Wcx, Wcy) * T;
 		}
 		if (IsKeyDown(KEY_E)) {
-			T = translate(-Wx, -Wy) * T;
+			T = translate(-Wcx, -Wcy) * T;
 			T = rotate(-0.01f) * T;
 			T = translate(Wcx, Wcy) * T;
 		}
