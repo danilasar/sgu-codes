@@ -95,7 +95,6 @@ int main() {
 	const Padding paddings = { 30.f, 160.f, 20.f, 50.f }; // расстояния от границ окна
 	const float thickness = 1.f;
 	float Wx, Wy, Wcx, Wcy, frameAspect;
-	float Vx, Vy;
 	Vec2 Vc = Vec2(-2.f, -2.f), V = Vec2(4.f, 4.f);
 	Vec2 Vc_work, V_work;
 	frame_calc(paddings, Wx, Wy, Wcx, Wcy, frameAspect);
@@ -121,16 +120,16 @@ int main() {
 
 		Vc_work = normalize(T * Vec3(Vc, 1.f));
 		V_work = Mat2(T) * V;
+		float center_x = Vc_work.x + V_work.x / 2;
+		float center_y = Vc_work.y + V_work.y / 2;
+
 		Vec2 start;
 		float x, y;
 		x = Vc_work.x;
 		y = f(x);
-		std::cout << x << " " << y << std::endl;
 		start.x = Wcx;
 		start.y = Wcy - (y - Vc_work.y) / V_work.y * Wy;
-		std::cout << start.x << " " << start.y << std::endl;
 		const float delta_x = V_work.x / Wx;
-		DrawCircle(start.x, start.y, 5., RED);
 		
 		while(start.x < Wcx + Wx) {
 			Vec2 end;
@@ -156,6 +155,34 @@ int main() {
 		// Handle input
 		if (IsKeyPressed(KEY_C)) {
 			T = initT;
+		}
+
+		if(IsKeyDown(KEY_A)) {
+			T = translate(-V_work.x / Wx, 0.f) * T;
+		}
+
+		if(IsKeyDown(KEY_D)) {
+			T = translate(V_work.x / Wx, 0.f) * T;
+		}
+
+		if(IsKeyDown(KEY_F)) {
+			T = translate(0.f, V_work.y / Wy) * T;
+		}
+
+		if(IsKeyDown(KEY_R)) {
+			T = translate(0.f, -V_work.y / Wy) * T;
+		}
+
+		if(IsKeyDown(KEY_Z)) {
+			T = translate(-center_x, -center_y) * T;
+			T = scale(1.1f) * T;
+			T = translate(center_x, center_y) * T;
+		}
+
+		if(IsKeyDown(KEY_X)) {
+			T = translate(-center_x, -center_y) * T;
+			T = scale(1 / 1.1f) * T;
+			T = translate(center_x, center_y) * T;
 		}
 	}
 	CloseWindow();
