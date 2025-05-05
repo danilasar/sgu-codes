@@ -70,8 +70,8 @@ struct Padding {
 void frame_calc(const Padding& p, float& Wx, float& Wy, float& Wcx, float& Wcy, float& frameAspect) {
 	Wx = static_cast<float>(GetScreenWidth()) - p.left - p.right;
 	Wy = static_cast<float>(GetScreenHeight()) - p.top - p.bottom;
-	Wcx = Wx / 2.0f + p.left;
-	Wcy = Wy / 2.0f + p.top;
+	Wcx = p.left;
+	Wcy = p.top + Wy;
 	frameAspect = Wx / Wy;
 }
 
@@ -101,8 +101,6 @@ int main() {
 	frame_calc(paddings, Wx, Wy, Wcx, Wcy, frameAspect);
 
 	T = initT = Mat3(1.f);
-	Vc_work = normalize(T * Vec3(Vc, 1.f));
-	V_work = Mat2(T) * V;
 
 
 	while (!WindowShouldClose()) {
@@ -115,30 +113,33 @@ int main() {
 		ClearBackground(SKYBLUE);
 
 		DrawRectangleLinesEx({
-			Wcx - Wx / 2, // слева
-			Wcy - Wy / 2, // сверху
+			Wcx, // слева
+			Wcy - Wy, // сверху
 			Wx, // ширина
 			Wy // высота
 		}, 2.f, BLACK);
 
+		Vc_work = normalize(T * Vec3(Vc, 1.f));
+		V_work = Mat2(T) * V;
 		Vec2 start;
 		float x, y;
 		x = Vc_work.x;
 		y = f(x);
+		std::cout << x << " " << y << std::endl;
 		start.x = Wcx;
 		start.y = Wcy - (y - Vc_work.y) / V_work.y * Wy;
+		std::cout << start.x << " " << start.y << std::endl;
 		const float delta_x = V_work.x / Wx;
-			DrawCircle(10, 10, 5., RED);
-			DrawCircle(Vc_work.x, Vc_work.y, 5., RED);
+		DrawCircle(start.x, start.y, 5., RED);
 		
-		while(start.x < Vc_work.x + V_work.x) {
+		while(start.x < Wcx + Wx) {
 			Vec2 end;
 			end.x = start.x + 1.f;
 			x += delta_x;
 			y = f(x);
 			end.y = Wcy - (y - Vc_work.y) / V_work.y * Wy;
 			Vec2 tmp_end = end;
-			bool visible = clip(start, end, Vc_work, {Vc_work.x + V_work.x, Vc_work.y + V_work.y});
+			bool visible = clip(start, end, {Wcx, Wcy - Wy}, {Wcx + Wx, Wcy});
 			if(visible) {
 				DrawLineEx(
 					{start.x, start.y},
