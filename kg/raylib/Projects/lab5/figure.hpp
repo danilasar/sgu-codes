@@ -45,4 +45,5 @@ struct Model {
 		, Vy(Vy) {}
 };
 
+
 } // namespace ssu
