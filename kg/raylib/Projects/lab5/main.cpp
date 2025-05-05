@@ -76,7 +76,14 @@ void frame_calc(const Padding& p, float& Wx, float& Wy, float& Wcx, float& Wcy, 
 }
 
 float f(float x) {
-	return x * sin(x);
+	//return x * sin(log(x));
+	return tan(x);
+}
+
+bool f_exists(float x, float delta_x) {
+	//return x > 0;
+	//return cos(x) != 0.f;
+	return fabs(2.f * acos(cos(x)) - M_PI) > delta_x;
 }
 
 int main() {
@@ -120,26 +127,32 @@ int main() {
 
 		Vc_work = normalize(T * Vec3(Vc, 1.f));
 		V_work = Mat2(T) * V;
-		float center_x = Vc_work.x + V_work.x / 2;
-		float center_y = Vc_work.y + V_work.y / 2;
+		const float center_x = Vc_work.x + V_work.x / 2;
+		const float center_y = Vc_work.y + V_work.y / 2;
+		const float delta_x = V_work.x / Wx;
 
 		Vec2 start;
 		float x, y;
 		x = Vc_work.x;
-		y = f(x);
 		start.x = Wcx;
-		start.y = Wcy - (y - Vc_work.y) / V_work.y * Wy;
-		const float delta_x = V_work.x / Wx;
+		bool has_start = f_exists(x, delta_x), has_end, visible;
+		if(has_start) {
+			y = f(x);
+			start.y = Wcy - (y - Vc_work.y) / V_work.y * Wy;
+		}
 		
 		while(start.x < Wcx + Wx) {
 			Vec2 end;
 			end.x = start.x + 1.f;
 			x += delta_x;
-			y = f(x);
-			end.y = Wcy - (y - Vc_work.y) / V_work.y * Wy;
-			Vec2 tmp_end = end;
-			bool visible = clip(start, end, {Wcx, Wcy - Wy}, {Wcx + Wx, Wcy});
-			if(visible) {
+			has_end = f_exists(x, delta_x);
+			if(has_end) {
+				y = f(x);
+				end.y = Wcy - (y - Vc_work.y) / V_work.y * Wy;
+			}
+			const Vec2 tmp_end = end;
+			visible = clip(start, end, {Wcx, Wcy - Wy}, {Wcx + Wx, Wcy});
+			if(has_start && has_end && visible) {
 				DrawLineEx(
 					{start.x, start.y},
 					{end.x, end.y},
@@ -148,6 +161,7 @@ int main() {
 				);
 			}
 			start = tmp_end;
+			has_start = has_end;
 		}
 
 		EndDrawing();
