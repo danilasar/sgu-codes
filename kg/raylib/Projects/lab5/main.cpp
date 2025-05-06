@@ -75,15 +75,12 @@ void frame_calc(const Padding& p, float& Wx, float& Wy, float& Wcx, float& Wcy, 
 	frameAspect = Wx / Wy;
 }
 
-float f(float x) {
-	//return x * sin(log(x));
-	return tan(x);
+float f(float x, float z) {
+	return x * sin(sqrtf(x * x + z * z));
 }
 
-bool f_exists(float x, float delta_x) {
-	//return x > 0;
-	//return cos(x) != 0.f;
-	return fabs(2.f * acos(cos(x)) - M_PI) > delta_x;
+bool f_exists(float x, float z, float delta_x) {
+	return true;
 }
 
 int main() {
@@ -96,17 +93,17 @@ int main() {
 	InitWindow(600, 600, "Lab cuatro");
 	SetTargetFPS(60);
 
-	Mat3 T = Mat3(1.f);
-	Mat3 initT;
+	Mat4 T = Mat4(1.f);
+	Mat4 initT;
 
 	const Padding paddings = { 30.f, 160.f, 20.f, 50.f }; // расстояния от границ окна
 	const float thickness = 1.f;
 	float Wx, Wy, Wcx, Wcy, frameAspect;
-	Vec2 Vc = Vec2(-2.f, -2.f), V = Vec2(4.f, 4.f);
-	Vec2 Vc_work, V_work;
 	frame_calc(paddings, Wx, Wy, Wcx, Wcy, frameAspect);
+	Vec3 Vc = Vec3(-2.f, -2.f, -2.f), V = Vec3(4.f, 4.f, 4.f);
+	Vec3 Vc_work, V_work;
 
-	T = initT = Mat3(1.f);
+	T = initT = Mat4(1.f);
 
 
 	while (!WindowShouldClose()) {
@@ -125,19 +122,23 @@ int main() {
 			Wy // высота
 		}, 2.f, BLACK);
 
-		Vc_work = normalize(T * Vec3(Vc, 1.f));
-		V_work = Mat2(T) * V;
-		const float center_x = Vc_work.x + V_work.x / 2;
-		const float center_y = Vc_work.y + V_work.y / 2;
+		Vc_work = normalize(T * Vec4(Vc, 1.f));
+		V_work = Mat3(T) * V;
+		const Vec3 center(
+			Vc_work.x + V_work.x / 2,
+			Vc_work.y + V_work.y / 2,
+			Vc_work.z + V_work.z / 2
+		);
 		const float delta_x = V_work.x / Wx;
 
 		Vec2 start;
-		float x, y;
+		float x, y, z;
 		x = Vc_work.x;
+		z = Vc_work.z;
 		start.x = Wcx;
-		bool has_start = f_exists(x, delta_x), has_end, visible;
+		bool has_start = f_exists(x, z, delta_x), has_end, visible;
 		if(has_start) {
-			y = f(x);
+			y = f(x, z);
 			start.y = Wcy - (y - Vc_work.y) / V_work.y * Wy;
 		}
 		
@@ -148,9 +149,9 @@ int main() {
 			Vec2 end;
 			end.x = start.x + 1.f;
 			x += delta_x;
-			has_end = f_exists(x, delta_x);
+			has_end = f_exists(x, z, delta_x);
 			if(has_end) {
-				y = f(x);
+				y = f(x, z);
 				delta_y = (y - Vc_work.y) / V_work.y;
 				end.y = Wcy - delta_y * Wy;
 			}
@@ -187,31 +188,39 @@ int main() {
 		}
 
 		if(IsKeyDown(KEY_A)) {
-			T = translate(-V_work.x / Wx, 0.f) * T;
+			T = translate(-V_work.x / Wx, 0.f, 0.f) * T;
 		}
 
 		if(IsKeyDown(KEY_D)) {
-			T = translate(V_work.x / Wx, 0.f) * T;
+			T = translate(V_work.x / Wx, 0.f, 0.f) * T;
 		}
 
 		if(IsKeyDown(KEY_F)) {
-			T = translate(0.f, V_work.y / Wy) * T;
+			T = translate(0.f, V_work.y / Wy, 0.f) * T;
 		}
 
 		if(IsKeyDown(KEY_R)) {
-			T = translate(0.f, -V_work.y / Wy) * T;
+			T = translate(0.f, -V_work.y / Wy, 0.f) * T;
+		}
+
+		if(IsKeyDown(KEY_W)) {
+			T = translate(0.f, 0.f, V_work.y / Wy) * T;
+		}
+
+		if(IsKeyDown(KEY_S)) {
+			T = translate(0.f, 0.f, -V_work.y / Wy) * T;
 		}
 
 		if(IsKeyDown(KEY_Z)) {
-			T = translate(-center_x, -center_y) * T;
+			T = translate(-center.x, -center.y, center.z) * T;
 			T = scale(1.1f) * T;
-			T = translate(center_x, center_y) * T;
+			T = translate(center.x, center.y, center.z) * T;
 		}
 
 		if(IsKeyDown(KEY_X)) {
-			T = translate(-center_x, -center_y) * T;
+			T = translate(-center.x, -center.y, center.z) * T;
 			T = scale(1 / 1.1f) * T;
-			T = translate(center_x, center_y) * T;
+			T = translate(center.x, center.y, center.z) * T;
 		}
 	}
 	CloseWindow();

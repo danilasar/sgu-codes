@@ -283,3 +283,7 @@ struct Mat2 {
 inline Vec2 normalize(const Vec3 &v) {
     return Vec2(v.x / v.z, v.y / v.z);
 }
+
+inline Vec3 normalize(const Vec4 &v) {
+    return Vec3(v.x / v.w, v.y / v.w, v.z / v.w);
+}
