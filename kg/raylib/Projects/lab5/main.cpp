@@ -141,6 +141,9 @@ int main() {
 			start.y = Wcy - (y - Vc_work.y) / V_work.y * Wy;
 		}
 		
+		float delta_y;
+		unsigned char red, green, blue;
+		
 		while(start.x < Wcx + Wx) {
 			Vec2 end;
 			end.x = start.x + 1.f;
@@ -148,16 +151,28 @@ int main() {
 			has_end = f_exists(x, delta_x);
 			if(has_end) {
 				y = f(x);
-				end.y = Wcy - (y - Vc_work.y) / V_work.y * Wy;
+				delta_y = (y - Vc_work.y) / V_work.y;
+				end.y = Wcy - delta_y * Wy;
 			}
 			const Vec2 tmp_end = end;
 			visible = clip(start, end, {Wcx, Wcy - Wy}, {Wcx + Wx, Wcy});
 			if(has_start && has_end && visible) {
+				if(delta_y > 1.f) delta_y = 1.f;
+				if(delta_y < 0.f) delta_y = 0.f;
+				green = 510 * delta_y;
+				if(delta_y < 0.5f) {
+					blue = 255 - green;
+					red = 0;
+				} else {
+					blue = 0;
+					red = green - 255;
+					green = 510 - green;
+				}
 				DrawLineEx(
 					{start.x, start.y},
 					{end.x, end.y},
 					thickness,
-					BLUE
+					{red, green, blue, 255}
 				);
 			}
 			start = tmp_end;
