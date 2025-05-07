@@ -153,7 +153,7 @@ void draw_grid(
 	for(int i = 0; i <= num_sect_y; ++i) {
 	    float tmp_y_coord_v = Wc_work.y - i * grid_step_y;
 		//float tmp_y_coord_h = Wc.y - i * grid_step_y;
-	    float tmp_y_coord_h = Wc.y - (Wc_work.x - Wc.x) / W_work.z;
+	    float tmp_y_coord_h = Wc.y - i * grid_step_y;
 	
 	    DrawLineEx(
 	        {Wc_work.x, tmp_y_coord_v},
@@ -397,8 +397,7 @@ int main() {
 		if(num_sect_z > 2 && IsKeyPressed(KEY_SIX)) {
 			num_sect_z -= 1;
 		}
-
-		
+	
 		if (IsKeyDown(KEY_T)) V.x *= scale_factor;
 		if (IsKeyDown(KEY_G)) V.x /= scale_factor;
 		

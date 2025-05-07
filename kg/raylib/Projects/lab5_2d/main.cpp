@@ -1,18 +1,11 @@
 #include "matrix.hpp"
 #include "transform.hpp"
-#include "figure.hpp"
-
-#include "hare.hpp"
 
 #include <raylib.h>
 #include <raygui.h>
 #include <nfd.h>
-#include <vector>
-#include <array>
 #include <iostream>
-#include <fstream>
 #include <sstream>
-#include <cstdint>
 
 char codeKS(const Vec2& P, const Vec2& min, const Vec2& max) {
 	char code = 0;
@@ -86,6 +79,58 @@ bool f_exists(float x, float delta_x) {
 	return fabs(2.f * acos(cos(x)) - M_PI) > delta_x;
 }
 
+std::string to_string_with_precision(const float a_value, const int n = 3) {
+    std::ostringstream out;
+    out.precision(n);
+    out << std::fixed << a_value;
+    return std::move(out).str();
+}
+
+void draw_grid(
+	const Vec2& Wc,
+	const Vec2& W,
+	const Vec2& Vc_work,
+	const Vec2& V_work,
+	const u_int8_t num_sect_x = 5, const u_int8_t num_sect_y = 5
+) {
+	for(int i = 0; i <= num_sect_x; ++i) {
+		float tmp_x_coord_d = Wc.x + i * W.x / num_sect_x;
+		DrawLineEx(
+			{tmp_x_coord_d, Wc.y},
+			{tmp_x_coord_d, Wc.y - W.y},
+			1.f,
+			BLACK
+		);
+		if(i > 0 && i < num_sect_x) {
+			DrawText(
+				to_string_with_precision(Vc_work.x + i * V_work.x / num_sect_x).c_str(),
+				tmp_x_coord_d,
+				Wc.y,
+				12,
+				BLACK
+			);
+		}
+	}
+	for(int i = 0; i <= num_sect_y; ++i) {
+		float tmp_y_coord_d = Wc.y - i * W.y / num_sect_y;
+		DrawLineEx(
+			{Wc.x, tmp_y_coord_d},
+			{Wc.x + W.x, tmp_y_coord_d},
+			1.f,
+			BLACK
+		);
+		if(i > 0 && i < num_sect_y) {
+			DrawText(
+				to_string_with_precision(Vc_work.y + i * V_work.y / num_sect_y).c_str(),
+				Wc.x + W.x,
+				tmp_y_coord_d,
+				12,
+				BLACK
+			);
+		}
+	}
+}
+
 int main() {
 	if (NFD_Init() != NFD_OKAY) {
 		std::cerr << "ERROR: can't initialize Native File Dialog" << std::endl;
@@ -108,6 +153,7 @@ int main() {
 
 	T = initT = Mat3(1.f);
 
+	u_int8_t num_sect_x = 5, num_sect_y = 5;
 
 	while (!WindowShouldClose()) {
 		if(IsWindowResized()) {
@@ -127,9 +173,15 @@ int main() {
 
 		Vc_work = normalize(T * Vec3(Vc, 1.f));
 		V_work = Mat2(T) * V;
-		const float center_x = Vc_work.x + V_work.x / 2;
-		const float center_y = Vc_work.y + V_work.y / 2;
 		const float delta_x = V_work.x / Wx;
+
+		draw_grid(
+			{Wcx, Wcy},
+			{Wx, Wy},
+			Vc_work,
+			V_work,
+			num_sect_x, num_sect_y
+		);
 
 		Vec2 start;
 		float x, y;
@@ -141,8 +193,8 @@ int main() {
 			start.y = Wcy - (y - Vc_work.y) / V_work.y * Wy;
 		}
 		
-		float delta_y;
 		unsigned char red, green, blue;
+		float delta_y;
 		
 		while(start.x < Wcx + Wx) {
 			Vec2 end;
@@ -181,9 +233,23 @@ int main() {
 
 		EndDrawing();
 
+		const Vec2 center(
+			Vc_work.x + V_work.x / 2,
+			Vc_work.y + V_work.y / 2
+		);
+		const float scale_factor = 1.1f;
+
 		// Handle input
 		if (IsKeyPressed(KEY_C)) {
 			T = initT;
+		}
+
+		if(IsKeyDown(KEY_W)) {
+			T = translate(0.f, -V_work.y / Wy) * T;
+		}
+
+		if(IsKeyDown(KEY_S)) {
+			T = translate(0.f, V_work.y / Wy) * T;
 		}
 
 		if(IsKeyDown(KEY_A)) {
@@ -194,25 +260,36 @@ int main() {
 			T = translate(V_work.x / Wx, 0.f) * T;
 		}
 
-		if(IsKeyDown(KEY_F)) {
-			T = translate(0.f, V_work.y / Wy) * T;
+		if(T.row1.x < 1e9 && IsKeyDown(KEY_Z)) {
+			T = translate(-center.x, -center.y) * T;
+			T = scale(scale_factor) * T;
+			T = translate(center.x, center.y) * T;
 		}
 
-		if(IsKeyDown(KEY_R)) {
-			T = translate(0.f, -V_work.y / Wy) * T;
+		if(T.row1.x > 1e-9 && IsKeyDown(KEY_X)) {
+			T = translate(-center.x, -center.y) * T;
+			T = scale(1 / scale_factor) * T;
+			T = translate(center.x, center.y) * T;
 		}
 
-		if(IsKeyDown(KEY_Z)) {
-			T = translate(-center_x, -center_y) * T;
-			T = scale(1.1f) * T;
-			T = translate(center_x, center_y) * T;
+		if (IsKeyDown(KEY_T)) V.x *= scale_factor;
+		if (IsKeyDown(KEY_G)) V.x /= scale_factor;
+		
+		if (IsKeyDown(KEY_Y)) V.y *= scale_factor;
+		if (IsKeyDown(KEY_H)) V.y /= scale_factor;
+
+		if(IsKeyPressed(KEY_ONE)) num_sect_x += 1;
+
+		if(num_sect_x > 2 && IsKeyPressed(KEY_TWO)) {
+			num_sect_x -= 1;
 		}
 
-		if(IsKeyDown(KEY_X)) {
-			T = translate(-center_x, -center_y) * T;
-			T = scale(1 / 1.1f) * T;
-			T = translate(center_x, center_y) * T;
-		}
+		if (IsKeyDown(KEY_T)) V.x *= scale_factor;
+		if (IsKeyDown(KEY_G)) V.x /= scale_factor;
+		
+		if (IsKeyDown(KEY_Y)) V.y *= scale_factor;
+		if (IsKeyDown(KEY_H)) V.y /= scale_factor;
+
 	}
 	CloseWindow();
 	NFD_Quit();
