@@ -1,18 +1,11 @@
 #include "matrix.hpp"
 #include "transform.hpp"
-#include "figure.hpp"
-
-#include "hare.hpp"
 
 #include <raylib.h>
 #include <raygui.h>
 #include <nfd.h>
-#include <vector>
-#include <array>
 #include <iostream>
-#include <fstream>
 #include <sstream>
-#include <cstdint>
 
 char codeKS(const Vec2& P, const Vec2& min, const Vec2& max) {
 	char code = 0;
@@ -159,7 +152,8 @@ void draw_grid(
 	
 	for(int i = 0; i <= num_sect_y; ++i) {
 	    float tmp_y_coord_v = Wc_work.y - i * grid_step_y;
-	    float tmp_y_coord_h = Wc.y - i * grid_step_y;
+		//float tmp_y_coord_h = Wc.y - i * grid_step_y;
+	    float tmp_y_coord_h = Wc.y - (Wc_work.x - Wc.x) / W_work.z;
 	
 	    DrawLineEx(
 	        {Wc_work.x, tmp_y_coord_v},
@@ -195,7 +189,7 @@ int main() {
 	}
 
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-	InitWindow(600, 600, "Lab cuatro");
+	InitWindow(600, 600, "Lab cinco");
 	SetTargetFPS(60);
 
 	Mat4 T = Mat4(1.f);
@@ -203,9 +197,9 @@ int main() {
 
 	const Padding paddings = { 30.f, 160.f, 20.f, 50.f }; // расстояния от границ окна
 	const float thickness = 1.f;
-	float Wx, Wy, Wcx, Wcy, frameAspect;
+	float Wx, Wy, Wcx, Wcy;
 	float Wx_work, Wy_work, Wz_work, Wcx_work, Wcy_work;
-	const float Wx_part = 0.6f, Wy_part = 0.6f;
+	float Wx_part = 0.6f, Wy_part = 0.6f;
 	Vec3 Vc = Vec3(-2.f, -2.f, -2.f), V = Vec3(4.f, 4.f, 4.f);
 	Vec3 Vc_work, V_work;
 
@@ -224,7 +218,6 @@ int main() {
 			Wy = static_cast<float>(GetScreenHeight()) - paddings.top - paddings.bottom;
 			Wcx = paddings.left;
 			Wcy = paddings.top + Wy;
-			frameAspect = Wx / Wy;
 			Wx_work = Wx_part * Wx;
 			Wy_work = Wy_part * Wy;
 			Wcx_work = Wx + Wcx - Wx_work;
@@ -292,7 +285,12 @@ int main() {
 					end.y = Wcy_work - delta_y * Wy_work;
 				}
 				const Vec2 tmp_end = end;
-				visible = clip(start, end, {Wcx_work, Wcy_work - Wy_work}, {Wcx_work + Wx_work, Wcy_work});
+				visible = clip(
+					start,
+					end,
+					{Wcx_work, Wcy_work - Wy_work},
+					{Wcx_work + Wx_work, Wcy_work}
+				);
 				if(has_start && has_end && visible) {
 					if(delta_y > 1.f) delta_y = 1.f;
 					if(delta_y < 0.f) delta_y = 0.f;
@@ -321,6 +319,8 @@ int main() {
 		}
 
 		EndDrawing();
+
+		const float scale_factor = 1.1f;
 
 		// Handle input
 		if (IsKeyPressed(KEY_C)) {
@@ -351,17 +351,62 @@ int main() {
 			T = translate(0.f, 0.f, -V_work.y / Wy_work) * T;
 		}
 
-		if(IsKeyDown(KEY_Z)) {
+		if(T.row1.x < 1e9 && IsKeyDown(KEY_Z)) {
 			T = translate(-center.x, -center.y, center.z) * T;
-			T = scale(1.1f) * T;
+			T = scale(scale_factor) * T;
 			T = translate(center.x, center.y, center.z) * T;
 		}
 
-		if(IsKeyDown(KEY_X)) {
+		if(T.row1.x > 1e-9 && IsKeyDown(KEY_X)) {
 			T = translate(-center.x, -center.y, center.z) * T;
-			T = scale(1 / 1.1f) * T;
+			T = scale(1 / scale_factor) * T;
 			T = translate(center.x, center.y, center.z) * T;
 		}
+
+
+		if(Wx_part <= 0.9 && IsKeyDown(KEY_Q)) {
+			Wx_part *= scale_factor;
+		}
+
+		if(Wx_part >= 0.2 && IsKeyDown(KEY_E)) {
+			Wx_part /= scale_factor;
+		}
+
+		if(Wy_part <= 0.9 && IsKeyDown(KEY_V)) {
+			Wy_part *= scale_factor;
+		}
+
+		if(Wy_part >= 0.2 && IsKeyDown(KEY_B)) {
+			Wy_part /= scale_factor;
+		}
+
+		if(IsKeyPressed(KEY_ONE)) num_sect_x += 1;
+
+		if(num_sect_x > 2 && IsKeyPressed(KEY_TWO)) {
+			num_sect_x -= 1;
+		}
+
+		if(IsKeyPressed(KEY_THREE)) num_sect_y += 1;
+
+		if(num_sect_y > 2 && IsKeyPressed(KEY_FOUR)) {
+			num_sect_y -= 1;
+		}
+
+		if(IsKeyPressed(KEY_FIVE)) num_sect_z += 1;
+
+		if(num_sect_z > 2 && IsKeyPressed(KEY_SIX)) {
+			num_sect_z -= 1;
+		}
+
+		
+		if (IsKeyDown(KEY_T)) V.x *= scale_factor;
+		if (IsKeyDown(KEY_G)) V.x /= scale_factor;
+		
+		if (IsKeyDown(KEY_Y)) V.y *= scale_factor;
+		if (IsKeyDown(KEY_H)) V.y /= scale_factor;
+		
+		if (IsKeyDown(KEY_U)) V.z *= scale_factor;
+		if (IsKeyDown(KEY_J)) V.z /= scale_factor;
 	}
 	CloseWindow();
 	NFD_Quit();
