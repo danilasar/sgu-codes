@@ -67,16 +67,9 @@ struct Padding {
 	float left, right, top, bottom;
 };
 
-void frame_calc(const Padding& p, float& Wx, float& Wy, float& Wcx, float& Wcy, float& frameAspect) {
-	Wx = static_cast<float>(GetScreenWidth()) - p.left - p.right;
-	Wy = static_cast<float>(GetScreenHeight()) - p.top - p.bottom;
-	Wcx = p.left;
-	Wcy = p.top + Wy;
-	frameAspect = Wx / Wy;
-}
-
 float f(float x, float z) {
 	return x * sin(sqrtf(x * x + z * z));
+	//return x * x + z * z;
 }
 
 bool f_exists(float x, float z, float delta_x) {
@@ -99,7 +92,8 @@ int main() {
 	const Padding paddings = { 30.f, 160.f, 20.f, 50.f }; // расстояния от границ окна
 	const float thickness = 1.f;
 	float Wx, Wy, Wcx, Wcy, frameAspect;
-	frame_calc(paddings, Wx, Wy, Wcx, Wcy, frameAspect);
+	float Wx_work, Wy_work, Wz_work, Wcx_work, Wcy_work;
+	float Wx_part = 0.6f, Wy_part = 0.6f;
 	Vec3 Vc = Vec3(-2.f, -2.f, -2.f), V = Vec3(4.f, 4.f, 4.f);
 	Vec3 Vc_work, V_work;
 
@@ -107,8 +101,22 @@ int main() {
 
 
 	while (!WindowShouldClose()) {
+		bool need_recalculate_w = true;
 		if(IsWindowResized()) {
-			frame_calc(paddings, Wx, Wy, Wcx, Wcy, frameAspect);
+			need_recalculate_w = true;
+		}
+		if(need_recalculate_w) {
+			need_recalculate_w = false;
+			Wx = static_cast<float>(GetScreenWidth()) - paddings.left - paddings.right;
+			Wy = static_cast<float>(GetScreenHeight()) - paddings.top - paddings.bottom;
+			Wcx = paddings.left;
+			Wcy = paddings.top + Wy;
+			frameAspect = Wx / Wy;
+			Wx_work = Wx_part * Wx;
+			Wy_work = Wy_part * Wy;
+			Wcx_work = Wx + Wcx - Wx_work;
+			Wcy_work = paddings.top + Wy_work;
+			Wz_work = Wcy - Wcy_work;
 		}
 
 		// Render figures
@@ -122,6 +130,9 @@ int main() {
 			Wy // высота
 		}, 2.f, BLACK);
 
+		const float delta_z = V_work.z / Wz_work;
+		const float delta_Wcx = (Wcx_work - Wcx) / Wz_work;
+
 		Vc_work = normalize(T * Vec4(Vc, 1.f));
 		V_work = Mat3(T) * V;
 		const Vec3 center(
@@ -129,55 +140,61 @@ int main() {
 			Vc_work.y + V_work.y / 2,
 			Vc_work.z + V_work.z / 2
 		);
-		const float delta_x = V_work.x / Wx;
+		const float delta_x = V_work.x / Wx_work;
 
 		Vec2 start;
 		float x, y, z;
-		x = Vc_work.x;
 		z = Vc_work.z;
-		start.x = Wcx;
-		bool has_start = f_exists(x, z, delta_x), has_end, visible;
-		if(has_start) {
-			y = f(x, z);
-			start.y = Wcy - (y - Vc_work.y) / V_work.y * Wy;
-		}
-		
-		float delta_y;
-		unsigned char red, green, blue;
-		
-		while(start.x < Wcx + Wx) {
-			Vec2 end;
-			end.x = start.x + 1.f;
-			x += delta_x;
-			has_end = f_exists(x, z, delta_x);
-			if(has_end) {
+
+		while(Wcy_work <= Wcy) {
+			start.x = Wcx_work;
+			x = Vc_work.x;
+			bool has_start = f_exists(x, z, delta_x), has_end, visible;
+			if(has_start) {
 				y = f(x, z);
-				delta_y = (y - Vc_work.y) / V_work.y;
-				end.y = Wcy - delta_y * Wy;
+				start.y = Wcy_work - (y - Vc_work.y) / V_work.y * Wy_work;
 			}
-			const Vec2 tmp_end = end;
-			visible = clip(start, end, {Wcx, Wcy - Wy}, {Wcx + Wx, Wcy});
-			if(has_start && has_end && visible) {
-				if(delta_y > 1.f) delta_y = 1.f;
-				if(delta_y < 0.f) delta_y = 0.f;
-				green = 510 * delta_y;
-				if(delta_y < 0.5f) {
-					blue = 255 - green;
-					red = 0;
-				} else {
-					blue = 0;
-					red = green - 255;
-					green = 510 - green;
+			
+			float delta_y;
+			unsigned char red, green, blue;
+			
+			while(start.x < Wcx_work + Wx_work) {
+				Vec2 end;
+				end.x = start.x + 1.f;
+				x += delta_x;
+				has_end = f_exists(x, z, delta_x);
+				if(has_end) {
+					y = f(x, z);
+					delta_y = (y - Vc_work.y) / V_work.y;
+					end.y = Wcy_work - delta_y * Wy_work;
 				}
-				DrawLineEx(
-					{start.x, start.y},
-					{end.x, end.y},
-					thickness,
-					{red, green, blue, 255}
-				);
+				const Vec2 tmp_end = end;
+				visible = clip(start, end, {Wcx_work, Wcy_work - Wy_work}, {Wcx_work + Wx_work, Wcy_work});
+				if(has_start && has_end && visible) {
+					if(delta_y > 1.f) delta_y = 1.f;
+					if(delta_y < 0.f) delta_y = 0.f;
+					green = 510 * delta_y;
+					if(delta_y < 0.5f) {
+						blue = 255 - green;
+						red = 0;
+					} else {
+						blue = 0;
+						red = green - 255;
+						green = 510 - green;
+					}
+					DrawLineEx(
+						{start.x, start.y},
+						{end.x, end.y},
+						thickness,
+						{red, green, blue, 255}
+					);
+				}
+				start = tmp_end;
+				has_start = has_end;
 			}
-			start = tmp_end;
-			has_start = has_end;
+			Wcy_work += 1.f;
+			Wcx_work -= delta_Wcx;
+			z += delta_z;
 		}
 
 		EndDrawing();
@@ -188,27 +205,27 @@ int main() {
 		}
 
 		if(IsKeyDown(KEY_A)) {
-			T = translate(-V_work.x / Wx, 0.f, 0.f) * T;
+			T = translate(-V_work.x / Wx_work, 0.f, 0.f) * T;
 		}
 
 		if(IsKeyDown(KEY_D)) {
-			T = translate(V_work.x / Wx, 0.f, 0.f) * T;
+			T = translate(V_work.x / Wx_work, 0.f, 0.f) * T;
 		}
 
 		if(IsKeyDown(KEY_F)) {
-			T = translate(0.f, V_work.y / Wy, 0.f) * T;
+			T = translate(0.f, V_work.y / Wy_work, 0.f) * T;
 		}
 
 		if(IsKeyDown(KEY_R)) {
-			T = translate(0.f, -V_work.y / Wy, 0.f) * T;
+			T = translate(0.f, -V_work.y / Wy_work, 0.f) * T;
 		}
 
 		if(IsKeyDown(KEY_W)) {
-			T = translate(0.f, 0.f, V_work.y / Wy) * T;
+			T = translate(0.f, 0.f, V_work.y / Wy_work) * T;
 		}
 
 		if(IsKeyDown(KEY_S)) {
-			T = translate(0.f, 0.f, -V_work.y / Wy) * T;
+			T = translate(0.f, 0.f, -V_work.y / Wy_work) * T;
 		}
 
 		if(IsKeyDown(KEY_Z)) {
