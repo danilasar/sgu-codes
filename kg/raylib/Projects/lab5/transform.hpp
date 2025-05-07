@@ -13,10 +13,11 @@ inline Mat4 translate(float Tx, float Ty, float Tz) {
 }
 
 inline Mat4 scale(float Sx, float Sy, float Sz) {
-    Mat4 res = Mat4(1.f);
+    Mat4 res = Mat4(0.f);
     res[0][0] = Sx;
     res[1][1] = Sy;
     res[2][2] = Sz;
+	res[3][3] = 1;
     return res;
 }
 

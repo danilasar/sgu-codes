@@ -76,6 +76,118 @@ bool f_exists(float x, float z, float delta_x) {
 	return true;
 }
 
+std::string to_string_with_precision(const float a_value, const int n = 3) {
+    std::ostringstream out;
+    out.precision(n);
+    out << std::fixed << a_value;
+    return std::move(out).str();
+}
+
+void draw_grid(
+	const Vec2& Wc,
+	const Vec2& W,
+	const Vec2& Wc_work,
+	const Vec3& W_work,
+	const Vec3& Vc_work,
+	const Vec3& V_work,
+	const u_int8_t num_sect_x = 5, const u_int8_t num_sect_y = 5, const u_int8_t num_sect_z = 5
+) {
+	float grid_step_x = W_work.x / num_sect_x;
+	float tick_x = Vc_work.x;
+	const float grid_dX = V_work.x / num_sect_z;
+	for(int i = 0; i <= num_sect_x; ++i) {
+		float tmp_x_coord_d = Wc.x + i * grid_step_x;
+		float tmp_x_coord_v = Wc_work.x + i * grid_step_x;
+		DrawLineEx(
+			{tmp_x_coord_d, Wc.y},
+			{tmp_x_coord_v, Wc_work.y},
+			1.f,
+			BLACK
+		);
+		DrawLineEx(
+			{tmp_x_coord_v, Wc_work.y},
+			{tmp_x_coord_v, Wc.y - W.y},
+			1.f,
+			BLACK
+		);
+		if(i > 0 && i < num_sect_x) {
+			DrawText(
+				to_string_with_precision(tick_x).c_str(),
+				tmp_x_coord_d,
+				Wc.y,
+				12,
+				BLACK
+			);
+		}
+		tick_x += grid_dX;
+	}
+	grid_step_x = (W.x - W_work.x) / num_sect_z;
+	float grid_step_y = W_work.z / num_sect_z;
+	const float grid_dZ = V_work.z / num_sect_z;
+	float tick_z = Vc_work.z;
+	for(int i = 0; i <= num_sect_z; ++i) {
+		float tmp_x_coord_v = Wc_work.x - i * grid_step_x;
+		float tmp_y_coord_h = Wc_work.y + i * grid_step_y;
+		float tmp_x_coord_h = tmp_x_coord_v + W_work.x;
+	    DrawLineEx(
+	        {tmp_x_coord_v, tmp_y_coord_h},
+	        {tmp_x_coord_v, tmp_y_coord_h - W_work.y},
+	        1.0f,
+	        BLACK
+	    );
+	    DrawLineEx(
+	        {tmp_x_coord_v, tmp_y_coord_h},
+	        {tmp_x_coord_h, tmp_y_coord_h},
+	        1.0f,
+	        BLACK
+	    );
+	    if(i > 0 && i < num_sect_z) {
+	        DrawText(
+	            to_string_with_precision(tick_z).c_str(),
+	            static_cast<int>(tmp_x_coord_h),
+	            static_cast<int>(tmp_y_coord_h),
+	            12,
+	            BLACK
+	        );
+	    }
+	    tick_z += grid_dZ;
+	}
+	grid_step_y = (W.y - W_work.y) / num_sect_y;
+	grid_step_x = W_work.x / num_sect_y;
+	const float grid_dY = V_work.y / num_sect_y;
+	float tick_y = Vc_work.y;
+	
+	for(int i = 0; i <= num_sect_y; ++i) {
+	    float tmp_y_coord_v = Wc_work.y - i * grid_step_y;
+	    float tmp_y_coord_h = Wc.y - i * grid_step_y;
+	
+	    DrawLineEx(
+	        {Wc_work.x, tmp_y_coord_v},
+	        {Wc_work.x + W_work.x, tmp_y_coord_v},
+	        1.0f,
+	        BLACK
+	    );
+	
+	    DrawLineEx(
+	        {Wc.x, tmp_y_coord_h},
+	        {Wc_work.x, tmp_y_coord_v},
+	        1.0f,
+	        BLACK
+	    );
+	
+	    if(i > 0 && i < num_sect_y) {
+	        DrawText(
+	            to_string_with_precision(tick_y).c_str(),
+	            static_cast<int>(Wc_work.x + W_work.x),
+	            static_cast<int>(tmp_y_coord_v),
+	            12,
+	            BLACK
+	        );
+	    }	
+	    tick_y += grid_dY;
+	}
+}
+
 int main() {
 	if (NFD_Init() != NFD_OKAY) {
 		std::cerr << "ERROR: can't initialize Native File Dialog" << std::endl;
@@ -93,12 +205,13 @@ int main() {
 	const float thickness = 1.f;
 	float Wx, Wy, Wcx, Wcy, frameAspect;
 	float Wx_work, Wy_work, Wz_work, Wcx_work, Wcy_work;
-	float Wx_part = 0.6f, Wy_part = 0.6f;
+	const float Wx_part = 0.6f, Wy_part = 0.6f;
 	Vec3 Vc = Vec3(-2.f, -2.f, -2.f), V = Vec3(4.f, 4.f, 4.f);
 	Vec3 Vc_work, V_work;
 
 	T = initT = Mat4(1.f);
 
+	u_int8_t num_sect_x = 5, num_sect_y = 5, num_sect_z = 5;
 
 	while (!WindowShouldClose()) {
 		bool need_recalculate_w = true;
@@ -129,6 +242,16 @@ int main() {
 			Wx, // ширина
 			Wy // высота
 		}, 2.f, BLACK);
+
+		draw_grid(
+			{Wcx, Wcy},
+			{Wx, Wy},
+			{Wcx_work, Wcy_work},
+			{Wx_work, Wy_work, Wz_work},
+			Vc_work,
+			V_work,
+			num_sect_x, num_sect_y, num_sect_z
+		);
 
 		const float delta_z = V_work.z / Wz_work;
 		const float delta_Wcx = (Wcx_work - Wcx) / Wz_work;
