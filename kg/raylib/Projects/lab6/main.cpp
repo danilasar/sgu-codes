@@ -167,6 +167,11 @@ bool clip(Vec2 &A, Vec2 &B, const Vec2& min, const Vec2& max) {
 	return true;
 }
 
+inline Mat3 cadrRL(const Vec2& Vc, const Vec2& V, const Vec2& Wc, const Vec2& W) {
+	return translate(Wc.x, Wc.y) *
+		(scale(W.x / V.x, -W.y / V.y) * translate(-Vc.x, -Vc.y));
+}
+
 struct Padding {
 	float left, right, top, bottom;
 };
