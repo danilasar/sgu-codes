@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cmath>
 #include <stddef.h>
 #include <raylib.h>
 
@@ -307,6 +308,26 @@ inline Vec3 normalize(const Vec4 &v) {
     return Vec3(v.x / v.w, v.y / v.w, v.z / v.w);
 }
 
-inline Mat3 cross_M(const Vec3& p);
-inline float length(const Vec3& p);
-inline Vec3 norm(Vec3 p);
+inline Vec3 cross(const Vec3& a, const Vec3& b) {
+    return {
+        a[1] * b[2] - a[2] * b[1],
+        a[2] * b[0] - a[0] * b[2],
+        a[0] * b[1] - a[1] * b[0]
+    };
+}
+
+inline Mat3 cross_M(const Vec3& p) {
+	return Mat3(
+		Vec3(0.f, -p.z, p.y),
+		Vec3(p.z, 0.f, -p.x),
+		Vec3(-p.y, p.x, 0.f)
+	);
+}
+
+inline float length(const Vec3& p) {
+	return std::sqrt(dot(p, p));
+}
+
+inline Vec3 norm(Vec3 p) {
+	return normalize(Vec4(p, length(p)));
+}

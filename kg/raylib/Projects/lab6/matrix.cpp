@@ -1,5 +1,4 @@
 #include "matrix.hpp"
-#include <cmath>
 #include <cstdint>
 
 
@@ -60,19 +59,3 @@ Mat3 Mat3::operator*(const float n) const {
 	return Mat3(*this) *= n;
 }
 
-inline Mat3 cross_M(const Vec3& p) {
-	return Mat3(
-		Vec3(0.f, -p.z, p.y),
-		Vec3(p.z, 0.f, -p.x),
-		Vec3(-p.y, p.x, 0.f)
-	);
-}
-
-inline float length(const Vec3& p) {
-	return std::sqrt(dot(p, p));
-}
-
-
-inline Vec3 norm(Vec3 p) {
-	return normalize(Vec4(p, length(p)));
-}
