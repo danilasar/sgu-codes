@@ -7,11 +7,11 @@
 namespace ssu {
 
 struct Path {
-    std::vector<Vec2> vertices;
+    std::vector<Vec3> vertices;
     Color color;
     float thickness;
 
-    Path(std::vector<Vec2> vertices, Color color, float thickness)
+    Path(std::vector<Vec3> vertices, Color color, float thickness)
         : vertices(vertices)
         , color(color)
         , thickness(thickness) {}
