@@ -10,8 +10,9 @@
 #include <fstream>
 #include <sstream>
 #include <cstdint>
+#include <cfloat>
 
-Mat4 T; // матрица, в которой накапливаются все преобразования
+Mat4 T, initT;
 Vec3 S, P, u; // координаты точки наблюдения
 // точки, в которую направлен вектор наблюдения
 // вектора направления вверх
@@ -19,8 +20,9 @@ float dist; // вспомогательная переменная - расст�
 float fovy, aspect; // угол обзора и соотношение сторон окна наблюдения
 float fovy_work, aspect_work; // рабочие переменные для fovy и aspect
 float near, far; // расстояния до окна наблюдения и до горизонта
-float n, f; // рабочие переменные для near и far
+float n, f;      // рабочие переменные для near и far
 float l, r, t, b; // рабочие вспомогательные переменные
+
 // для значений координат левой, правой,
 // нижней и верхней координаты в СКН
 enum projType { Ortho, Frustum, Perspective } pType; // тип трехмерной проекции
@@ -73,7 +75,6 @@ ssu::Model readFromFile(const char *fileName) {
     Mat4 initM;
     std::vector<Mat4> transforms;
     ssu::Figure figure;
-    Vec3 S, P, u;
 
     std::string line;
     while (in) {
@@ -125,9 +126,16 @@ ssu::Model readFromFile(const char *fileName) {
             }
             // все точки считаны, генерируем ломаную (path) и кладем ее в список
             // figure
-            figure.paths.push_back(
-                ssu::Path(vertices, Color(r, g, b), thickness)
-            );
+            figure.paths.push_back(ssu::Path(
+                vertices,
+                Color(
+                    static_cast<uint8_t>(r),
+                    static_cast<uint8_t>(g),
+                    static_cast<uint8_t>(b),
+                    255
+                ),
+                thickness
+            ));
         } else if (cmd == "model") { // начало описания нового рисунка
             float mVcx, mVcy, mVcz, mVx, mVy, mVz; // параметры команды model
             s >> mVcx >> mVcy >> mVcz >> mVx >> mVy
@@ -165,8 +173,18 @@ ssu::Model readFromFile(const char *fileName) {
             transforms.pop_back(); // выкидываем матрицу из стека
         }
     }
-
+    initWorkPars();
     return model;
+}
+
+float clamp(float value, float min, float max) {
+    if (value < min) {
+        return min;
+    }
+    if (value > max) {
+        return max;
+    }
+    return value;
 }
 
 char codeKS(const Vec2 &P, const Vec2 &min, const Vec2 &max) {
@@ -238,8 +256,8 @@ void frame_calc(
 ) {
     Wx = static_cast<float>(GetScreenWidth()) - p.left - p.right;
     Wy = static_cast<float>(GetScreenHeight()) - p.top - p.bottom;
-    Wcx = Wx / 2.0f;
-    Wcy = Wy / 2.0f;
+    Wcx = p.left;
+    Wcy = p.top + Wy;
     frameAspect = Wx / Wy;
 }
 
@@ -254,8 +272,10 @@ int main() {
     SetTargetFPS(60);
 
     ssu::Model model;
-    Mat3 T = Mat3(1.f);
-    Mat3 initT;
+    Mat4 initT = Mat4(1.);
+
+    Mat4 proj; // матрица перехода в пространство отсечения
+    pType = Ortho; // WARN: самовольно
 
     const Padding paddings
         = {30.f, 160.f, 20.f, 50.f}; // расстояния от границ окна
@@ -265,6 +285,17 @@ int main() {
     while (!WindowShouldClose()) {
         if (IsWindowResized()) {
             frame_calc(paddings, Wx, Wy, Wcx, Wcy, frameAspect);
+        }
+        switch (pType) {
+        case Ortho: // прямоугольная проекция
+            proj = ortho(l, r, b, t, -n, -f);
+            break;
+        case Frustum: // перспективная проекция с Frustum
+            proj = frustum(l, r, b, t, n, f);
+            break;
+        case Perspective: // перспективная проекция с Perspective
+            proj = perspective(fovy_work, aspect_work, n, f);
+            break;
         }
 
         // Render figures
@@ -282,20 +313,22 @@ int main() {
             BLACK
         );
 
+        // матрица кадрирования
+        Mat3 cdr = cadrRL(
+            Vec2(-1.f, -1.f), Vec2(2.f, 2.f), Vec2(Wcx, Wcy), Vec2(Wx, Wy)
+        );
+        Mat4 C = proj * T; // матрица перехода от мировых координат в
+                           // пространство отсечения
         for (const auto &figure : model.figures) {
-            Mat3 TM = T * figure.M;
+            Mat4 TM = C * figure.M;
             for (const auto &lines : figure.paths) {
-                Vec2 start = normalize(TM * Vec3(lines.vertices[0], 1));
+                Vec3 start_3d = normalize(TM * Vec4(lines.vertices[0], 1));
+                Vec2 start = normalize(cdr * Vec3(start_3d, 1.f));
                 for (const auto &line : lines.vertices) {
-                    Vec2 end = normalize(TM * Vec3(line, 1));
+                    Vec2 end_3D = normalize(TM * Vec4(line, 1));
+                    Vec2 end = normalize(cdr * Vec3(end_3D, 1.f));
                     Vec2 old_end = end;
-                    if (clip(
-                            start,
-                            end,
-                            {paddings.left, paddings.top},
-                            {paddings.left + Wx, paddings.top + Wy}
-                        ))
-                    {
+                    if (clip(start, end, {Wcx, Wcy - Wy}, {Wcx + Wx, Wcy})) {
                         DrawLineEx(
                             {start.x, start.y},
                             {end.x, end.y},
@@ -321,16 +354,16 @@ int main() {
                 = NFD_OpenDialog(&outPath, filterItem, 2, nullptr);
             if (result == NFD_OKAY) {
                 model = readFromFile(outPath);
-                const float figureAspect = model.Vx / model.Vy;
+                /*const float figureAspect = model.Vx / model.Vy;
                 Mat3 T1 = translate(-model.Vx / 2, -model.Vy / 2);
                 const float S = figureAspect < frameAspect ? Wy / model.Vy
                                                            : Wx / model.Vx;
-                Mat3 S1 = scale(S, -S);
-                Mat3 T2 = translate(
+                Mat4 S1 = scale(S, -S, S);
+                Mat4 T2 = translate(
                     Wx / 2, Wy / 2
                 ); // WARN: Миронов походу знаки попутал
                 initT = T2 * (S1 * T1);
-                T = initT;
+                T = initT;*/
                 NFD_FreePath(outPath);
             } else if (result == NFD_CANCEL) {
                 std::cerr << "INFO: NFD: user pressed cancel" << std::endl;
@@ -339,102 +372,152 @@ int main() {
             }
         }
         EndDrawing();
-
-        // Handle input
+        // Escape
         if (IsKeyPressed(KEY_C)) {
-            T = initT;
+            initWorkPars();
         }
-
-        if (IsKeyDown(KEY_Q)) {
-            T = translate(-Wcx, -Wcy) * T;
-            T = rotate(0.01f) * T;
-            T = translate(Wcx, Wcy) * T;
+        // W
+        if (IsKeyPressed(KEY_W)) {
+            T = look_at(Vec3(0, 0, -1), Vec3(0, 0, -2), Vec3(0, 1, 0)) * T;
         }
-        if (IsKeyDown(KEY_E)) {
-            T = translate(-Wcx, -Wcy) * T;
-            T = rotate(-0.01f) * T;
-            T = translate(Wcx, Wcy) * T;
+        // S
+        if (IsKeyPressed(KEY_S)) {
+            T = look_at(Vec3(0, 0, 1), Vec3(0, 0, 0), Vec3(0, 1, 0)) * T;
         }
-
-        if (IsKeyDown(KEY_W)) {
-            T = translate(0, -1) * T;
+        // A
+        if (IsKeyPressed(KEY_A)) {
+            T = look_at(Vec3(-1, 0, 0), Vec3(-1, 0, -1), Vec3(0, 1, 0)) * T;
         }
-        if (IsKeyDown(KEY_S)) {
-            T = translate(0, 1) * T;
+        // R
+        if (IsKeyDown(KEY_R)) {
+            Vec3 u_new = Mat3(rotate(0.1f, Vec3(0, 0, 1))) * Vec3(0, 1, 0);
+            T = look_at(Vec3(0, 0, 0), Vec3(0, 0, -1), u_new) * T;
         }
-        if (IsKeyDown(KEY_A)) {
-            T = translate(-1, 0) * T;
-        }
-        if (IsKeyDown(KEY_D)) {
-            T = translate(1, 0) * T;
-        }
-
-        if (IsKeyPressed(KEY_R)) {
-            T = translate(-Wcx, -Wcy) * T;
-            T = rotate(0.05f) * T;
-            T = translate(Wcx, Wcy) * T;
-        }
-        if (IsKeyPressed(KEY_Y)) {
-            T = translate(-Wcx, -Wcy) * T;
-            T = rotate(-0.05f) * T;
-            T = translate(Wcx, Wcy) * T;
-        }
-
+        // T
         if (IsKeyPressed(KEY_T)) {
-            T = translate(0.f, -10.f) * T;
+            if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) {
+                Mat4 M = rotateP(0.1f, Vec3(1, 0, 0), Vec3(0, 0, -dist));
+                Vec3 u_new = Mat3(M) * Vec3(0, 1, 0);
+                Vec3 S_new = normalize(M * Vec4(0, 0, 0, 1));
+                T = look_at(S_new, Vec3(0, 0, -dist), u_new) * T;
+            } else {
+                Mat4 M = rotate(0.1f, Vec3(1, 0, 0));
+                Vec3 u_new = Mat3(M) * Vec3(0, 1, 0);
+                Vec3 P_new = normalize(M * Vec4(0, 0, -1, 1));
+                T = look_at(Vec3(0, 0, 0), P_new, u_new) * T;
+            }
         }
-        if (IsKeyPressed(KEY_G)) {
-            T = translate(0.f, 10.f) * T;
+        // I
+        if (IsKeyDown(KEY_I)) {
+            if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) {
+                t -= 1;
+            } else {
+                t += 1;
+            }
         }
-        if (IsKeyPressed(KEY_F)) {
-            T = translate(-10.f, 0.f) * T;
+        // J
+        if (IsKeyDown(KEY_J)) {
+            if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) {
+                l += 1;
+            } else {
+                l -= 1;
+            }
         }
-        if (IsKeyPressed(KEY_H)) {
-            T = translate(10.f, 0.f) * T;
+        // D1
+        if (IsKeyPressed(KEY_ONE)) {
+            pType = Ortho;
         }
-
-        if (IsKeyPressed(KEY_Z)) {
-            T = translate(-Wcx, -Wcy) * T;
-            T = scale(1.1f) * T;
-            T = translate(Wcx, Wcy) * T;
+        // D3
+        if (IsKeyPressed(KEY_THREE)) {
+            pType = Perspective;
         }
-        if (IsKeyPressed(KEY_X)) {
-            T = translate(-Wcx, -Wcy) * T;
-            T = scale(1 / 1.1f) * T;
-            T = translate(Wcx, Wcy) * T;
-        }
-
-        if (IsKeyPressed(KEY_U)) {
-            T = translate(-Wcx, -Wcy) * T;
-            T = mirrorX() * T;
-            T = translate(Wcx, Wcy) * T;
-        }
-        if (IsKeyPressed(KEY_J)) {
-            T = translate(-Wcx, -Wcy) * T;
-            T = mirrorY() * T;
-            T = translate(Wcx, Wcy) * T;
-        }
-
-        if (IsKeyPressed(KEY_I)) {
-            T = translate(-Wcx, -Wcy) * T;
-            T = scale(1.1f, 1.f) * T;
-            T = translate(Wcx, Wcy) * T;
-        }
-        if (IsKeyPressed(KEY_K)) {
-            T = translate(-Wcx, -Wcy) * T;
-            T = scale(1 / 1.1f, 1.f) * T;
-            T = translate(Wcx, Wcy) * T;
+        // 2 - Frustum projection
+        if (IsKeyPressed(KEY_TWO)) {
+            pType = Frustum;
         }
 
-        if (IsKeyPressed(KEY_O)) {
-            T = translate(-Wcx, -Wcy) * T;
-            T = scale(1.f, 1.1f) * T;
-            T = translate(Wcx, Wcy) * T;
+        // D - Move right in view space
+        if (IsKeyPressed(KEY_D)) {
+            T = translate(1, 0, 0) * T;
         }
-        if (IsKeyPressed(KEY_L)) {
-            T = translate(-Wcx, -Wcy) * T;
-            T = scale(1.f, 1 / 1.1f) * T;
-            T = translate(Wcx, Wcy) * T;
+
+        // Shift+W/S/A/D - Slow movement
+        float shiftStep = 0.1f;
+        if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) {
+            if (IsKeyDown(KEY_W)) {
+                T = translate(0, 0, -shiftStep) * T;
+            }
+            if (IsKeyDown(KEY_S)) {
+                T = translate(0, 0, shiftStep) * T;
+            }
+            if (IsKeyDown(KEY_A)) {
+                T = translate(-shiftStep, 0, 0) * T;
+            }
+            if (IsKeyDown(KEY_D)) {
+                T = translate(shiftStep, 0, 0) * T;
+            }
+        }
+
+        // Y - Rotate around Z axis
+        if (IsKeyDown(KEY_Y)) {
+            T = rotate(0.1f, Vec3(0, 0, 1)) * T;
+        }
+
+        // G/Shift-G - Rotate around X axis
+        if (IsKeyDown(KEY_G)) {
+            float angle = IsKeyDown(KEY_LEFT_SHIFT) ? -0.1f : 0.1f;
+            if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) {
+                Mat4 M = rotateP(angle, Vec3(1, 0, 0), P);
+                T = M * T;
+            } else {
+                T = rotate(angle, Vec3(1, 0, 0)) * T;
+            }
+        }
+
+        // K/Shift-K - Adjust window params
+        if (IsKeyDown(KEY_K)) {
+            if (IsKeyDown(KEY_LEFT_SHIFT)) {
+                b += 1;
+            } else {
+                b -= 1;
+            }
+        }
+        if (IsKeyDown(KEY_L)) {
+            if (IsKeyDown(KEY_LEFT_SHIFT)) {
+                r += 1;
+            } else {
+                r -= 1;
+            }
+        }
+
+        // U/Shift-U - Adjust n parameter
+        if (IsKeyDown(KEY_U)) {
+            float delta = IsKeyDown(KEY_LEFT_SHIFT) ? -0.2f : 0.2f;
+            n = clamp(n + delta, 0.1f, f - 0.1f);
+        }
+
+        // O/Shift-O - Adjust f parameter
+        if (IsKeyDown(KEY_O)) {
+            float delta = IsKeyDown(KEY_LEFT_SHIFT) ? -0.2f : 0.2f;
+            f = clamp(f + delta, n + 0.1f, FLT_MAX);
+        }
+
+        // B/Shift-B - Adjust dist
+        if (IsKeyDown(KEY_B)) {
+            float delta = IsKeyDown(KEY_LEFT_SHIFT) ? -0.2f : 0.2f;
+            dist = fmaxf(dist + delta, 0.1f);
+        }
+
+        // Z/Shift-Z - Adjust fovy_work
+        if (IsKeyDown(KEY_Z)) {
+            float delta = IsKeyDown(KEY_LEFT_SHIFT) ? -0.1f : 0.1f;
+            fovy_work = clamp(fovy_work + delta, 0.3f, 3.0f);
+        }
+
+        // X/Shift-X - Adjust aspect_work
+        if (IsKeyDown(KEY_X)) {
+            float delta = IsKeyDown(KEY_LEFT_SHIFT) ? -0.05f : 0.05f;
+            aspect_work = fmaxf(aspect_work + delta, 0.01f);
         }
     }
     CloseWindow();
