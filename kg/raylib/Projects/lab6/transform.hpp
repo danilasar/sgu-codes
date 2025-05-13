@@ -112,9 +112,8 @@ inline Mat4 frustum(float l, float r, float b, float t, float n, float f) {
     );
 }
 
-inline Mat4 perspective(float fovy_degrees, float aspect, float n, float f) {
-    const float fovy_rad = fovy_degrees * M_PI / 180.f; // градусы в радианы
-    const float t = n * std::tan(fovy_rad / 2.f);
+inline Mat4 perspective(float fovy, float aspect, float n, float f) {
+    const float t = n * std::tan(fovy / 2.f);
     const float b = -t;
     const float r = t * aspect;
     const float l = -r;

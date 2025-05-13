@@ -67,8 +67,8 @@ ssu::Model readFromFile(const char *fileName) {
     // считывают в переменные char ASCII (!!!!!!) код введённого символа, вместо
     // парсинга 8-битного числа. Отсюда здесь int и ниже static_cast на три
     // переменные (?!?!?!?!?).
-    int r, g, b;
-    float thickness;
+    int r = 0, g = 0, b = 0;
+    float thickness = 1.;
     float mVx = 0, mVy = 0;
     std::vector<ssu::Path> paths;
     Mat4 M = Mat4(1.f);
@@ -242,24 +242,12 @@ cadrRL(const Vec2 &Vc, const Vec2 &V, const Vec2 &Wc, const Vec2 &W) {
          * (scale(W.x / V.x, -W.y / V.y) * translate(-Vc.x, -Vc.y));
 }
 
-struct Padding {
-    float left, right, top, bottom;
+struct Line {
+    Vec2 start;
+    Vec2 end;
+    Color color;
+    float thickness;
 };
-
-void frame_calc(
-    const Padding &p,
-    float &Wx,
-    float &Wy,
-    float &Wcx,
-    float &Wcy,
-    float &frameAspect
-) {
-    Wx = static_cast<float>(GetScreenWidth()) - p.left - p.right;
-    Wy = static_cast<float>(GetScreenHeight()) - p.top - p.bottom;
-    Wcx = p.left;
-    Wcy = p.top + Wy;
-    frameAspect = Wx / Wy;
-}
 
 int main() {
     if (NFD_Init() != NFD_OKAY) {
@@ -272,30 +260,65 @@ int main() {
     SetTargetFPS(60);
 
     ssu::Model model;
-    Mat4 initT = Mat4(1.);
 
     Mat4 proj; // матрица перехода в пространство отсечения
     pType = Ortho; // WARN: самовольно
 
-    const Padding paddings
-        = {30.f, 160.f, 20.f, 50.f}; // расстояния от границ окна
+		const float p_left = 30.f, p_right = 160.f, p_top = 20.f, p_bottom = 50.f;
     float Wx, Wy, Wcx, Wcy, frameAspect;
-    frame_calc(paddings, Wx, Wy, Wcx, Wcy, frameAspect);
+
+    std::vector<Line> all_lines;
+    bool need_recalculate = true;
 
     while (!WindowShouldClose()) {
-        if (IsWindowResized()) {
-            frame_calc(paddings, Wx, Wy, Wcx, Wcy, frameAspect);
-        }
-        switch (pType) {
-        case Ortho: // прямоугольная проекция
-            proj = ortho(l, r, b, t, -n, -f);
-            break;
-        case Frustum: // перспективная проекция с Frustum
-            proj = frustum(l, r, b, t, n, f);
-            break;
-        case Perspective: // перспективная проекция с Perspective
-            proj = perspective(fovy_work, aspect_work, n, f);
-            break;
+        if (need_recalculate || IsWindowResized()) {
+            need_recalculate = false;
+    Wx = static_cast<float>(GetScreenWidth()) - p_left - p_right;
+    Wy = static_cast<float>(GetScreenHeight()) - p_top - p_bottom;
+    Wcx = p_left;
+    Wcy = p_top + Wy;
+    frameAspect = Wx / Wy;
+            switch (pType) {
+            case Ortho: // прямоугольная проекция
+                proj = ortho(l, r, b, t, -n, -f);
+                break;
+            case Frustum: // перспективная проекция с Frustum
+                proj = frustum(l, r, b, t, n, f);
+                break;
+            case Perspective: // перспективная проекция с Perspective
+                proj = perspective(fovy_work, aspect_work, n, f);
+                break;
+            }
+            all_lines.clear();
+            // матрица кадрирования
+            Mat3 cdr = cadrRL(
+                Vec2(-1.f, -1.f), Vec2(2.f, 2.f), Vec2(Wcx, Wcy), Vec2(Wx, Wy)
+            );
+            Mat4 C = proj * T; // матрица перехода от мировых координат в
+                               // пространство отсечения
+            for (const auto &figure : model.figures) {
+                Mat4 TM = C * figure.M;
+                for (const auto &lines : figure.paths) {
+                    Vec3 start_3d = normalize(TM * Vec4(lines.vertices[0], 1));
+                    Vec2 start = normalize(cdr * Vec3(start_3d, 1.f));
+                    for (const auto &line : lines.vertices) {
+                        Vec2 end_3D = normalize(TM * Vec4(line, 1));
+                        Vec2 end = normalize(cdr * Vec3(end_3D, 1.f));
+                        Vec2 old_end = end;
+                        if (clip(start, end, {Wcx, Wcy - Wy}, {Wcx + Wx, Wcy}))
+                        {
+                            all_lines.push_back({
+                                start,
+                                end,
+                                lines.color,
+                                lines.thickness,
+                            });
+                        }
+
+                        start = old_end;
+                    }
+                }
+            }
         }
 
         // Render figures
@@ -304,42 +327,22 @@ int main() {
 
         DrawRectangleLinesEx(
             {
-                paddings.left, // слева
-                paddings.top,  // сверху
-                Wx,            // ширина
-                Wy             // высота
+                Wcx,      // слева
+                Wcy - Wy, // сверху
+                Wx,       // ширина
+                Wy        // высота
             },
             2.f,
             BLACK
         );
 
-        // матрица кадрирования
-        Mat3 cdr = cadrRL(
-            Vec2(-1.f, -1.f), Vec2(2.f, 2.f), Vec2(Wcx, Wcy), Vec2(Wx, Wy)
-        );
-        Mat4 C = proj * T; // матрица перехода от мировых координат в
-                           // пространство отсечения
-        for (const auto &figure : model.figures) {
-            Mat4 TM = C * figure.M;
-            for (const auto &lines : figure.paths) {
-                Vec3 start_3d = normalize(TM * Vec4(lines.vertices[0], 1));
-                Vec2 start = normalize(cdr * Vec3(start_3d, 1.f));
-                for (const auto &line : lines.vertices) {
-                    Vec2 end_3D = normalize(TM * Vec4(line, 1));
-                    Vec2 end = normalize(cdr * Vec3(end_3D, 1.f));
-                    Vec2 old_end = end;
-                    if (clip(start, end, {Wcx, Wcy - Wy}, {Wcx + Wx, Wcy})) {
-                        DrawLineEx(
-                            {start.x, start.y},
-                            {end.x, end.y},
-                            lines.thickness,
-                            lines.color
-                        );
-                    }
-
-                    start = old_end;
-                }
-            }
+        for (const auto &line : all_lines) {
+            DrawLineEx(
+                {line.start.x, line.start.y},
+                {line.end.x, line.end.y},
+                line.thickness,
+                line.color
+            );
         }
 
         if (GuiButton(
@@ -354,6 +357,7 @@ int main() {
                 = NFD_OpenDialog(&outPath, filterItem, 2, nullptr);
             if (result == NFD_OKAY) {
                 model = readFromFile(outPath);
+                need_recalculate = true;
                 /*const float figureAspect = model.Vx / model.Vy;
                 Mat3 T1 = translate(-model.Vx / 2, -model.Vy / 2);
                 const float S = figureAspect < frameAspect ? Wy / model.Vy
@@ -375,25 +379,44 @@ int main() {
         // Escape
         if (IsKeyPressed(KEY_C)) {
             initWorkPars();
+            need_recalculate = true;
         }
-        // W
-        if (IsKeyPressed(KEY_W)) {
-            T = look_at(Vec3(0, 0, -1), Vec3(0, 0, -2), Vec3(0, 1, 0)) * T;
+        float step = IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)
+                       ? 0.1f
+                       : 1.0f;
+        // W - движение вперёд
+        if (IsKeyDown(KEY_W)) {
+            T = look_at(Vec3(0, 0, -step), Vec3(0, 0, -1 - step), Vec3(0, 1, 0))
+              * T;
+            need_recalculate = true;
         }
-        // S
-        if (IsKeyPressed(KEY_S)) {
-            T = look_at(Vec3(0, 0, 1), Vec3(0, 0, 0), Vec3(0, 1, 0)) * T;
+        // S - движение назад
+        if (IsKeyDown(KEY_S)) {
+            T = look_at(Vec3(0, 0, step), Vec3(0, 0, 1 - step), Vec3(0, 1, 0))
+              * T;
+            need_recalculate = true;
         }
-        // A
-        if (IsKeyPressed(KEY_A)) {
-            T = look_at(Vec3(-1, 0, 0), Vec3(-1, 0, -1), Vec3(0, 1, 0)) * T;
+        // A - движение влево
+        if (IsKeyDown(KEY_A)) {
+            T = look_at(Vec3(-step, 0, 0), Vec3(-step, 0, -1), Vec3(0, 1, 0))
+              * T;
+            need_recalculate = true;
         }
-        // R
+
+        // D - движение вправо
+        if (IsKeyDown(KEY_D)) {
+            // T = translate(1, 0, 0) * T;
+            T = look_at(Vec3(step, 0, 0), Vec3(step, 0, -1), Vec3(0, 1, 0)) * T;
+            need_recalculate = true;
+        }
+
+        // R - вращение по Oz на 0.1 радиан
         if (IsKeyDown(KEY_R)) {
             Vec3 u_new = Mat3(rotate(0.1f, Vec3(0, 0, 1))) * Vec3(0, 1, 0);
             T = look_at(Vec3(0, 0, 0), Vec3(0, 0, -1), u_new) * T;
+            need_recalculate = true;
         }
-        // T
+        // T - разворот камеры на 0.1 радиан
         if (IsKeyPressed(KEY_T)) {
             if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) {
                 Mat4 M = rotateP(0.1f, Vec3(1, 0, 0), Vec3(0, 0, -dist));
@@ -406,6 +429,7 @@ int main() {
                 Vec3 P_new = normalize(M * Vec4(0, 0, -1, 1));
                 T = look_at(Vec3(0, 0, 0), P_new, u_new) * T;
             }
+            need_recalculate = true;
         }
         // I
         if (IsKeyDown(KEY_I)) {
@@ -414,6 +438,7 @@ int main() {
             } else {
                 t += 1;
             }
+            need_recalculate = true;
         }
         // J
         if (IsKeyDown(KEY_J)) {
@@ -422,56 +447,90 @@ int main() {
             } else {
                 l -= 1;
             }
+            need_recalculate = true;
         }
         // D1
         if (IsKeyPressed(KEY_ONE)) {
             pType = Ortho;
+            need_recalculate = true;
         }
         // D3
         if (IsKeyPressed(KEY_THREE)) {
             pType = Perspective;
+            need_recalculate = true;
         }
         // 2 - Frustum projection
         if (IsKeyPressed(KEY_TWO)) {
             pType = Frustum;
+            need_recalculate = true;
         }
 
-        // D - Move right in view space
-        if (IsKeyPressed(KEY_D)) {
-            T = translate(1, 0, 0) * T;
-        }
-
-        // Shift+W/S/A/D - Slow movement
-        float shiftStep = 0.1f;
-        if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) {
-            if (IsKeyDown(KEY_W)) {
-                T = translate(0, 0, -shiftStep) * T;
-            }
-            if (IsKeyDown(KEY_S)) {
-                T = translate(0, 0, shiftStep) * T;
-            }
-            if (IsKeyDown(KEY_A)) {
-                T = translate(-shiftStep, 0, 0) * T;
-            }
-            if (IsKeyDown(KEY_D)) {
-                T = translate(shiftStep, 0, 0) * T;
-            }
-        }
-
-        // Y - Rotate around Z axis
+        // Y - поворот вокруг Oz (по часовой стрелке)
         if (IsKeyDown(KEY_Y)) {
-            T = rotate(0.1f, Vec3(0, 0, 1)) * T;
+            float angle = 0.1f;
+            Vec3 new_dir = Mat3(rotate(angle, Vec3(0, 0, 1))) * Vec3(0, 0, -1);
+            Vec3 new_up = Mat3(rotate(angle, Vec3(0, 0, 1))) * Vec3(0, 1, 0);
+            T = look_at(Vec3(0, 0, 0), new_dir, new_up) * T;
+            need_recalculate = true;
         }
 
-        // G/Shift-G - Rotate around X axis
+        // G - поворот вокруг Ox (Shift-G - вокруг оси через точку P)
         if (IsKeyDown(KEY_G)) {
-            float angle = IsKeyDown(KEY_LEFT_SHIFT) ? -0.1f : 0.1f;
+            float angle
+                = (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT))
+                    ? -0.1f
+                    : 0.1f;
+
             if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) {
+                // Поворот вокруг оси через точку P
                 Mat4 M = rotateP(angle, Vec3(1, 0, 0), P);
-                T = M * T;
+                Vec3 new_dir = normalize(M * Vec4(0, 0, -1, 1));
+                Vec3 new_up = Mat3(M) * Vec3(0, 1, 0);
+                T = look_at(Vec3(0, 0, 0), new_dir, new_up) * T;
             } else {
-                T = rotate(angle, Vec3(1, 0, 0)) * T;
+                // Поворот вокруг глобальной Ox
+                Vec3 new_dir
+                    = Mat3(rotate(angle, Vec3(1, 0, 0))) * Vec3(0, 0, -1);
+                Vec3 new_up
+                    = Mat3(rotate(angle, Vec3(1, 0, 0))) * Vec3(0, 1, 0);
+                T = look_at(Vec3(0, 0, 0), new_dir, new_up) * T;
             }
+            need_recalculate = true;
+        }
+
+        // F/H - повороты вокруг Oy (Shift-F/H - вокруг оси через точку P)
+        if (IsKeyDown(KEY_F)) { // Против часовой
+            float angle = 0.1f;
+            if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) {
+                Mat4 M = rotateP(-angle, Vec3(0, 1, 0), P);
+                Vec3 new_dir = normalize(M * Vec4(0, 0, -1, 1));
+                Vec3 new_up = Mat3(M) * Vec3(0, 1, 0);
+                T = look_at(Vec3(0, 0, 0), new_dir, new_up) * T;
+            } else {
+                Vec3 new_dir
+                    = Mat3(rotate(-angle, Vec3(0, 1, 0))) * Vec3(0, 0, -1);
+                Vec3 new_up
+                    = Mat3(rotate(-angle, Vec3(0, 1, 0))) * Vec3(0, 1, 0);
+                T = look_at(Vec3(0, 0, 0), new_dir, new_up) * T;
+            }
+            need_recalculate = true;
+        }
+
+        if (IsKeyDown(KEY_H)) { // По часовой
+            float angle = 0.1f;
+            if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) {
+                Mat4 M = rotateP(angle, Vec3(0, 1, 0), P);
+                Vec3 new_dir = normalize(M * Vec4(0, 0, -1, 1));
+                Vec3 new_up = Mat3(M) * Vec3(0, 1, 0);
+                T = look_at(Vec3(0, 0, 0), new_dir, new_up) * T;
+            } else {
+                Vec3 new_dir
+                    = Mat3(rotate(angle, Vec3(0, 1, 0))) * Vec3(0, 0, -1);
+                Vec3 new_up
+                    = Mat3(rotate(angle, Vec3(0, 1, 0))) * Vec3(0, 1, 0);
+                T = look_at(Vec3(0, 0, 0), new_dir, new_up) * T;
+            }
+            need_recalculate = true;
         }
 
         // K/Shift-K - Adjust window params
@@ -481,6 +540,7 @@ int main() {
             } else {
                 b -= 1;
             }
+            need_recalculate = true;
         }
         if (IsKeyDown(KEY_L)) {
             if (IsKeyDown(KEY_LEFT_SHIFT)) {
@@ -488,36 +548,42 @@ int main() {
             } else {
                 r -= 1;
             }
+            need_recalculate = true;
         }
 
         // U/Shift-U - Adjust n parameter
         if (IsKeyDown(KEY_U)) {
             float delta = IsKeyDown(KEY_LEFT_SHIFT) ? -0.2f : 0.2f;
             n = clamp(n + delta, 0.1f, f - 0.1f);
+            need_recalculate = true;
         }
 
         // O/Shift-O - Adjust f parameter
         if (IsKeyDown(KEY_O)) {
             float delta = IsKeyDown(KEY_LEFT_SHIFT) ? -0.2f : 0.2f;
             f = clamp(f + delta, n + 0.1f, FLT_MAX);
+            need_recalculate = true;
         }
 
         // B/Shift-B - Adjust dist
         if (IsKeyDown(KEY_B)) {
             float delta = IsKeyDown(KEY_LEFT_SHIFT) ? -0.2f : 0.2f;
             dist = fmaxf(dist + delta, 0.1f);
+            need_recalculate = true;
         }
 
         // Z/Shift-Z - Adjust fovy_work
         if (IsKeyDown(KEY_Z)) {
             float delta = IsKeyDown(KEY_LEFT_SHIFT) ? -0.1f : 0.1f;
             fovy_work = clamp(fovy_work + delta, 0.3f, 3.0f);
+            need_recalculate = true;
         }
 
         // X/Shift-X - Adjust aspect_work
         if (IsKeyDown(KEY_X)) {
             float delta = IsKeyDown(KEY_LEFT_SHIFT) ? -0.05f : 0.05f;
             aspect_work = fmaxf(aspect_work + delta, 0.01f);
+            need_recalculate = true;
         }
     }
     CloseWindow();
