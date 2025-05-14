@@ -175,11 +175,11 @@ struct Padding {
 };
 
 void frame_calc(const Padding& p, float& Wx, float& Wy, float& Wcx, float& Wcy, float& frameAspect) {
-	Wx = static_cast<float>(GetScreenWidth()) - p.left - p.right;
-	Wy = static_cast<float>(GetScreenHeight()) - p.top - p.bottom;
-	Wcx = Wx / 2.0f;
-	Wcy = Wy / 2.0f;
-	frameAspect = Wx / Wy;
+    Wx = static_cast<float>(GetScreenWidth()) - p.left - p.right;
+    Wy = static_cast<float>(GetScreenHeight()) - p.top - p.bottom;
+    Wcx = p.left;
+    Wcy = p.top + Wy;
+    frameAspect = Wx / Wy;
 }
 
 int main() {
@@ -210,8 +210,8 @@ int main() {
 		ClearBackground(SKYBLUE);
 
 		DrawRectangleLinesEx({
-			paddings.left, // слева
-			paddings.top, // сверху
+			Wcx, // слева
+			Wcy - Wy, // сверху
 			Wx, // ширина
 			Wy // высота
 		}, 2.f, BLACK);
@@ -223,7 +223,7 @@ int main() {
 				for (const auto &line : lines.vertices) {
 					Vec2 end = normalize(TM * Vec3(line, 1));
 					Vec2 old_end = end;
-					if(clip(start, end, {paddings.left, paddings.top}, {paddings.left + Wx, paddings.top + Wy})) {
+					if(clip(start, end, {Wcx, Wcy - Wy}, {Wcx + Wx, Wcy})) {
 						DrawLineEx(
 							{start.x, start.y},
 							{end.x, end.y},
@@ -268,14 +268,14 @@ int main() {
 		}
 
 		if (IsKeyDown(KEY_Q)) {
-			T = translate(-Wcx, -Wcy) * T;
+			T = translate(-(Wx - Wcx) / 2, -((Wcy - Wy) + Wy / 2)) * T;
 			T = rotate(0.01f) * T;
-			T = translate(Wcx, Wcy) * T;
+			T = translate((Wx - Wcx) / 2, (Wcy - Wy) + Wy / 2) * T;
 		}
 		if (IsKeyDown(KEY_E)) {
-			T = translate(-Wcx, -Wcy) * T;
+			T = translate(-(Wx - Wcx) / 2, -((Wcy - Wy) + Wy / 2)) * T;
 			T = rotate(-0.01f) * T;
-			T = translate(Wcx, Wcy) * T;
+			T = translate((Wx - Wcx) / 2, (Wcy - Wy) + Wy / 2) * T;
 		}
 
 		if (IsKeyDown(KEY_W)) {
@@ -292,14 +292,14 @@ int main() {
 		}
 
 		if (IsKeyPressed(KEY_R)) {
-			T = translate(-Wcx, -Wcy) * T;
+			T = translate(-(Wx - Wcx) / 2, -((Wcy - Wy) + Wy / 2)) * T;
 			T = rotate(0.05f) * T;
-			T = translate(Wcx, Wcy) * T;
+			T = translate((Wx - Wcx) / 2, (Wcy - Wy) + Wy / 2) * T;
 		}
 		if (IsKeyPressed(KEY_Y)) {
-			T = translate(-Wcx, -Wcy) * T;
+			T = translate(-(Wx - Wcx) / 2, -((Wcy - Wy) + Wy / 2)) * T;
 			T = rotate(-0.05f) * T;
-			T = translate(Wcx, Wcy) * T;
+			T = translate((Wx - Wcx) / 2, (Wcy - Wy) + Wy / 2) * T;
 		}
 
 		if (IsKeyPressed(KEY_T)) {
@@ -316,47 +316,47 @@ int main() {
 		}
 
 		if (IsKeyPressed(KEY_Z)) {
-			T = translate(-Wcx, -Wcy) * T;
+			T = translate(-(Wx - Wcx) / 2, -((Wcy - Wy) + Wy / 2)) * T;
 			T = scale(1.1f) * T;
-			T = translate(Wcx, Wcy) * T;
+			T = translate((Wx - Wcx) / 2, (Wcy - Wy) + Wy / 2) * T;
 		}
 		if (IsKeyPressed(KEY_X)) {
-			T = translate(-Wcx, -Wcy) * T;
+			T = translate(-(Wx - Wcx) / 2, -((Wcy - Wy) + Wy / 2)) * T;
 			T = scale(1 / 1.1f) * T;
-			T = translate(Wcx, Wcy) * T;
+			T = translate((Wx - Wcx) / 2, (Wcy - Wy) + Wy / 2) * T;
 		}
 
 		if (IsKeyPressed(KEY_U)) {
-			T = translate(-Wcx, -Wcy) * T;
+			T = translate(-(Wx - Wcx) / 2, -((Wcy - Wy) + Wy / 2)) * T;
 			T = mirrorX() * T;
-			T = translate(Wcx, Wcy) * T;
+			T = translate((Wx - Wcx) / 2, (Wcy - Wy) + Wy / 2) * T;
 		}
 		if (IsKeyPressed(KEY_J)) {
-			T = translate(-Wcx, -Wcy) * T;
+			T = translate(-(Wx - Wcx) / 2, -((Wcy - Wy) + Wy / 2)) * T;
 			T = mirrorY() * T;
-			T = translate(Wcx, Wcy) * T;
+			T = translate((Wx - Wcx) / 2, (Wcy - Wy) + Wy / 2) * T;
 		}
 
 		if (IsKeyPressed(KEY_I)) {
-			T = translate(-Wcx, -Wcy) * T;
+			T = translate(-(Wx - Wcx) / 2, -((Wcy - Wy) + Wy / 2)) * T;
 			T = scale(1.1f, 1.f) * T;
-			T = translate(Wcx, Wcy) * T;
+			T = translate((Wx - Wcx) / 2, (Wcy - Wy) + Wy / 2) * T;
 		}
 		if (IsKeyPressed(KEY_K)) {
-			T = translate(-Wcx, -Wcy) * T;
+			T = translate(-(Wx - Wcx) / 2, -((Wcy - Wy) + Wy / 2)) * T;
 			T = scale(1 / 1.1f, 1.f) * T;
-			T = translate(Wcx, Wcy) * T;
+			T = translate((Wx - Wcx) / 2, (Wcy - Wy) + Wy / 2) * T;
 		}
 
 		if (IsKeyPressed(KEY_O)) {
-			T = translate(-Wcx, -Wcy) * T;
+			T = translate(-(Wx - Wcx) / 2, -((Wcy - Wy) + Wy / 2)) * T;
 			T = scale(1.f, 1.1f) * T;
-			T = translate(Wcx, Wcy) * T;
+			T = translate((Wx - Wcx) / 2, (Wcy - Wy) + Wy / 2) * T;
 		}
 		if (IsKeyPressed(KEY_L)) {
-			T = translate(-Wcx, -Wcy) * T;
+			T = translate(-(Wx - Wcx) / 2, -((Wcy - Wy) + Wy / 2)) * T;
 			T = scale(1.f, 1 / 1.1f) * T;
-			T = translate(Wcx, Wcy) * T;
+			T = translate((Wx - Wcx) / 2, (Wcy - Wy) + Wy / 2) * T;
 		}
 	}
 	CloseWindow();
