@@ -273,11 +273,11 @@ int main() {
     while (!WindowShouldClose()) {
         if (need_recalculate || IsWindowResized()) {
             need_recalculate = false;
-    Wx = static_cast<float>(GetScreenWidth()) - p_left - p_right;
-    Wy = static_cast<float>(GetScreenHeight()) - p_top - p_bottom;
-    Wcx = p_left;
-    Wcy = p_top + Wy;
-    frameAspect = Wx / Wy;
+			Wx = static_cast<float>(GetScreenWidth()) - p_left - p_right;
+			Wy = static_cast<float>(GetScreenHeight()) - p_top - p_bottom;
+			Wcx = p_left;
+			Wcy = p_top + Wy;
+			frameAspect = Wx / Wy;
             switch (pType) {
             case Ortho: // прямоугольная проекция
                 proj = ortho(l, r, b, t, -n, -f);
