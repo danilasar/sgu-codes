@@ -1,5 +1,6 @@
 #include "algorithms.h"
 #include "lua.h"
+#include "avl_tree.h"
 #include "binary_tree.h"
 #include "rb_tree.h"
 #include "utils.h"
@@ -36,6 +37,7 @@ void Lua::init_lua() {
 	runtime["print_node"] = &print_node;
 	runtime["get_left"] = &get_left;
 	runtime["get_right"] = &get_right;
+
 	sol::usertype<RedBlackTree> rb_tree = runtime.new_usertype<RedBlackTree>(
 		"RedBlackTree",
 		
@@ -44,4 +46,16 @@ void Lua::init_lua() {
 		"find", &RedBlackTree::find,
 		"print", &RedBlackTree::print
 	);
+	AVLTree tree = AVLTree();
+
+	sol::usertype<AVLTree> avl_tree = runtime.new_usertype<AVLTree>(
+		"AVLTree",
+		
+		"insert", &AVLTree::insert,
+		"remove", &AVLTree::remove,
+		"find", &AVLTree::find,
+		"print", &AVLTree::print
+	);
+
+
 }

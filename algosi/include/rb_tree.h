@@ -4,7 +4,7 @@
 
 enum Color { BLACK, RED };
 
-class RedBlackTree {
+struct RedBlackTree {
 public:
     // Node structure
     struct Node {
@@ -14,7 +14,7 @@ public:
         Node *left;
         Node *parent;
         
-        Node(int val) : value(val), color(RED), right(nullptr), left(nullptr), parent(nullptr) {}
+        Node(int val) : color(RED), value(val), right(nullptr), left(nullptr), parent(nullptr) {}
     };
     // Constructors
     RedBlackTree() : root(nullptr) {}

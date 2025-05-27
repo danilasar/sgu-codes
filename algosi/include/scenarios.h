@@ -1,5 +1,6 @@
 #pragma once
 #include "algorithms.h"
+#include "avl_tree.h"
 #include "binary_tree.h"
 #include "rb_tree.h"
 #include "lua.h"
@@ -47,6 +48,17 @@ namespace Scenarios {
 	template<>
 	struct Task<Algorithms::RB_TREE> : TaskBase {
 		RedBlackTree tree;
+		Lua lua;
+		std::string script;
+		Task(std::string name, const toml::table& table);
+		void print_input() final;
+		void run() final;
+		void print_output() final;
+	};
+
+	template<>
+	struct Task<Algorithms::AVL_TREE> : TaskBase {
+		AVLTree tree;
 		Lua lua;
 		std::string script;
 		Task(std::string name, const toml::table& table);

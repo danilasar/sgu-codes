@@ -7,6 +7,7 @@ namespace Algorithms {
 		QUICK_SORT,
 		RADIX_SORT,
 		BINARY_TREE,
-		RB_TREE
+		RB_TREE,
+		AVL_TREE
 	};
 }
