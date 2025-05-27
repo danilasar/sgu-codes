@@ -12,6 +12,7 @@ function try_find_node(n)
 		print("Число " .. tostring(n) .. " найдено")
 	end
 end
+tree:print_tree(tree:get_root())
 
 local aboba = tree:in_order()
 print("Симметричный обход:")
@@ -34,6 +35,22 @@ tree:delete_node(69)
 try_find_node(69)
 try_find_node(42)
 
-tree:print()
 """
 
+[tasks.test]
+algorithm = "binary_tree"
+debug = false
+data = [ 23, 19, 10, 1, 7, 3, 44, 33, 28, 18, 24]
+script = """
+tree:print_tree(tree:get_root())
+
+aboba = tree:pre_order()
+print("Прямой обход:")
+print_array(aboba)
+
+
+tree:delete_node(23)
+
+tree:print_tree(tree:get_root())
+
+"""

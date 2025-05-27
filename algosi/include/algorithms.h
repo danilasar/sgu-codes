@@ -6,6 +6,7 @@ namespace Algorithms {
 		MERGE_SORT,
 		QUICK_SORT,
 		RADIX_SORT,
-		BINARY_TREE
+		BINARY_TREE,
+		RB_TREE
 	};
 }
