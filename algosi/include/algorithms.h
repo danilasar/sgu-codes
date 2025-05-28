@@ -8,6 +8,9 @@ namespace Algorithms {
 		RADIX_SORT,
 		BINARY_TREE,
 		RB_TREE,
-		AVL_TREE
+		AVL_TREE,
+		Z_FUNC,
+		KMP_FUNC,
+		BM_FUNC
 	};
 }

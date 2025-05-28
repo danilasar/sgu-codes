@@ -37,7 +37,9 @@ int main(int argc, char* argv[]) {
 		}
 	} else {
 		for(auto t = scenario.tasks.begin(); t != scenario.tasks.end(); ++t) {
+			std::cout << " === " << t->second->name << " === " << std::endl;
 			execute_task(std::move(t->second));
+			std::cout << " ===" << std::endl;
 		}
 	}
 

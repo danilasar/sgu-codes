@@ -3,8 +3,8 @@ project(algorithms LANGUAGES CXX)
 include(ExternalProject)
 include(FetchContent)
 
-set(CMAKE_CXX_STANDART 23)
-set(CMAKE_CXX_STANDART_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(FETCHCONTENT_QUIET OFF)
 add_compile_options(-Wall -Wextra -g)
@@ -30,6 +30,8 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(tomlplusplus)
 
 file(GLOB_RECURSE SRC_FILES "src/*.cpp")
+message(STATUS "Found source files: ${SRC_FILES}")
+
 
 add_executable(algorithms ${SRC_FILES})
 
@@ -38,9 +40,11 @@ target_include_directories(algorithms PRIVATE
 	${CMAKE_SOURCE_DIR}/src
 	${LUA_INCLUDE_DIR}
 	${sol2_SOURCE_DIR}/include
-
+	${tomlplusplus_SOURCE_DIR}/include
 )
-target_link_libraries(algorithms tomlplusplus::tomlplusplus)
-target_link_libraries(algorithms ${LUA_LIBRARIES})
+target_link_libraries(algorithms
+	tomlplusplus::tomlplusplus
+	${LUA_LIBRARIES}
+)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)

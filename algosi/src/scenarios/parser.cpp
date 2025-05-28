@@ -46,6 +46,12 @@ namespace Scenarios {
 			return new Task<Algorithms::RB_TREE>(name, table);
 		} else if(algorithm == "avl_tree") {
 			return new Task<Algorithms::AVL_TREE>(name, table);
+		} else if(algorithm == "z_func") {
+			return new Task<Algorithms::Z_FUNC>(name, table);
+		} else if(algorithm == "kmp_func") {
+			return new Task<Algorithms::KMP_FUNC>(name, table);
+		} else if(algorithm == "bm_func") {
+			return new Task<Algorithms::BM_FUNC>(name, table);
 		} else {
 			std::cerr << "[Ошибка] Неизвестный алгоритм: " << algorithm << std::endl;
 			return nullptr;

@@ -1,0 +1,37 @@
+[tasks]
+[tasks.z]
+algorithm = "z_func"
+debug = true
+haystack = "u popa bila sobaka zov on ee svo"
+needle = "zov"
+
+[tasks.kmp]
+algorithm = "kmp_func"
+debug = true
+haystack = "u popa bila sobaka zov on ee svo"
+needle = "zov"
+
+[tasks.bm]
+algorithm = "bm_func"
+debug = true
+haystack = "u popa bila sobaka zov on ee svo"
+needle = "zov"
+
+[tasks.z2]
+algorithm = "z_func"
+debug = true
+haystack = "zzovovzzovozzvvozvozv"
+needle = "zov"
+
+[tasks.kmp2]
+algorithm = "kmp_func"
+debug = true
+haystack = "zzovovzzovozzvvozvozv"
+needle = "zov"
+
+[tasks.bm2]
+algorithm = "bm_func"
+debug = true
+haystack = "zzovovzzovozzvvozvozv"
+needle = "zov"
+

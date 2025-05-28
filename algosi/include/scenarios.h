@@ -31,8 +31,34 @@ namespace Scenarios {
 		void print_output() override;
 	};
 
+	struct StringTask : TaskBase {
+		std::string haystack, needle;
+		void set_data(const std::string &haystack, const std::string &needle);
+		StringTask(std::string name, const toml::table& table);
+		void print_input() final;
+		void print_output() final;
+	};
+
 	template<Algorithms::Algorithm T>
 	struct Task : TaskBase {};
+
+	template<>
+	struct Task<Algorithms::Z_FUNC> : StringTask {
+		Task(std::string name, const toml::table& table);		
+		void run() final;
+	};
+
+	template<>
+	struct Task<Algorithms::KMP_FUNC> : StringTask {
+		Task(std::string name, const toml::table& table);		
+		void run() final;
+	};
+
+	template<>
+	struct Task<Algorithms::BM_FUNC> : StringTask {
+		Task(std::string name, const toml::table& table);		
+		void run() final;
+	};
 
 	template<>
 	struct Task<Algorithms::BINARY_TREE> : TaskBase {
