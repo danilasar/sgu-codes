@@ -1,9 +1,8 @@
 [tasks]
 [tasks.avltree]
 algorithm = "avl_tree"
-debug = false
-# data = [25, 20, 10, 19, 44, 15, 54, 61, 39, 7, 22]
-data = [10, 20, 15, 16, 18, 30, 28, 27, 24, 23, 21 ,25]
+debug = true
+data = [25, 20, 10, 19, 44, 15, 54, 61, 39, 7, 22]
 script = """
 function try_find_node(n)
 	local number = tree:find(n)
@@ -14,13 +13,16 @@ function try_find_node(n)
 	end
 end
 
+try_find_node(69)
+try_find_node(42)
+
 tree:print()
-tree:remove(15)
+tree:insert(42)
+tree:print()
+tree:remove(54)
 tree:print()
 
-tree:remove(16)
-tree:print()
+try_find_node(69)
+try_find_node(42)
 
-tree:remove(18)
-tree:print()
 """

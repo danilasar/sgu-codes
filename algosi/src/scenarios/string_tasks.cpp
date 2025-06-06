@@ -46,11 +46,13 @@ namespace Scenarios {
 	Task<Algorithms::BM_FUNC>::Task(std::string name, const toml::table& table) : StringTask(name, table) {}
 
 	void Task<Algorithms::BM_FUNC>::run() {
-	  int ans = bm(haystack, needle);
-	  if(ans == -1) {
+	  std::vector<int> ans = bm(haystack, needle);
+	  if(ans.empty()) {
 	    std::cout << "Вхождение не найдено" << std::endl;
 	  }
-	  std::cout << "Найдено вхождение в позиции " << ans << ':' << std::endl;
-	  std::cout << haystack.substr(ans, needle.length()) << std::endl;
+	  for(const int i : ans) {
+		  std::cout << "Найдено вхождение в позиции " << i << ':' << std::endl;
+		  std::cout << haystack.substr(i, needle.length()) << std::endl;
+	  }
 	}
 }

@@ -57,18 +57,25 @@ void pre_bm_gc(std::vector<int> &table, std::string pattern) {
     }
 }
 
-int bm(std::string haystack, std::string needle) {
+std::vector<int> bm(std::string haystack, std::string needle) {
     std::vector<int> badChar(ALPHABET_LEN);
     std::vector<int> goodSuf(needle.length());
+    std::vector<int> result;
     size_t haystack_len = haystack.length();
     size_t needle_len = needle.length();
+    
+    if (needle_len == 0 || needle_len > haystack_len) {
+        return result;
+    }
 
     pre_bm_bc(badChar, needle);
     pre_bm_gc(goodSuf, needle);
 
-    size_t i = std::max(static_cast<size_t>(1), needle_len) - 1; // Позиция в тексте
+    size_t i = needle_len - 1; // Позиция в тексте
     while (i < haystack_len) {
-        int j = std::max(static_cast<size_t>(1), needle_len) - 1; // Позиция в шаблоне
+        int j = needle_len - 1; // Позиция в шаблоне
+        size_t start_pos = i; // Запоминаем начальную позицию для сравнения
+        
         // Сравниваем справа налево
         while (j >= 0 && haystack[i] == needle[j]) {
             --i;
@@ -77,10 +84,18 @@ int bm(std::string haystack, std::string needle) {
 
         if (j < 0) {
             // Найдено совпадение
-            return i + 1;
+            result.push_back(i + 1);
+            // Восстанавливаем позицию и делаем минимальный сдвиг
+            i = start_pos + 1;
+        } else {
+            // Сдвиг по максимальному из двух правил
+            size_t bad_char_shift = (haystack[i] < ALPHABET_LEN) ? 
+                std::max(1, j - badChar[haystack[i]]) : j + 1;
+            size_t good_suffix_shift = (j < needle_len - 1) ? 
+                goodSuf[j + 1] : 1;
+            
+            i = start_pos + std::max(bad_char_shift, good_suffix_shift);
         }
-        // Сдвиг по максимальному из двух правил
-        i += std::max(badChar[haystack[i]], goodSuf[j]);
     }
-    return -1;
+    return result;
 }

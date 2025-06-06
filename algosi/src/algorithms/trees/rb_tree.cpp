@@ -186,7 +186,6 @@ void RedBlackTree::remove(int value) {
 
     if (current) {
         removeOne(root, current);
-        delete current;
     }
 }
 
@@ -205,8 +204,9 @@ RedBlackTree::Node* RedBlackTree::find(int value) {
 }
 
 void RedBlackTree::print() {
+    std::cout << std::endl;
     if (!root) {
-        std::cout << "Empty tree" << std::endl;
+        std::cout << "Пустое дерево" << std::endl;
         return;
     }
 
@@ -233,6 +233,7 @@ void RedBlackTree::print() {
         delete[] nodes[i];
     }
     delete[] nodes;
+    std::cout << std::endl;
 }
 
 // Helper methods for deletion
@@ -277,10 +278,14 @@ void RedBlackTree::deleteCase3(Node*& root, Node* node) {
 
 void RedBlackTree::deleteCase4(Node*& root, Node* node) {
     Node* sibling = findSibling(node);
-
-    if (sibling && node->parent->color == RED && sibling->color == BLACK &&
+    if (!sibling) return;
+    
+    // Явная проверка цвета родителя
+    if (node->parent->color == RED && 
+        sibling->color == BLACK &&
         (!sibling->left || sibling->left->color == BLACK) &&
-        (!sibling->right || sibling->right->color == BLACK)) {
+        (!sibling->right || sibling->right->color == BLACK)) 
+    {
         sibling->color = RED;
         node->parent->color = BLACK;
     } else {
@@ -312,6 +317,8 @@ void RedBlackTree::deleteCase5(Node*& root, Node* node) {
 void RedBlackTree::deleteCase6(Node*& root, Node* node) {
     Node* sibling = findSibling(node);
 
+    if (!sibling) return;
+
     sibling->color = node->parent->color;
     node->parent->color = BLACK;
 
@@ -320,12 +327,15 @@ void RedBlackTree::deleteCase6(Node*& root, Node* node) {
             sibling->right->color = BLACK;
         }
         leftTurn(root, node->parent);
+        if (node->parent == root) root = sibling;
     } else {
         if (sibling->left) {
             sibling->left->color = BLACK;
         }
         rightTurn(root, node->parent);
     }
+
+    if (!sibling->parent) root = sibling;
 }
 
 void RedBlackTree::replaceNode(Node*& root, Node* node) {
@@ -342,9 +352,12 @@ void RedBlackTree::replaceNode(Node*& root, Node* node) {
             node->parent->right = replacement;
         }
 
-        if (node->color == BLACK) {
+        if (node->color == BLACK && replacement->color == BLACK) {
             deleteCase1(root, replacement);
+        } else {
+            replacement->color = BLACK;
         }
+
     } else if (!node->parent) {
         root = nullptr;
     } else {
@@ -362,16 +375,21 @@ void RedBlackTree::replaceNode(Node*& root, Node* node) {
 
 void RedBlackTree::removeOne(Node*& root, Node* node) {
     if (node->left && node->right) {
+        // Исправлено: ищем минимальный в правом поддереве
         Node* replacement = node->right;
-        while (replacement->left) {
+        while (replacement->left) 
             replacement = replacement->left;
-        }
-        node->value = replacement->value;
+        
+        // Переносим ВСЕ данные, а не только значение
+        Node tmp = *replacement; 
         replaceNode(root, replacement);
+        node->value = tmp.value;
+        node->color = tmp.color; // Сохраняем исходный цвет
     } else {
         replaceNode(root, node);
     }
 }
+
 
 // Helper methods for printing
 std::string RedBlackTree::formatNode(Node* node) {

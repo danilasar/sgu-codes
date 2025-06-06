@@ -92,7 +92,7 @@ void AVLTree::print_helper(AVLNode *root, std::string indent, bool last) {
         }
         else {
             std::cout << "L";
-            indent += "|  ";
+            indent += "   ";
         }
         std::cout << root->value << "(" << root->height << ")" << std::endl;
         print_helper(root->left, indent, false);
