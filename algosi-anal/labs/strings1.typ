@@ -354,50 +354,6 @@ void BinaryTree<T>::print_tree_vertical(Node<T>* node, int space, int indent) {
 
     // Затем печатаем левое поддерево
     print_tree_vertical(node->left, space + indent, indent);
-    /*if (!root) {
-        std::cout << "<empty tree>\n";
-        return;
-    }
-
-    // Узнаём высоту дерева
-    std::function<int(Node<T>*)> tree_height = [&](Node<T>* node) {
-        if (!node) return 0;
-        return 1 + std::max(tree_height(node->left), tree_height(node->right));
-    };
-    int height = tree_height(root);
-
-    // Используем очередь для обхода по уровням
-    std::queue<Node<T>*> q;
-    q.push(root);
-
-    int max_width = std::pow(2, height) * 4; // ширина для форматирования
-
-    for (int level = 0; level < height; ++level) {
-        int level_nodes = std::pow(2, level);
-        int space_between = max_width / level_nodes;
-        int first_space = space_between / 2;
-
-        // Выводим узлы текущего уровня
-        for (int i = 0; i < level_nodes; ++i) {
-            Node<T>* node = q.front();
-            q.pop();
-
-            if (i == 0)
-                std::cout << std::setw(first_space) << "";
-
-            if (node) {
-                std::cout << node->key;
-                q.push(node->left);
-                q.push(node->right);
-            } else {
-                std::cout << " ";
-                q.push(nullptr);
-                q.push(nullptr);
-            }
-            std::cout << std::setw(space_between) << "";
-        }
-        std::cout << "\n";
-    }*/
 }
 
 template <typename T>
@@ -598,7 +554,6 @@ enum Color { BLACK, RED };
 
 struct RedBlackTree {
 public:
-    // Node structure
     struct Node {
         Color color;
         int value;
@@ -608,10 +563,8 @@ public:
         
         Node(int val) : color(RED), value(val), right(nullptr), left(nullptr), parent(nullptr) {}
     };
-    // Constructors
     RedBlackTree() : root(nullptr) {}
     
-    // Public methods
     void insert(int value);
     void remove(int value);
     Node* find(int value);
@@ -619,10 +572,8 @@ public:
     
 private:
     
-    // Root pointer
     Node* root;
     
-    // Helper methods
     Node* createNode(int value);
     void leftTurn(Node*& root, Node* node);
     void rightTurn(Node*& root, Node* node);
@@ -654,12 +605,10 @@ private:
 
 using namespace std;
 
-// Create a new node
 RedBlackTree::Node* RedBlackTree::createNode(int value) {
     return new Node(value);
 }
 
-// Left rotation
 void RedBlackTree::leftTurn(Node*& root, Node* node) {
     Node* rightChild = node->right;
     node->right = rightChild->left;
@@ -686,7 +635,6 @@ void RedBlackTree::leftTurn(Node*& root, Node* node) {
     }
 }
 
-// Right rotation
 void RedBlackTree::rightTurn(Node*& root, Node* node) {
     Node* leftChild = node->left;
     node->left = leftChild->right;
@@ -713,12 +661,10 @@ void RedBlackTree::rightTurn(Node*& root, Node* node) {
     }
 }
 
-// Find grandparent
 RedBlackTree::Node* RedBlackTree::findGrandParent(Node* node) {
     return (node && node->parent) ? node->parent->parent : nullptr;
 }
 
-// Find uncle
 RedBlackTree::Node* RedBlackTree::findUncle(Node* node) {
     Node* grandParent = findGrandParent(node);
     if (!grandParent)
@@ -727,7 +673,6 @@ RedBlackTree::Node* RedBlackTree::findUncle(Node* node) {
                                                : grandParent->left;
 }
 
-// Find sibling
 RedBlackTree::Node* RedBlackTree::findSibling(Node* node) {
     if (!node || !node->parent)
         return nullptr;
@@ -735,7 +680,6 @@ RedBlackTree::Node* RedBlackTree::findSibling(Node* node) {
                                         : node->parent->left;
 }
 
-// Insertion cases
 void RedBlackTree::insertCase1(Node*& root, Node* node) {
     if (!node->parent) {
         node->color = BLACK;
@@ -789,7 +733,6 @@ void RedBlackTree::insertCase5(Node*& root, Node* node) {
     }
 }
 
-// Public methods
 void RedBlackTree::insert(int value) {
     if (!root) {
         root = createNode(value);
@@ -816,7 +759,7 @@ void RedBlackTree::insert(int value) {
             }
             current = current->right;
         } else {
-            return; // Value already exists
+            return;
         }
     }
 }
@@ -885,7 +828,6 @@ void RedBlackTree::print() {
     std::cout << std::endl;
 }
 
-// Helper methods for deletion
 void RedBlackTree::deleteCase1(Node*& root, Node* node) {
     if (!node->parent) {
         root = (node->left) ? node->left : node->right;
@@ -1040,7 +982,6 @@ void RedBlackTree::removeOne(Node*& root, Node* node) {
 }
 
 
-// Helper methods for printing
 std::string RedBlackTree::formatNode(Node* node) {
     if (!node)
     return "    ";
@@ -1058,7 +999,6 @@ void RedBlackTree::printHelper(Node*** nodes, Node* current, size_t depth, size_
   }
 }
 
-// Helper method for calculating tree height
 void RedBlackTree::max_height(Node* root, size_t& max, size_t depth) {
     if (!root) {
         return;
@@ -1350,18 +1290,18 @@ AVL дерево является  балансированным деревом
 === Повороты и балансировка
 Высота всегда будет $log n$, так как дерево балансируется поворотами.
 
-Любой поворот перопределяет указатели и высоты узлов в дереве. Все операции в повороте займут $O(1)$. В худшем случае требуется не более двух поворотов для восстановления баланса за $O(1)$ дерева. Временная сложность составит $O(log n)$
+Любой поворот перопределяет указатели и высоты узлов в дереве. Все операции в повороте займут $O(1)$. В худшем случае требуется не более двух поворотов для восстановления баланса за $O(1)$ дерева. Временная сложность составит $O(1)$
 
 === Вставка
 - Сначала ищем узел за $O(log N)$, так как дерево балансированное.
-- После этого идет балансировка --- $O(O(log N))$.
+- После этого идет балансировка --- $O(1$.
 
-Общая сложность вставки $O(log N) + O(log N) = O(log N)$
+Общая сложность вставки $O(log N) + O(1) = O(log N)$
 
 === Удаление
 - Сначала ищем узел за $O(log N)$, так как дерево балансированное.
 - Удаление узла, занимает от $O(1)$ (если нет детей у узла) до $O(log N)$ (при наличи двух детей), как в бинарном дереве, так как надо заменить на минимальный из его правого поддерва. Поиск минимума займет $O(log N)$
-- После этого идет балансировка --- $O(O(log N))$.
+- После этого идет балансировка --- $O(1)$.
 
 === Обходы
 Все обходы занимают $O(n)$, так как нужно пройитсь по всем элементам.
